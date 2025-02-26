@@ -16,7 +16,7 @@ const Navbar: React.FC<NavbarProps> = ({ onCartClick, cartItemsCount }) => {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <Shield className="h-8 w-8 text-blue-600" />
-              <span className="ml-2 text-xl font-bold text-gray-900">SecureGuard</span>
+              <span className="ml-2 text-xl font-bold text-gray-900">CR Seguridad Industrial</span>
             </div>
             
             <div className="hidden md:flex items-center space-x-8">

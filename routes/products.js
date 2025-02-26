@@ -1,7 +1,12 @@
-const express = require('express');
-const Product = require('../models/Product');
+import express from 'express';
+import Product from '../models/Product.js';
+import mongoose from 'mongoose';
 
 const router = express.Router();
+
+router.get('/', (req, res) => {
+  res.send('Lista de productos');
+});
 
 // Obtener todos los productos
 router.get('/', async (req, res) => {
@@ -16,4 +21,5 @@ router.post('/', async (req, res) => {
   res.status(201).json(newProduct);
 });
 
-module.exports = router;
+
+export default router;

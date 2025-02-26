@@ -53,7 +53,7 @@ const WelcomePopup: React.FC<WelcomePopupProps> = ({ isOpen, onClose, onSubmit }
           <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
             <Building2 className="w-8 h-8 text-blue-600" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome to SecureGuard</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Bienvenido a CR Seguridad Industrial</h2>
           <p className="text-gray-600">
             Help us personalize your experience by telling us about your organization
           </p>

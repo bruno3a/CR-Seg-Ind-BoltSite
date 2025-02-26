@@ -12,7 +12,7 @@ const Hero = () => {
       <div className="relative container mx-auto px-4 h-full flex items-center">
         <div className="max-w-2xl">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-            Industrial Security Solutions for Modern Enterprises
+            Artículos de Seguridad Industrial para todas las industrias
           </h1>
           <p className="text-xl text-gray-200 mb-8">
             Protect your facilities with state-of-the-art security systems designed for industrial applications.
