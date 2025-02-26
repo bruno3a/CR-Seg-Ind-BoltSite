@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import express from 'express';
 import productRoutes from './routes/products.js';
+import authRoutes from './routes/auth.js';
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ mongoose.connect(MONGO_URI, {
 app.use(express.json());
 
 app.use('/api/products', productRoutes);
+app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => {
   res.send('API funcionando 🚀');

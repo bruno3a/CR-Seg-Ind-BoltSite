@@ -8,6 +8,8 @@ import Pictogram from './components/Pictogram';
 import IndustriesSection from './components/IndustriesSection';
 import Cart from './components/Cart';
 import WelcomePopup from './components/WelcomePopup';
+import Login from './components/Login';
+import Catalog from './components/Catalog';
 
 const products = [
   {
