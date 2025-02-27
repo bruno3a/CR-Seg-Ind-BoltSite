@@ -4,9 +4,11 @@ import { Shield, X, ShoppingCart } from 'lucide-react';
 interface NavbarProps {
   onCartClick: () => void;
   cartItemsCount: number;
+  onProductsClick: () => void;
+  onClientLoginClick: () => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ onCartClick, cartItemsCount }) => {
+const Navbar: React.FC<NavbarProps> = ({ onCartClick, cartItemsCount, onProductsClick, onClientLoginClick }) => {
   const [showLogin, setShowLogin] = useState(false);
 
   return (
@@ -21,7 +23,7 @@ const Navbar: React.FC<NavbarProps> = ({ onCartClick, cartItemsCount }) => {
             
             <div className="hidden md:flex items-center space-x-8">
               <a href="#" className="text-gray-600 hover:text-blue-600">Home</a>
-              <a href="#" className="text-gray-600 hover:text-blue-600">Products</a>
+              <a href="#" className="text-gray-600 hover:text-blue-600" onClick={onProductsClick}>Products</a>
               <a href="#" className="text-gray-600 hover:text-blue-600">Solutions</a>
               <a href="#" className="text-gray-600 hover:text-blue-600">About</a>
               <a href="#" className="text-gray-600 hover:text-blue-600">Contact</a>

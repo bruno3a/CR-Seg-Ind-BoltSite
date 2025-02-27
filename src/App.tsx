@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import { Shield, Camera, Lock, Fingerprint, Bell, Radio, Eye, Building2, User, Warehouse } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -8,79 +8,69 @@ import Pictogram from './components/Pictogram';
 import IndustriesSection from './components/IndustriesSection';
 import Cart from './components/Cart';
 import WelcomePopup from './components/WelcomePopup';
-import Login from './components/Login';
-import Catalog from './components/Catalog';
+import Catalog from './components/Catalog'; // Importar Catalog
+//import Login from './components/Login';
 
-const products = [
-  {
-    id: 1,
-    name: "Advanced CCTV System",
-    description: "4K resolution security cameras with night vision and motion detection",
-    icon: Camera,
-    price: "$1,299",
-    category: "Surveillance"
-  },
-  {
-    id: 2,
-    name: "Biometric Access Control",
-    description: "Multi-factor authentication system with fingerprint and facial recognition",
-    icon: Fingerprint,
-    price: "$2,499",
-    category: "Access Control"
-  },
-  {
-    id: 3,
-    name: "Perimeter Alarm System",
-    description: "Advanced motion sensors with real-time alerts and mobile integration",
-    icon: Bell,
-    price: "$1,899",
-    category: "Alarms"
-  },
-  {
-    id: 4,
-    name: "Industrial Security Gates",
-    description: "Heavy-duty electric gates with remote access control",
-    icon: Lock,
-    price: "$3,999",
-    category: "Physical Security"
-  },
-  {
-    id: 5,
-    name: "Two-Way Radio System",
-    description: "Long-range communication system for security personnel",
-    icon: Radio,
-    price: "$899",
-    category: "Communication"
-  },
-  {
-    id: 6,
-    name: "Surveillance Analytics",
-    description: "AI-powered video analytics for threat detection",
-    icon: Eye,
-    price: "$1,599",
-    category: "Software"
-  }
-];
+const API_URL = 'http://localhost:3010'; // Definir la URL de la API
+
+interface Product {
+  _id: string;
+  name: string;
+  description: string;
+  icon: React.FC<any>; // Ajustar el tipo de icono si es necesario
+  price: string;
+  category: string;
+}
+
+interface CartItem {
+  _id: string;
+  name: string;
+  price: string;
+  quantity: number;
+}
+
+interface NavbarProps {
+  onCartClick: () => void;
+  cartItemsCount: number;
+  onProductsClick: () => void;
+  onClientLoginClick: () => void;
+}
 
 function App() {
-  const [cartItems, setCartItems] = useState<Array<{ id: number; name: string; price: string; quantity: number }>>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
+  const [products, setProducts] = useState<Product[]>([]); // Estado para los productos
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [showCatalog, setShowCatalog] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const hasVisited = localStorage.getItem('hasVisited');
-    if (!hasVisited) {
-      setShowWelcome(true);
-      localStorage.setItem('hasVisited', 'true');
-    }
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch(`${API_URL}/api/products`);
+        if (!response.ok) {
+          throw new Error(`Error al obtener productos: ${response.statusText}`);
+        }
+        const data = await response.json();
+        setProducts(data);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
   }, []);
 
-  const handleAddToCart = (product: typeof products[0]) => {
+  const handleAddToCart = (product: Product) => {
     setCartItems(prev => {
-      const existing = prev.find(item => item.id === product.id);
+      const existing = prev.find(item => item._id === product._id);
       if (existing) {
         return prev.map(item =>
-          item.id === product.id
+          item._id === product._id
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
@@ -90,30 +80,42 @@ function App() {
     setIsCartOpen(true);
   };
 
-  const handleUpdateQuantity = (id: number, quantity: number) => {
+  const handleUpdateQuantity = (id: string, quantity: number) => {
     setCartItems(prev =>
       quantity === 0
-        ? prev.filter(item => item.id !== id)
+        ? prev.filter(item => item._id !== id)
         : prev.map(item =>
-            item.id === id ? { ...item, quantity } : item
+            item._id === id ? { ...item, quantity } : item
           )
     );
   };
 
-  const handleRemoveItem = (id: number) => {
-    setCartItems(prev => prev.filter(item => item.id !== id));
+  const handleRemoveItem = (id: string) => {
+    setCartItems(prev => prev.filter(item => item._id === id));
   };
 
   const handleWelcomeSubmit = (data: { companyType: string; industry: string }) => {
     console.log('Welcome data:', data);
     // Here you could send this data to your analytics or CRM system
   };
+  const handleProductClick = () => {
+    setShowCatalog(true);
+  };
+
+  const handleLoginClick = () => {
+    setIsAuthenticated(false); // Muestra el login
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar onCartClick={() => setIsCartOpen(true)} cartItemsCount={cartItems.length} />
+      <Navbar 
+        onCartClick={() => setIsCartOpen(true)} 
+        cartItemsCount={cartItems.length} 
+        onProductsClick={handleProductClick} 
+        onClientLoginClick={handleLoginClick}
+      />
       <Hero />
-      
+
       <main className="container mx-auto px-4 py-16">
         <section className="mb-16">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
@@ -147,15 +149,13 @@ function App() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {products.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onAddToCart={() => handleAddToCart(product)}
-              />
-            ))}
-          </div>
+          {loading ? (
+            <div>Cargando productos...</div>
+          ) : error ? (
+            <div>Error: {error}</div>
+          ) : (
+            <Catalog products={products} onAddToCart={handleAddToCart} /> // Pasar productos y onAddToCart como props
+          )}
         </section>
 
         <IndustriesSection />
@@ -238,8 +238,8 @@ function App() {
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
         items={cartItems}
-        onUpdateQuantity={handleUpdateQuantity}
-        onRemoveItem={handleRemoveItem}
+        onUpdateQuantity={(id:string, quantity: number) => handleUpdateQuantity(id, quantity)}
+        onRemoveItem={(id:string) => handleRemoveItem(id)}
       />
 
       <WelcomePopup
