@@ -21,6 +21,7 @@ The content of those pages should be landing pages for the service itself, creat
 Have a good looking contact us page with the <contact_details> on it
 Ensure to create a phenomenal modern homepage for the website using the images and information about services to make a modular, mobilefriendly (it must not scroll horizontally on mobile) homepage
 
+
 <products>
 Elementos de seguridad industrial
 Protección física

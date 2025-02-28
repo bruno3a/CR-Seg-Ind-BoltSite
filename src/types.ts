@@ -5,6 +5,7 @@ export interface Product {
   icon: string;
   price: string;
   category: string;
+  industry: string;
 }
 
 export interface CartItem {

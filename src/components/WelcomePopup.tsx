@@ -8,23 +8,23 @@ interface WelcomePopupProps {
 }
 
 const companyTypes = [
-  "Small Business",
-  "Medium Enterprise",
-  "Large Corporation",
-  "Government Agency",
-  "Non-Profit Organization"
+  "Pequeña Empresa",
+  "Mediana Empresa",
+  "Gran Corporación",
+  "Agencia Gubernamental",
+  "Organización Sin Fines de Lucro"
 ];
 
 const industries = [
-  "Manufacturing",
-  "Healthcare",
-  "Financial Services",
-  "Logistics",
-  "Education",
-  "Commercial",
-  "Aviation",
-  "Retail",
-  "Other"
+  "Fábricas",
+  "Salud",
+  "Servicios Financieros",
+  "Logística",
+  "Educación",
+  "Comercial",
+  "Aviación",
+  "Reventa",
+  "Otros"
 ];
 
 const WelcomePopup: React.FC<WelcomePopupProps> = ({ isOpen, onClose, onSubmit }) => {
@@ -55,14 +55,14 @@ const WelcomePopup: React.FC<WelcomePopupProps> = ({ isOpen, onClose, onSubmit }
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Bienvenido a CR Seguridad Industrial</h2>
           <p className="text-gray-600">
-            Help us personalize your experience by telling us about your organization
+            Ayúdanos a personalizar tu experiencia contándonos sobre tu organización
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Company Type
+              Tipo de empresa
             </label>
             <select
               value={companyType}
@@ -70,7 +70,7 @@ const WelcomePopup: React.FC<WelcomePopupProps> = ({ isOpen, onClose, onSubmit }
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               required
             >
-              <option value="">Select company type</option>
+              <option value="">Seleccione tipo de empresa</option>
               {companyTypes.map((type) => (
                 <option key={type} value={type}>{type}</option>
               ))}
@@ -79,7 +79,7 @@ const WelcomePopup: React.FC<WelcomePopupProps> = ({ isOpen, onClose, onSubmit }
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Industry
+              Industria
             </label>
             <select
               value={industry}
@@ -87,7 +87,7 @@ const WelcomePopup: React.FC<WelcomePopupProps> = ({ isOpen, onClose, onSubmit }
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               required
             >
-              <option value="">Select industry</option>
+              <option value="">Seleccione Industria</option>
               {industries.map((ind) => (
                 <option key={ind} value={ind}>{ind}</option>
               ))}
@@ -98,7 +98,7 @@ const WelcomePopup: React.FC<WelcomePopupProps> = ({ isOpen, onClose, onSubmit }
             type="submit"
             className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300"
           >
-            Get Started
+            Iniciemos
           </button>
         </form>
       </div>
