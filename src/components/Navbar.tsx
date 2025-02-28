@@ -24,7 +24,7 @@ const Navbar: React.FC<NavbarProps> = ({ onCartClick, cartItemsCount, onProducts
             <div className="hidden md:flex items-center space-x-8">
               <a href="#" className="text-gray-600 hover:text-blue-600">Inicio</a>
               <a href="#" className="text-gray-600 hover:text-blue-600" onClick={onProductsClick}>Productos</a>
-              <a href="#" className="text-gray-600 hover:text-blue-600">Solutions</a>
+              {/* <a href="#" className="text-gray-600 hover:text-blue-600">Solutions</a> */}
               <a href="#" className="text-gray-600 hover:text-blue-600">Conocenos</a>
               <a href="#" className="text-gray-600 hover:text-blue-600">Contacto</a>
               <button 
