@@ -2,7 +2,7 @@ import React from 'react';
 import { ShoppingCart, X, Trash2 } from 'lucide-react';
 
 interface CartItem {
-  _id: string;
+  id: number;
   name: string;
   price: string;
   quantity: number;
@@ -12,13 +12,13 @@ interface CartProps {
   isOpen: boolean;
   onClose: () => void;
   items: CartItem[];
-  onUpdateQuantity: (id: string, quantity: number) => void;
-  onRemoveItem: (id: string) => void;
+  onUpdateQuantity: (id: number, quantity: number) => void;
+  onRemoveItem: (id: number) => void;
 }
 
 const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onUpdateQuantity, onRemoveItem }) => {
   const total = items.reduce((sum, item) => {
-    const price = parseFloat(item.price);
+    const price = parseFloat(item.price.replace('$', '').replace(',', ''));
     return sum + price * item.quantity;
   }, 0);
 
@@ -49,27 +49,27 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onUpdateQuantity, o
           ) : (
             <div className="space-y-4">
               {items.map((item) => (
-                <div key={item._id} className="flex items-center space-x-4 bg-gray-50 p-4 rounded-lg">
+                <div key={item.id} className="flex items-center space-x-4 bg-gray-50 p-4 rounded-lg">
                   <div className="flex-1">
                     <h3 className="font-semibold text-gray-900">{item.name}</h3>
-                    <p className="text-blue-600">{`$${Number(item.price).toFixed(2)}`}</p>
+                    <p className="text-blue-600">{item.price}</p>
                   </div>
                   <div className="flex items-center space-x-2">
                     <button
-                      onClick={() => onUpdateQuantity(item._id, Math.max(0, item.quantity - 1))}
+                      onClick={() => onUpdateQuantity(item.id, Math.max(0, item.quantity - 1))}
                       className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100"
                     >
                       -
                     </button>
                     <span className="w-8 text-center">{item.quantity}</span>
                     <button
-                      onClick={() => onUpdateQuantity(item._id, item.quantity + 1)}
+                      onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
                       className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100"
                     >
                       +
                     </button>
                     <button
-                      onClick={() => onRemoveItem(item._id)}
+                      onClick={() => onRemoveItem(item.id)}
                       className="text-red-500 hover:text-red-700 ml-2"
                     >
                       <Trash2 className="w-5 h-5" />

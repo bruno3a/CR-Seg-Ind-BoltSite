@@ -1,19 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ShoppingCart } from 'lucide-react';
+import { Product } from '../types';
 
 interface ProductCardProps {
-  product: {
-    name: string;
-    description: string;
-    icon: string; // This will hold the image URL
-    price: string;
-    category: string;
-  };
-  onAddToCart: () => void;
+  product: Product;
+  onAddToCart: (product: Product, quantity: number) => void;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
-  const { name, description, icon, price, category } = product;
+  const { name, description, icon, price, category, _id } = product;
+  const [quantity, setQuantity] = useState(1);
+
+  const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newQuantity = parseInt(event.target.value, 10);
+    setQuantity(isNaN(newQuantity) || newQuantity < 1 ? 1 : newQuantity);
+  };
 
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300 w-80">
@@ -32,11 +33,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
               id="quantity"
               name="quantity"
               min="1"
-              defaultValue="1"
+              value={quantity}
+              onChange={handleQuantityChange}
               className="w-20 px-2 py-1 text-gray-700 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <button
-              onClick={onAddToCart}
+              onClick={() => onAddToCart(product, quantity)}
               className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300 flex items-center ml-2"
             >
               <ShoppingCart className="w-5 h-5 mr-2" />
