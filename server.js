@@ -32,30 +32,44 @@ mongoose.connect(MONGO_URI)
 app.use('/api/products', productRoutes);
 app.use('/api/auth', authRoutes);
 
-// RUTA TEMPORAL PARA INSERTAR DATOS DE PRUEBA
+// RUTA TEMPORAL PARA INSERTAR DATOS DE PRUEBA - MODIFICADA PARA AÑADIR 5 PRODUCTOS
 app.get('/insert-test-data', async (req, res) => {
   try {
     const testProducts = [
       {
         name: 'Guantes de seguridad',
         description: 'Guantes resistentes para trabajos industriales',
-        price: 25,
+        price: 10,
         category: 'Seguridad Industrial',
-        icon: 'https://example.com/guantes.jpg', // Agregar una URL de imagen de ejemplo
+        icon: 'https://www.bac-dall.com.ar/products/images/soldador.jpg',
       },
       {
         name: 'Botas de seguridad',
         description: 'Botas con punta de acero para protección',
         price: 50,
         category: 'Calzado',
-        icon: 'https://example.com/botas.jpg', // Agregar una URL de imagen de ejemplo
+        icon: 'https://www.bac-dall.com.ar/products/images/bota%20blanca%20pampeana%20con%20punt.jpg',
       },
       {
         name: 'Casco de seguridad',
         description: 'Casco resistente a impactos',
         price: 35,
         category: 'Protección',
-        icon: 'https://example.com/casco.jpg', // Agregar una URL de imagen de ejemplo
+        icon: 'https://www.bac-dall.com.ar/products/images/msa%20299931.jpg',
+      },
+      {
+        name: 'Mameluco',
+        description: 'https://www.bac-dall.com.ar/products/images/msa%20299931.jpg',
+        price: 500,
+        category: 'Indumentaria',
+        icon: 'https://www.bac-dall.com.ar/products/images/mam-4.5-cr.jpg',
+      },
+      {
+        name: 'Pinza para bloqueo',
+        description: 'Dielectrica',
+        price: 30,
+        category: 'Seguridad',
+        icon: 'https://www.bac-dall.com.ar/products/images/428.jpg',
       },
     ];
 

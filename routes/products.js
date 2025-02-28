@@ -30,4 +30,47 @@ router.post('/', async (req, res) => {
   }
 });
 
+// Agregar múltiples productos
+router.post('/add-multiple', async (req, res) => {
+  try {
+    const newProducts = req.body; // Array de productos a agregar
+    if (!Array.isArray(newProducts)) {
+      return res.status(400).json({ message: 'Se espera un array de productos' });
+    }
+
+    const insertedProducts = await Product.insertMany(newProducts); // Insertar los productos en la base de datos
+    res.status(201).json(insertedProducts); // Retornar los productos insertados con un estado 201
+  } catch (err) {
+    res.status(400).json({ message: 'Error al agregar productos', error: err.message }); // Manejo de errores al agregar productos
+  }
+});
+
+// Actualizar la imagen de un producto
+router.put('/:id/image', async (req, res) => {
+  const { id } = req.params;
+  const { icon } = req.body;
+
+  try {
+    // Verificar si el ID es válido
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: 'ID de producto no válido' });
+    }
+
+    // Buscar el producto por ID y actualizar la imagen
+    const updatedProduct = await Product.findByIdAndUpdate(
+      id,
+      { icon: icon },
+      { new: true } // Para retornar el producto actualizado
+    );
+
+    if (!updatedProduct) {
+      return res.status(404).json({ message: 'Producto no encontrado' });
+    }
+
+    res.json(updatedProduct); // Retornar el producto actualizado
+  } catch (err) {
+    res.status(500).json({ message: 'Error al actualizar la imagen del producto', error: err.message });
+  }
+});
+
 export default router;
