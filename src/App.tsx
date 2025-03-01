@@ -2,15 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Shield, Lock, Building2, User, Warehouse, Bell } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-// import ProductCard from './components/ProductCard'; // No longer needed here
 import WhatsAppButton from './components/WhatsAppButton';
 import Pictogram from './components/Pictogram';
 import IndustriesSection from './components/IndustriesSection';
 import Cart from './components/Cart';
 import WelcomePopup from './components/WelcomePopup';
-import Catalog from './components/Catalog'; // Importar Catalog
-//import Login from './components/Login';
+import Catalog from './components/Catalog';
 import { Product, CartItem } from './types';
+import { Routes, Route } from 'react-router-dom';
 
 const API_URL = 'http://localhost:3010'; // Definir la URL de la API
 
@@ -83,10 +82,6 @@ function App() {
     console.log('Welcome data:', data);
     // Here you could send this data to your analytics or CRM system
   };
-  const handleProductClick = () => {
-    setShowCatalog(true);
-  };
-
   const handleLoginClick = () => {
     setIsAuthenticated(false); // Muestra el login
   };
@@ -96,104 +91,99 @@ function App() {
       <Navbar
         onCartClick={() => setIsCartOpen(true)}
         cartItemsCount={cartItems.length}
-        onProductsClick={handleProductClick}
         onClientLoginClick={handleLoginClick}
       />
-      <Hero />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <Hero />
+              <main className="container mx-auto px-4 py-16">
+                <section className="mb-16">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                    <Pictogram
+                      icon={User}
+                      title="Personal Safety Solutions"
+                      description="Comprehensive personal protection equipment and systems for individual security"
+                      stats={[
+                        { label: 'Protected Users', value: '50K+' },
+                        { label: 'Success Rate', value: '99.9%' },
+                      ]}
+                      image="https://images.unsplash.com/photo-1517697471339-4aa32003c11a?ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"
+                    />
+                    <Pictogram
+                      icon={Warehouse}
+                      title="Warehouse Security"
+                      description="Advanced security systems designed specifically for warehouse and storage facilities"
+                      stats={[
+                        { label: 'Secured Space', value: '2M+ sqft' },
+                        { label: 'Incident Prevention', value: '98%' },
+                      ]}
+                      image="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"
+                    />
+                  </div>
+                </section>
 
-      <main className="container mx-auto px-4 py-16">
-        <section className="mb-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-            <Pictogram
-              icon={User}
-              title="Personal Safety Solutions"
-              description="Comprehensive personal protection equipment and systems for individual security"
-              stats={[
-                { label: 'Protected Users', value: '50K+' },
-                { label: 'Success Rate', value: '99.9%' },
-              ]}
-              image="https://images.unsplash.com/photo-1517697471339-4aa32003c11a?ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"
-            />
-            <Pictogram
-              icon={Warehouse}
-              title="Warehouse Security"
-              description="Advanced security systems designed specifically for warehouse and storage facilities"
-              stats={[
-                { label: 'Secured Space', value: '2M+ sqft' },
-                { label: 'Incident Prevention', value: '98%' },
-              ]}
-              image="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"
-            />
-          </div>
+                <IndustriesSection />
 
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Security Solutions Catalog
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Discover our comprehensive range of industrial security products
-              designed to protect your facilities and assets with cutting-edge
-              technology.
-            </p>
-          </div>
+                <section className="bg-white rounded-2xl shadow-lg p-8 mb-16">
+                  <div className="text-center mb-12">
+                    <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                      Why Choose Us
+                    </h2>
+                    <p className="text-gray-600">
+                      Industry-leading security solutions for your business
+                    </p>
+                  </div>
 
-          {loading ? (
-            <div>Cargando productos...</div>
-          ) : error ? (
-            <div>Error: {error}</div>
-          ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    {[
+                      {
+                        icon: Shield,
+                        title: 'Excelencia en Servicio',
+                        description:
+                          'Cientos de empresas líderes confían en nosotros',
+                      },
+                      {
+                        icon: Building2,
+                        title: 'Enterprise Grade',
+                        description: 'Built for industrial applications',
+                      },
+                      {
+                        icon: Lock,
+                        title: 'Advanced Security',
+                        description: 'Latest security technologies',
+                      },
+                      {
+                        icon: Bell,
+                        title: '24/7 Support',
+                        description: 'Round-the-clock technical assistance',
+                      },
+                    ].map((feature, index) => (
+                      <div key={index} className="text-center">
+                        <div className="inline-block p-3 bg-blue-100 rounded-full mb-4">
+                          <feature.icon className="w-6 h-6 text-blue-600" />
+                        </div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                          {feature.title}
+                        </h3>
+                        <p className="text-gray-600">{feature.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              </main>
+            </>
+          }
+        />
+        <Route
+          path="/catalog"
+          element={
             <Catalog products={products} onAddToCart={handleAddToCart} />
-          )}
-        </section>
-
-        <IndustriesSection />
-
-        <section className="bg-white rounded-2xl shadow-lg p-8 mb-16">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Why Choose Us
-            </h2>
-            <p className="text-gray-600">
-              Industry-leading security solutions for your business
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                icon: Shield,
-                title: 'Proven Protection',
-                description: 'Trusted by leading industries worldwide',
-              },
-              {
-                icon: Building2,
-                title: 'Enterprise Grade',
-                description: 'Built for industrial applications',
-              },
-              {
-                icon: Lock,
-                title: 'Advanced Security',
-                description: 'Latest security technologies',
-              },
-              {
-                icon: Bell,
-                title: '24/7 Support',
-                description: 'Round-the-clock technical assistance',
-              },
-            ].map((feature, index) => (
-              <div key={index} className="text-center">
-                <div className="inline-block p-3 bg-blue-100 rounded-full mb-4">
-                  <feature.icon className="w-6 h-6 text-blue-600" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-      </main>
+          }
+        />
+      </Routes>
 
       <footer className="bg-gray-900 text-white py-12">
         <div className="container mx-auto px-4">
