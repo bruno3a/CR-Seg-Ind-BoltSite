@@ -1,44 +1,83 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { industries } from '../utils';
 
+interface Industry {
+    name: string;
+    description: string;
+    image: string;
+}
 interface IndustryFilterProps {
-  allIndustries: string[];
-  selectedIndustries: string[];
-  onIndustryChange: (industry: string) => void;
+    allIndustries: Industry[];
+    selectedIndustries: string[];
+    onIndustryChange: (industryName: string) => void;
 }
 
 const IndustryFilter: React.FC<IndustryFilterProps> = ({
-  allIndustries,
-  selectedIndustries,
-  onIndustryChange,
+    allIndustries,
+    selectedIndustries,
+    onIndustryChange,
 }) => {
-    
-  const [randomIndustries, setRandomIndustries] = React.useState<string[]>([]);
+    // Simulate admin-selected industries (replace with actual logic if needed)
+    const adminSelectedIndustries = [
+        "AERONAUTICA",
+        "AGRICOLA",
+        "ALIMENTICIA",
+        "AUTOMOTRIZ",
+        "AUTOPARTISTA",
+        "AVICOLA",
+        "CARPINTERIA"
+    ];
 
-    React.useEffect(() => {
-        const shuffled = [...allIndustries].sort(() => 0.5 - Math.random());
-        setRandomIndustries(shuffled.slice(0, 5));
-    }, [allIndustries]);
+    const [showAll, setShowAll] = useState(false);
 
-  return (
-    <div className="w-64 p-4 bg-gray-100 rounded-lg shadow-md">
-      <h2 className="text-lg font-semibold mb-4">Industrias</h2>
-      <ul>
-        {randomIndustries.map((industry) => (
-          <li
-            key={industry}
-            className={`cursor-pointer py-2 px-4 rounded-md mb-1 ${
-              selectedIndustries.includes(industry)
-                ? 'bg-blue-500 text-white'
-                : 'hover:bg-gray-200'
-            }`}
-            onClick={() => onIndustryChange(industry)}
-          >
-            {industry}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+    const visibleIndustries = showAll
+        ? allIndustries
+        : allIndustries.filter((industry) => adminSelectedIndustries.includes(industry.name));
+
+    const remainingIndustries = allIndustries.filter(
+        (industry) => !adminSelectedIndustries.includes(industry.name)
+    );
+    return (
+        <div className="w-64 p-4 bg-gray-100 rounded-lg shadow-md">
+            <h2 className="text-lg font-semibold mb-4">Industrias</h2>
+            <ul>
+                {visibleIndustries.map((industry) => (
+                    <li
+                        key={industry.name}
+                        className={`cursor-pointer py-2 px-4 rounded-md mb-1 ${selectedIndustries.includes(industry.name)
+                            ? 'bg-blue-500 text-white'
+                            : 'hover:bg-gray-200'
+                            }`}
+                        onClick={() => onIndustryChange(industry.name)}
+                    >
+                        {industry.name}
+                    </li>
+                ))}
+                {remainingIndustries.length > 0 && (
+                    <div className="overflow-y-auto max-h-40">
+                        {remainingIndustries.map((industry) => (
+                            <li
+                                key={industry.name}
+                                className={`cursor-pointer py-2 px-4 rounded-md mb-1 ${selectedIndustries.includes(industry.name)
+                                    ? 'bg-blue-500 text-white'
+                                    : 'hover:bg-gray-200'
+                                    }`}
+                                onClick={() => onIndustryChange(industry.name)}
+                            >
+                                {industry.name}
+                            </li>
+                        ))}
+                    </div>
+                )}
+            </ul>
+            {/* <button
+        onClick={() => setShowAll(!showAll)}
+        className="text-blue-500 hover:text-blue-700 mt-2"
+      >
+        {showAll ? 'Mostrar menos' : 'Mostrar todas'}
+      </button> */}
+        </div>
+    );
 };
 
 export default IndustryFilter;
