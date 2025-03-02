@@ -10,6 +10,7 @@ import Cart from './components/Cart';
 import WelcomePopup from './components/WelcomePopup';
 import Catalog from './components/Catalog';
 import ProductDetail from './components/ProductDetail';
+import UserRegistration from './components/UserRegistration';
 import { Product, CartItem } from './types';
 import { Routes, Route } from 'react-router-dom';
 
@@ -219,15 +220,12 @@ function App() {
                     path="/catalog"
                     element={
                         <Catalog products={products} onAddToCart={handleAddToCart} />
-                    }
-                />
-
-                <Route
-                    path="/product/:id"
-                    element={<ProductDetailWrapper />}
-                />
-
-            </Routes>
+          }
+        />
+        <Route path="/catalog" element={<Catalog products={products} onAddToCart={handleAddToCart} />} />
+        <Route path="/product/:id" element={<ProductDetailWrapper />} />
+        <Route path="/register" element={<UserRegistration />} />
+      </Routes>
 
             <footer className="bg-gray-900 text-white py-12">
                 <div className="container mx-auto px-4">
