@@ -123,7 +123,7 @@ const Navbar: React.FC<NavbarProps> = ({
                 >
                   Recuperar contraseña?
                 </a>
-                <Link to="/register" className="text-sm text-blue-600 hover:text-blue-800 ml-4">
+                <Link to="/register" className="text-sm text-blue-600 hover:text-blue-800 ml-4" onClick={() => setShowLogin(false)}>
                   Registrarse
                 </Link>
               </div>
