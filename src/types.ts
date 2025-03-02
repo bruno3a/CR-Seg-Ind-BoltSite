@@ -3,9 +3,12 @@ export interface Product {
   name: string;
   description: string;
   icon: string;
-  price: string;
-  category: string;
-  industry: string;
+    price: string;
+    category: string;
+    industry: string;
+    brand: string;
+    code: string;
+    normative: string;
 }
 
 export interface CartItem {
