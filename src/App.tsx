@@ -233,49 +233,34 @@ function App() {
 
             <footer className="bg-gray-900 text-white py-12">
                 <div className="container mx-auto px-4">
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mx-auto px-4">
                         <div>
-                            <h3 className="text-lg font-semibold mb-4">About Us</h3>
+                            <h3 className="text-lg font-semibold mb-4">Sobre Nosotros</h3>
                             <p className="text-gray-400">
-                                Leading provider of industrial security solutions with over 20
-                                years of experience.
+                                Proveedor líder de soluciones de seguridad industrial con más de 10
+                                años de experiencia en el mercado.
                             </p>
                         </div>
                         <div>
-                            <h3 className="text-lg font-semibold mb-4">Contact</h3>
+                            <h3 className="text-lg font-semibold mb-4">Contacto</h3>
                             <p className="text-gray-400">
-                                Email: info@securitysolutions.com
+                                <b>Mail:</b> caneparo@crseguridad.com
                             </p>
-                            <p className="text-gray-400">Phone: (555) 123-4567</p>
+                            <p className="text-gray-400">
+                                <b>Dirección:</b> Merlo 2338, Moreno, Buenos Aires 1744
+                            </p>
+                            <p className="text-gray-400">
+                                <b>Teléfono:</b> (011) 1234-5678</p>
                         </div>
+                        
                         <div>
-                            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-                            <ul className="text-gray-400">
-                                <li className="mb-2">
-                                    <a href="#" className="hover:text-white">
-                                        Products
-                                    </a>
-                                </li>
-                                <li className="mb-2">
-                                    <a href="#" className="hover:text-white">
-                                        Services
-                                    </a>
-                                </li>
-                                <li className="mb-2">
-                                    <a href="#" className="hover:text-white">
-                                        Support
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h3 className="text-lg font-semibold mb-4">Newsletter</h3>
+                            <h3 className="text-lg font-semibold mb-4">Boletín</h3>
                             <p className="text-gray-400 mb-4">
-                                Subscribe to our newsletter for updates
+                                Suscríbete a nuestro boletín para recibir actualizaciones
                             </p>
                             <input
                                 type="email"
-                                placeholder="Enter your email"
+                                placeholder="Ingresa tu correo electrónico"
                                 className="w-full px-4 py-2 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-blue-500"
                             />
                         </div>
