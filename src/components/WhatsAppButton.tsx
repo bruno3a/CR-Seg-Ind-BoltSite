@@ -4,6 +4,7 @@ import { MessageCircle } from 'lucide-react';
 interface WhatsAppButtonProps {
   phoneNumber: string;
   message: string;
+  className?: string; // Allow className prop
 }
 
 const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({ phoneNumber, message }) => {
