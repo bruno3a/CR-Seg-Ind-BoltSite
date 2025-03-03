@@ -17,9 +17,9 @@ import { Routes, Route } from 'react-router-dom';
 const API_URL = 'http://localhost:3010'; // Definir la URL de la API
 
 interface NavbarProps {
-    onCartClick: () => void;
-    cartItemsCount: number;
-    onClientLoginClick: () => void;
+  onCartClick: () => void;
+  cartItemsCount: number;
+  onClientLoginClick: () => void;
 }
 
 function App() {
