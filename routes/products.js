@@ -26,6 +26,10 @@ router.post('/', async (req, res) => {
     await newProduct.save(); // Guardar el nuevo producto en la base de datos
     res.status(201).json(newProduct); // Retornar el nuevo producto con un estado 201
   } catch (err) {
+    if (err.code === 11000) {
+      // Duplicate key error (MongoServerError)
+      return res.status(400).json({ message: 'Ya existe un producto con ese nombre.' });
+    }
     res.status(400).json({ message: 'Error al crear producto', error: err.message }); // Manejo de errores al crear producto
   }
 });
@@ -70,6 +74,60 @@ router.put('/:id/image', async (req, res) => {
     res.json(updatedProduct); // Retornar el producto actualizado
   } catch (err) {
     res.status(500).json({ message: 'Error al actualizar la imagen del producto', error: err.message });
+  }
+});
+
+// Obtener un producto por ID
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Verificar si el ID es válido
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: 'ID de producto no válido' });
+    }
+
+    const product = await Product.findById(id);
+
+    if (!product) {
+      return res.status(404).json({ message: 'Producto no encontrado' });
+    }
+
+    res.json(product);
+  } catch (err) {
+    res.status(500).json({ message: 'Error al obtener el producto', error: err.message });
+  }
+});
+
+// TEMPORARY ROUTE TO REMOVE DUPLICATE PRODUCTS
+router.delete('/remove-duplicates', async (req, res) => {
+  try {
+    const duplicates = await Product.aggregate([
+      {
+        $group: {
+          _id: { name: "$name" },
+          dups: { $addToSet: "$_id" },
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $match: {
+          count: { $gt: 1 }
+        }
+      }
+    ]);
+
+    const removedProductIds = [];
+
+    for (const dup of duplicates) {
+      const idsToRemove = dup.dups.slice(1); // Keep the first one, remove the rest
+      removedProductIds.push(...idsToRemove)
+      await Product.deleteMany({ _id: { $in: idsToRemove } });
+    }
+
+    res.json({ message: "Duplicates removed", removedIds: removedProductIds });
+  } catch (err) {
+    res.status(500).json({ message: "Error removing duplicates", error: err.message });
   }
 });
 
