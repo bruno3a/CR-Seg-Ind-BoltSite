@@ -10,6 +10,8 @@ export interface Product {
   code: string;
   normative: string;
   stock: number;
+  imageUrl: string;
+  technicalSpecs: { [key: string]: string };
 }
 
 export interface CartItem {

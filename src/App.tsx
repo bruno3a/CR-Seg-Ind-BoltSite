@@ -102,7 +102,16 @@ function App() {
             throw new Error(`Error al obtener el producto: ${response.statusText}`);
           }
           const data = await response.json();
-          setProduct(data);
+          // Ensure the fetched data includes imageUrl and technicalSpecs
+          const fetchedProduct = {
+            ...data,
+            imageUrl: data.imageUrl || 'https://via.placeholder.com/400', // Provide a default image URL if missing
+            technicalSpecs: data.technicalSpecs || {
+              'Specification 1': 'Value 1',
+              'Specification 2': 'Value 2'
+            }, // Provide default technical specs if missing
+          };
+          setProduct(fetchedProduct);
         } catch (error: any) {
           setError(error.message);
         }
@@ -284,7 +293,7 @@ function App() {
                 onSubmit={handleWelcomeSubmit}
             />
 
-            <WhatsAppButton />
+            
         </div>
     );
 }
