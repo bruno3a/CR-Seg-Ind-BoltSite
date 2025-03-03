@@ -17,30 +17,30 @@ const Navbar: React.FC<NavbarProps> = ({
 
     return (
         <>
-            <nav className="bg-white shadow-lg">
+            <nav className="bg-black border-b border-amber-300 shadow-lg">
                 <div className="container mx-auto px-4">
                     <div className="flex justify-between items-center h-16">
                         <div className="flex items-center">
-                            <Shield className="h-8 w-8 text-blue-600" />
-                            <span className="ml-2 text-xl font-bold text-gray-900">
+                            <Shield className="h-8 w-8 text-amber-300" />
+                            <span className="ml-2 text-xl font-bold text-amber-300">
                                 CR Seguridad Industrial
                             </span>
                         </div>
 
                         <div className="hidden md:flex items-center space-x-8">
-                            <Link to="/" className="text-gray-600 hover:text-blue-600">
+                            <Link to="/" className="text-gray-300 hover:text-amber-300">
                                 Inicio
                             </Link>
                             <Link
                                 to="/catalog"
-                                className="text-gray-600 hover:text-blue-600"
+                                className="text-gray-300 hover:text-amber-300"
                             >
                 Productos
               </Link>
-              <a href="#" className="text-gray-600 hover:text-blue-600">
+              <a href="#" className="text-gray-300 hover:text-amber-300">
                 Conocenos
               </a>
-                            <a href="#" className="text-gray-600 hover:text-blue-600">
+                            <a href="#" className="text-gray-300 hover:text-amber-300">
                                 Contacto
                             </a>
                             <button
@@ -51,7 +51,7 @@ const Navbar: React.FC<NavbarProps> = ({
                             </button>
                             <button
                                 onClick={onCartClick}
-                                className="relative bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300 flex items-center"
+                                className="relative bg-amber-500 text-white px-4 py-2 rounded-lg hover:bg-amber-600 transition duration-300 flex items-center"
                             >
                                 <ShoppingCart className="w-5 h-5 mr-2" />
                                 Carrito

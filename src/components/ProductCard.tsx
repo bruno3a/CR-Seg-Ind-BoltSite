@@ -39,7 +39,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
             )}
             {stock > 0 && (
                 <span className="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                    Entrega Inmediata
+                    Disponible
                 </span>
             )}
             <div className="flex items-center justify-end mt-auto">

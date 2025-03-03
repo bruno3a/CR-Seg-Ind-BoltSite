@@ -16,7 +16,7 @@ const IndustriesSection = () => {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 xl:grid-cols-6 gap-6">
                     {industries.map((industry, index) => {
                         const Icon = iconMap[industry.name] || Users;
                         return (
@@ -29,10 +29,10 @@ const IndustriesSection = () => {
                                     style={{ backgroundImage: `url(${industry.image})` }}
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-                                <div className="relative p-6 h-64 flex flex-col justify-end">
+                                <div className="relative p-6 h-48 flex flex-col justify-end">
                                     <div className="mb-4">
-                                        <Icon className="w-8 h-8 text-blue-400 mb-2" />
-                                        <h3 className="text-xl font-semibold text-white mb-2">
+                                        <Icon className="w-6 h-6 text-blue-400 mb-2" />
+                                        <h3 className="text-lg font-semibold text-white mb-2">
                                             {industry.name}
                                         </h3>
                                         <p className="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
