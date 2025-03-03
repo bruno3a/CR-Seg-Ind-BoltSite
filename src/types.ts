@@ -4,11 +4,12 @@ export interface Product {
   description: string;
   icon: string;
     price: string;
-    category: string;
-    industry: string;
-    brand: string;
-    code: string;
-    normative: string;
+  category: string;
+  industry: string;
+  brand: string;
+  code: string;
+  normative: string;
+  stock: number;
 }
 
 export interface CartItem {
