@@ -47,7 +47,7 @@ const Navbar: React.FC<NavbarProps> = ({
                                 onClick={() => setShowLogin(true)}
                                 className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-200 transition duration-300"
                             >
-                                Login Clientes
+                                Ingreso Clientes
                             </button>
                             <button
                                 onClick={onCartClick}
