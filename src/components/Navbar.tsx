@@ -25,6 +25,9 @@ const Navbar: React.FC<NavbarProps> = ({
                             <span className="ml-2 text-xl font-bold text-amber-300">
                                 CR Seguridad Industrial
                             </span>
+                            <a href="https://www.instagram.com/crindustrial/" target="_blank" rel="noopener noreferrer">
+                                <img src="https://img.icons8.com/color/48/000000/instagram-new--v1.png" alt="Instagram" className="h-6 w-6" />
+                            </a>
                         </div>
 
                         <div className="hidden md:flex items-center space-x-8">
