@@ -134,7 +134,7 @@ function App() {
       return <div>Product not found.</div>;
     }
 
-    return <ProductDetail product={product} />;
+    return <ProductDetail product={product} onAddToCart={handleAddToCart} />;
   };
 
     return (
@@ -182,45 +182,43 @@ function App() {
                                 <section className="bg-white rounded-2xl shadow-lg p-8 mb-16">
                                     <div className="text-center mb-12">
                                         <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                                            Why Choose Us
+                                            Confiá en nosotros!
                                         </h2>
                                         <p className="text-gray-600">
-                                            Industry-leading security solutions for your business
+                                            Amplia disponibilidad de productos, servicio de entrega y retiro en planta, consultá los nuevos ingresos!
                                         </p>
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                                         {[
                                             {
-                                                icon: Shield,
-                                                title: 'Excelencia en Servicio',
-                                                description:
-                                                    'Cientos de empresas líderes confían en nosotros',
+                                                icon: User,
+                                                title: 'Convertite en distribuidor',
+                                                url: '#convertite-en-distribuidor'
+                                            },
+                                            {
+                                                icon: Warehouse,
+                                                title: 'Catálogo digital',
+                                                url: '#catalogo-digital'
                                             },
                                             {
                                                 icon: Building2,
-                                                title: 'Enterprise Grade',
-                                                description: 'Built for industrial applications',
-                                            },
-                                            {
-                                                icon: Lock,
-                                                title: 'Advanced Security',
-                                                description: 'Latest security technologies',
+                                                title: 'Plantilla X',
+                                                url: '#plantilla-x'
                                             },
                                             {
                                                 icon: Bell,
-                                                title: '24/7 Support',
-                                                description: 'Round-the-clock technical assistance',
+                                                title: 'Novedades',
+                                                url: '#novedades'
                                             },
                                         ].map((feature, index) => (
                                             <div key={index} className="text-center">
-                                                <div className="inline-block p-3 bg-blue-100 rounded-full mb-4">
+                                                <a href={feature.url} className="inline-block p-3 bg-blue-100 rounded-full mb-4">
                                                     <feature.icon className="w-6 h-6 text-blue-600" />
-                                                </div>
+                                                </a>
                                                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
                                                     {feature.title}
                                                 </h3>
-                                                <p className="text-gray-600">{feature.description}</p>
                                             </div>
                                         ))}
                                     </div>
