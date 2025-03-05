@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Shield, Lock, Building2, User, Warehouse, Bell } from 'lucide-react';
+import { Shield, Lock, Building2, User, Warehouse, Bell, Users, Book, FileText, Syringe } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import WhatsAppButton from './components/WhatsAppButton';
@@ -190,19 +190,19 @@ function App() {
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                                        {[
+                                         {[
                                             {
-                                                icon: User,
+                                                icon: Users,
                                                 title: 'Convertite en distribuidor',
                                                 url: '#convertite-en-distribuidor'
                                             },
                                             {
-                                                icon: Warehouse,
+                                                icon: Book,
                                                 title: 'Catálogo digital',
                                                 url: '#catalogo-digital'
                                             },
                                             {
-                                                icon: Building2,
+                                                icon: FileText,
                                                 title: 'Plantilla X',
                                                 url: '#plantilla-x'
                                             },
