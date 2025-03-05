@@ -259,6 +259,9 @@ function App() {
                                 <b>Dirección:</b> Merlo 2338, Moreno, Buenos Aires 1744
                             </p>
                             <p className="text-gray-400">
+                                <b>Horarios:</b> Lunes a Viernes 8:30 a 17hs
+                            </p>
+                            <p className="text-gray-400">
                                 <b>Teléfono:</b> (011) 1234-5678</p>
                         </div>
                         
