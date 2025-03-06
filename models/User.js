@@ -6,7 +6,11 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     industry: { type: String, required: true },
-    companySize: { type: String, required: true }
+    companySize: { type: String, required: true },
+    role: { type: String, enum: ['guest', 'customer','admin'], default: 'guest' },
+    isVerified: { type: Boolean, default: false },
+    lastLogin: { type: Date },
+    createdAt: { type: Date, default: Date.now }
 });
 
 userSchema.pre('save', async function (next) {
