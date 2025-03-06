@@ -26,7 +26,7 @@ const IndustriesSection = () => {
                             >
                                 <div
                                     className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
-                                    style={{ backgroundImage: `url(${industry.image})` }}
+                                    style={{ backgroundImage: `url(${industry.image}) !important` }}
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
                                 <div className="relative p-6 h-48 flex flex-col justify-end">
