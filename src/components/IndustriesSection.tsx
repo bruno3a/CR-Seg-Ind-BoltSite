@@ -16,35 +16,37 @@ const IndustriesSection = () => {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
                     {industries.map((industry, index) => {
                         const Icon = iconMap[industry.name] || Users;
+                        
                         return (
-                                    <div
-                                    style={{ height: '200px', width: '100%', overflow: 'hidden' }}
+                            <div
                                 key={index}
-                                className="group relative overflow-hidden rounded-xl shadow-lg cursor-pointer transform transition-transform hover:-translate-y-1"
+                                className="group relative overflow-hidden rounded-lg shadow-md cursor-pointer transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                                style={{ height: '180px' }}
                             >
-                                <div
+                                <div 
                                     className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
-                                    style={{ backgroundImage: `url(${industry.image}) !important` }}
+                                    style={{ 
+                                        backgroundImage: `url(${industry.image})`,
+                                        backgroundColor: '#f3f4f6'
+                                    }}
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-                                <div className="relative p-6 h-48 flex flex-col justify-end">
-                                    <div className="mb-4">
-                                        <Icon className="w-6 h-6 text-blue-400 mb-2" />
-                                        <h3 className="text-lg font-semibold text-white mb-2">
+                                
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/30" />
+                                
+                                <div className="relative h-full p-3 flex flex-col">
+                                    <div className="flex justify-between items-start mb-2">
+                                        <h3 className="text-sm font-semibold text-white leading-tight max-w-[80%]">
                                             {industry.name}
                                         </h3>
-                                        <p className="text-gray-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                            {industry.description}
-                                        </p>
+                                        <Icon className="w-5 h-5 text-blue-400 flex-shrink-0" />
                                     </div>
-                                    <div className="flex justify-between items-center">
-                                        <button className="text-blue-400 text-sm hover:text-blue-300 transition-colors duration-300">
-                                            Learn More →
-                                        </button>
-                                    </div>
+                                    
+                                    <p className="text-xs text-gray-300 mt-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300 line-clamp-3">
+                                        {industry.description}
+                                    </p>
                                 </div>
                             </div>
                         );
