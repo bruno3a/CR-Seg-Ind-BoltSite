@@ -153,24 +153,25 @@ function App() {
                             <BrandCarousel />
                             <main className="container mx-auto px-4 py-16">
                                 <section className="mb-16">
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-                                        <Pictogram
-                                            icon={User}
-                                            title="Personal Safety Solutions"
-                                            description="Comprehensive personal protection equipment and systems for individual security"
-                                            stats={[
-                                                { label: 'Protected Users', value: '50K+' },
-                                                { label: 'Success Rate', value: '99.9%' },
-                                            ]}
-                                            image="https://images.unsplash.com/photo-1517697471339-4aa32003c11a?ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"
-                                        />
+                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                                          <Pictogram
+                                             icon={Users}
+                                             title="¡Convertite en Distribuidor!"
+                                             description="Ampliá tu negocio con nuestro asesoramiento. Tenemos todos los productos que necesitás. ¡Unite a nuestra red de distribuidores!"
+                                             stats={[
+                                                 { label: 'Variedad', value: 'Más de 5000 artículos' },
+                                                 { label: 'Calidad', value: 'Las mejores marcas' },
+                                             ]}
+                                             image="/Distributor.png"
+                                             //image="\Public\Distributor.png"
+                                         />
                                         <Pictogram
                                             icon={Warehouse}
-                                            title="Warehouse Security"
-                                            description="Advanced security systems designed specifically for warehouse and storage facilities"
+                                            title="Novedades"
+                                            description="Descubrí los nuevos ingresos. Siempre hay alguna novedad."
                                             stats={[
-                                                { label: 'Secured Space', value: '2M+ sqft' },
-                                                { label: 'Incident Prevention', value: '98%' },
+                                                { label: 'Lo último de mercado internacional', value: 'Importados' },
+                                                { label: 'La confianza de siempre', value: 'Nacionales' },
                                             ]}
                                             image="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"
                                         />
