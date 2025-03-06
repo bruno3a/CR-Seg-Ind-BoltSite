@@ -38,7 +38,7 @@ const IndustriesSection = () => {
                                 
                                 <div className="relative h-full p-3 flex flex-col">
                                     <div className="flex justify-between items-start mb-2">
-                                        <h3 className="text-base md:text-lg font-bold text-white leading-tight max-w-[80%]">
+                                        <h3 className="text-lg font-bold text-white leading-tight max-w-[80%]">
                                             {industry.name}
                                         </h3>
                                         <Icon className="w-6 h-6 text-blue-400 flex-shrink-0" />

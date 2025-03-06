@@ -35,8 +35,6 @@ export const iconMap: { [key: string]: React.ComponentType<any> } = {
   AGRICOLA: Wheat,
   ALIMENTICIA: ShoppingBag,
   AUTOMOTRIZ: Truck,
-  AUTOPARTISTA: Wrench,
-  AVICOLA: Ban,
   CARPINTERIA: Hammer,
   CEMENTERA: Building,
   CONSTRUCCION: Construction,
@@ -46,22 +44,17 @@ export const iconMap: { [key: string]: React.ComponentType<any> } = {
   FARMACEUTICA: HeartPulse,
   FERRETERIA: Hammer,
   FRIGORIFICA: Warehouse,
-  FRIGORIFICO: Warehouse,
   GAS: Fuel,
   LABORATORIO: FlaskConical,
   LIMPIEZA: Paintbrush2,
   LOGISTICA: Boxes,
   MANUFACTURA: Factory,
   METALMECANICA: Wrench,
-  METALURRGICA: Factory,
+  METALURGICA: Factory,
   MINERA: Construction,
-  NAVIERA: Sailboat,
   PAPELERA: Newspaper,
-  PESQUERA: Fish,
   PETROLEO: Fuel,
   PETROLERA: Fuel,
-  PETROQUIMICA: Fuel,
-  PINTURA: PaintRoller,
   QUIMICA: FlaskConical,
   SALUD: HeartPulse,
   SIDERURGICA: Factory,
@@ -72,198 +65,138 @@ export const iconMap: { [key: string]: React.ComponentType<any> } = {
 
 export const industries = [
     {
-        name: 'AERONAUTICA',
-        description: 'Soluciones de seguridad para la industria aeronáutica.',
-        image: 'https://images.unsplash.com/photo-1559083156-7d2956b9430c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+        name: 'AERONAUTICA',  // Aeronautics/Aviation Industry
+        description: 'Soluciones especializadas de seguridad para mantenimiento de aeronaves, hangares y operaciones aeroportuarias.',
+        image: 'https://images.unsplash.com/photo-1570710891163-6d3b5c47248b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Aircraft maintenance technicians working in hangar
     },
     {
-        name: 'AGRICOLA',
-        description: 'Soluciones de seguridad para la industria agrícola.',
-        image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+        name: 'AGRICOLA',  // Agricultural Industry
+        description: 'Equipamiento de protección para trabajo agrícola, manejo de agroquímicos y operación de maquinaria pesada.',
+        image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Industrial agricultural machinery and safety equipment
     },
     {
-        name: 'ALIMENTICIA',
-        description: 'Soluciones de seguridad para la industria alimenticia.',
-        image: 'https://images.unsplash.com/photo-1606214174585-fe31582dc6ee?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+        name: 'ALIMENTICIA',  // Food Industry
+        description: 'Elementos de seguridad para plantas procesadoras de alimentos, cumpliendo normas sanitarias y de inocuidad.',
+        image: 'https://images.unsplash.com/photo-1606857521015-7f9fcf423740?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Food processing facility with workers in protective gear
     },
     {
-        name: 'AUTOMOTRIZ',
-        description: 'Soluciones de seguridad para la industria automotriz.',
-        image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+        name: 'AUTOMOTRIZ',  // Automotive Industry
+        description: 'Protección integral para líneas de ensamblaje, talleres mecánicos y plantas automotrices.',
+        image: 'https://images.unsplash.com/photo-1603714228681-b399de4850fe?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Modern automotive assembly line with safety protocols
     },
     {
-        name: 'AUTOPARTISTA',
-        description: 'Soluciones de seguridad para la industria de autopartes.',
-        image: 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+        name: 'CARPINTERIA',  // Woodworking Industry
+        description: 'Equipos de protección específicos para trabajo en madera, control de polvo y manejo de maquinaria.',
+        image: 'https://images.unsplash.com/photo-1622398925373-3f91b1e275f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Industrial woodworking facility with safety measures
     },
     {
-        name: 'AVICOLA',
-        description: 'Soluciones de seguridad para la industria avícola.',
-        image: 'https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+        name: 'CEMENTERA',  // Cement Industry
+        description: 'Soluciones de seguridad para plantas de cemento, protección respiratoria y control de particulados.',
+        image: 'https://images.unsplash.com/photo-1617791160505-6f00504e3519?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Cement production facility with safety protocols
     },
     {
-        name: 'CARPINTERIA',
-        description: 'Soluciones de seguridad para carpinterías.',
-        image: 'https://images.unsplash.com/photo-1622021142947-da7dedc7c39a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+        name: 'CONSTRUCCION',  // Construction Industry
+        description: 'Equipamiento completo de seguridad para obras, incluyendo protección en altura y manejo de materiales.',
+        image: 'https://images.unsplash.com/photo-1590644365607-1f81eae1d9a8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Construction site with workers in full PPE
     },
     {
-        name: 'CEMENTERA',
-        description: 'Soluciones de seguridad para la industria cementera.',
-        image: 'https://via.placeholder.com/300x200?text=Cementera',
+        name: 'ELECTRICA',  // Electrical Industry
+        description: 'Elementos de protección para trabajo con alta tensión y mantenimiento eléctrico industrial.',
+        image: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Electrical workers with safety equipment
     },
     {
-        name: 'CONSTRUCCION',
-        description: 'Soluciones de seguridad para la industria de la construcción.',
-        image: 'https://images.unsplash.com/photo-1541976590-713941681591?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+        name: 'ELECTRONICA',  // Electronics Industry
+        description: 'Equipamiento antiestático y de precisión para manufactura de componentes electrónicos.',
+        image: 'https://images.unsplash.com/photo-1588508065123-287b28e013da?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Electronics assembly clean room
     },
     {
-        name: 'VIALIDAD',
-        description: 'Soluciones de seguridad para la industria de vialidad.',
-        image: 'https://via.placeholder.com/300x200?text=Vialidad',
+        name: 'FARMACEUTICA',  // Pharmaceutical Industry
+        description: 'Protección especializada para laboratorios farmacéuticos y áreas estériles.',
+        image: 'https://images.unsplash.com/photo-1563213126-a4273aed2016?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Pharmaceutical manufacturing facility
     },
     {
-        name: 'ELECTRICA',
-        description: 'Soluciones de seguridad para la industria eléctrica.',
-        image: 'https://via.placeholder.com/300x200?text=Electrica',
+        name: 'FERRETERIA',  // Hardware/Industrial Supply
+        description: 'Suministros de seguridad industrial y equipos de protección personal.',
+        image: 'https://images.unsplash.com/photo-1581235720704-06d3acfcb36f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Industrial hardware warehouse
     },
     {
-        name: 'ELECTRONICA',
-        description: 'Soluciones de seguridad para la industria electrónica.',
-        image: 'https://via.placeholder.com/300x200?text=Electronica',
+        name: 'FRIGORIFICA',  // Cold Storage/Refrigeration
+        description: 'Protección térmica y seguridad para trabajo en ambientes refrigerados.',
+        image: 'https://images.unsplash.com/photo-1587049633312-d628ae50a8ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Industrial refrigeration facility
     },
     {
-        name: 'FARMACEUTICA',
-        description: 'Soluciones de seguridad para la industria farmacéutica.',
-        image: 'https://via.placeholder.com/300x200?text=Farmaceutica',
+        name: 'GAS',  // Gas Industry
+        description: 'Equipamiento especializado para manejo de gases industriales y plantas de procesamiento.',
+        image: 'https://images.unsplash.com/photo-1563089145-599997674d42?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Gas processing facility
     },
     {
-        name: 'FERRETERIA',
-        description: 'Soluciones de seguridad para ferreterías.',
-        image: 'https://via.placeholder.com/300x200?text=Ferreteria',
+        name: 'LABORATORIO',  // Laboratory
+        description: 'Elementos de protección para investigación científica y análisis químicos.',
+        image: 'https://images.unsplash.com/photo-1576086213369-97a306d36557?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Modern research laboratory
     },
     {
-        name: 'FRIGORIFICA',
-        description: 'Soluciones de seguridad para la industria frigorífica.',
-        image: 'https://via.placeholder.com/300x200?text=Frigorifica',
+        name: 'LIMPIEZA',  // Industrial Cleaning
+        description: 'Protección química y biológica para servicios de limpieza industrial.',
+        image: 'https://images.unsplash.com/photo-1584784670536-8a1b7c4c7e1a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Industrial cleaning operations
     },
     {
-        name: 'FRIGORIFICO',
-        description: 'Soluciones de seguridad para frigoríficos.',
-        image: 'https://via.placeholder.com/300x200?text=Frigorifico',
+        name: 'LOGISTICA',  // Logistics
+        description: 'Seguridad para operaciones de almacenamiento y distribución.',
+        image: 'https://images.unsplash.com/photo-1553413077-190dd305871c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Modern logistics warehouse
     },
     {
-        name: 'GAS',
-        description: 'Soluciones de seguridad para la industria del gas.',
-        image: 'https://via.placeholder.com/300x200?text=Gas',
+        name: 'MANUFACTURA',  // Manufacturing
+        description: 'Soluciones integrales de seguridad para procesos de fabricación.',
+        image: 'https://images.unsplash.com/photo-1624365169364-0640dd10e180?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Modern manufacturing facility
     },
     {
-        name: 'LABORATORIO',
-        description: 'Soluciones de seguridad para laboratorios.',
-        image: 'https://via.placeholder.com/300x200?text=Laboratorio',
+        name: 'METALMECANICA',  // Metalworking
+        description: 'Protección especializada para mecanizado y trabajo en metales.',
+        image: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Metal fabrication workshop
     },
     {
-        name: 'LIMPIEZA',
-        description: 'Soluciones de seguridad para la industria de la limpieza.',
-        image: 'https://via.placeholder.com/300x200?text=Limpieza',
+        name: 'NAVIERA',  // Maritime Industry
+        description: 'Equipamiento de seguridad para trabajo en astilleros y embarcaciones.',
+        image: 'https://images.unsplash.com/photo-1521369909029-2afed882baee?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Shipyard operations
     },
     {
-        name: 'LOGISTICA',
-        description: 'Soluciones de seguridad para la industria logística.',
-        image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+        name: 'PAPELERA',  // Paper Industry
+        description: 'Protección para plantas de procesamiento de papel y celulosa.',
+        image: 'https://images.unsplash.com/photo-1574492909706-09046e193f8b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Paper manufacturing facility
     },
     {
-        name: 'MANUFACTURA',
-        description: 'Soluciones de seguridad para la industria manufacturera.',
-        image: 'https://images.unsplash.com/photo-1563874257547-d19fbb71b46c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+        name: 'PETROLEO',  // Oil Industry
+        description: 'Equipamiento de alta seguridad para exploración y refinación petrolera.',
+        image: 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Oil refinery complex
     },
     {
-        name: 'METALMECANICA',
-        description: 'Soluciones de seguridad para la industria metalmecánica.',
-        image: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+        name: 'QUIMICA',  // Chemical Industry
+        description: 'Protección avanzada para manejo de sustancias químicas y procesos industriales.',
+        image: 'https://images.unsplash.com/photo-1616244133573-68b41f4825b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Chemical processing plant
     },
     {
-        name: 'METALURGICA',
-        description: 'Soluciones de seguridad para la industria metalúrgica.',
-        image: 'https://images.unsplash.com/photo-1533106497176-45ae19e68ba2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+        name: 'SALUD',  // Healthcare
+        description: 'Elementos de protección sanitaria y bioseguridad para personal médico.',
+        image: 'https://images.unsplash.com/photo-1583947215259-38e31be8751f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Modern hospital facility
     },
     {
-        name: 'MINERA',
-        description: 'Soluciones de seguridad para la industria minera.',
-        image: 'https://images.unsplash.com/photo-1507644331669-5cc76957c2d0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+        name: 'SIDERURGICA',  // Steel Industry
+        description: 'Equipamiento de alta resistencia para trabajo con metales a altas temperaturas.',
+        image: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Steel mill operations
     },
     {
-        name: 'MINERIA',
-        description: 'Soluciones de seguridad para la industria minera.',
-        image: 'https://via.placeholder.com/300x200?text=Mineria',
+        name: 'SOLDADURA',  // Welding
+        description: 'Protección especializada para trabajos de soldadura y corte de metales.',
+        image: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Industrial welding operations
     },
     {
-        name: 'NAVIERA',
-        description: 'Soluciones de seguridad para la industria naviera.',
-        image: 'https://via.placeholder.com/300x200?text=Naviera',
+        name: 'TABACALERA',  // Tobacco Industry
+        description: 'Seguridad para procesamiento y manufactura de productos de tabaco.',
+        image: 'https://images.unsplash.com/photo-1574983851972-ef06ee4ea206?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Tobacco processing facility
     },
     {
-        name: 'PAPELERA',
-        description: 'Soluciones de seguridad para la industria papelera.',
-        image: 'https://via.placeholder.com/300x200?text=Papelera',
-    },
-    {
-        name: 'PESQUERA',
-        description: 'Soluciones de seguridad para la industria pesquera.',
-        image: 'https://via.placeholder.com/300x200?text=Pesquera',
-    },
-    {
-        name: 'PETROLEO',
-        description: 'Soluciones de seguridad para la industria del petróleo.',
-        image: 'https://via.placeholder.com/300x200?text=Petroleo',
-    },
-    {
-        name: 'PETROLERA',
-        description: 'Soluciones de seguridad para la industria petrolera.',
-        image: 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
-    },
-    {
-        name: 'PETROQUIMICA',
-        description: 'Soluciones de seguridad para la industria petroquímica.',
-        image: 'https://via.placeholder.com/300x200?text=Petroquimica',
-    },
-    {
-        name: 'PINTURA',
-        description: 'Soluciones de seguridad para la industria de la pintura.',
-        image: 'https://via.placeholder.com/300x200?text=Pintura',
-    },
-    {
-        name: 'QUIMICA',
-        description: 'Soluciones de seguridad para la industria química.',
-        image: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
-    },
-    {
-        name: 'SALUD',
-        description: 'Soluciones de seguridad para el sector salud.',
-        image: 'https://images.unsplash.com/photo-1538108149393-fbbd81895907?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
-    },
-    {
-        name: 'SIDERURGICA',
-        description: 'Soluciones de seguridad para la industria siderúrgica.',
-        image: 'https://via.placeholder.com/300x200?text=Siderurgica',
-    },
-    {
-        name: 'SOLDADURA',
-        description: 'Soluciones de seguridad para la industria de la soldadura.',
-        image: 'https://via.placeholder.com/300x200?text=Soldadura',
-    },
-    {
-        name: 'TABACALERA',
-        description: 'Soluciones de seguridad para la industria tabacalera.',
-        image: 'https://via.placeholder.com/300x200?text=Tabacalera',
-    },
-    {
-        name: 'TRANSPORTE',
-        description: 'Soluciones de seguridad para la industria del transporte.',
-        image: 'https://via.placeholder.com/300x200?text=Transporte',
-    },
-    {
-        name: 'VIALIDAD',
-        description: 'Soluciones de seguridad para la industria de vialidad.',
-        image: 'https://via.placeholder.com/300x200?text=Vialidad',
-    },
+        name: 'TRANSPORTE',  // Transportation
+        description: 'Elementos de seguridad para transporte de carga y logística.',
+        image: 'https://images.unsplash.com/photo-1586768035999-0519f5ff5c3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',  // Transportation and logistics hub
+    }
 ];

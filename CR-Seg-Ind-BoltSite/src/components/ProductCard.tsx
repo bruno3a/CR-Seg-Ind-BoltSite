@@ -8,19 +8,22 @@ interface ProductCardProps {
     icon: LucideIcon;
     price: string;
     category: string;
+    image: string;
   };
   onAddToCart: () => void;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
-  const { name, description, icon: Icon, price, category } = product;
+  const { name, description, icon: Icon, price, category, image } = product;
 
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
       <div className="p-6">
-        <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-          <Icon className="w-6 h-6 text-blue-600" />
-        </div>
+        <img 
+          src={image} 
+          alt={name} 
+          className="w-full h-48 object-cover rounded-lg mb-4"
+        />
         <span className="text-sm font-medium text-blue-600 mb-2 block">{category}</span>
         <h3 className="text-xl font-bold text-gray-900 mb-2">{name}</h3>
         <p className="text-gray-600 mb-4">{description}</p>
