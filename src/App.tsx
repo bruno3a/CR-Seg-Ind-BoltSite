@@ -138,7 +138,7 @@ function App() {
   };
 
     return (
-        <div className="min-h-screen bg-gray-50">
+<div className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-50">
             <Navbar
                 onCartClick={() => setIsCartOpen(true)}
                 cartItemsCount={cartItems.length}
@@ -179,7 +179,7 @@ function App() {
 
                                 <IndustriesSection />
 
-                                <section className="bg-white rounded-2xl shadow-lg p-8 mb-16">
+<section className="bg-gray-50 rounded-2xl shadow-lg p-8 mb-16">
                                     <div className="text-center mb-12">
                                         <h2 className="text-3xl font-bold text-gray-900 mb-4">
                                             Confiá en nosotros!

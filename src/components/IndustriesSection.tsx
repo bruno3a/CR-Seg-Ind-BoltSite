@@ -4,7 +4,7 @@ import { industries, iconMap } from '../utils';
 
 const IndustriesSection = () => {
     return (
-        <section className="py-16 bg-gray-50">
+        <section className="py-16 bg-gradient-to-b from-gray-100 to-gray-50">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12">
                     <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -20,7 +20,8 @@ const IndustriesSection = () => {
                     {industries.map((industry, index) => {
                         const Icon = iconMap[industry.name] || Users;
                         return (
-                            <div
+                                    <div
+                                    style={{ height: '200px', width: '100%', overflow: 'hidden' }}
                                 key={index}
                                 className="group relative overflow-hidden rounded-xl shadow-lg cursor-pointer transform transition-transform hover:-translate-y-1"
                             >

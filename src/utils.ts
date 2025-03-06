@@ -74,17 +74,17 @@ export const industries = [
     {
         name: 'AERONAUTICA',
         description: 'Soluciones de seguridad para la industria aeronáutica.',
-        image: 'https://via.placeholder.com/300x200?text=Aeronautica',
+        image: '/Aero.webp',
     },
     {
         name: 'AGRICOLA',
         description: 'Soluciones de seguridad para la industria agrícola.',
-        image: 'https://via.placeholder.com/300x200?text=Agricola',
+        image: '/Agro.webp',
     },
     {
         name: 'ALIMENTICIA',
         description: 'Soluciones de seguridad para la industria alimenticia.',
-        image: 'https://via.placeholder.com/300x200?text=Alimenticia',
+        image: '/Alimenticia.webp',
     },
     {
         name: 'AUTOMOTRIZ',
