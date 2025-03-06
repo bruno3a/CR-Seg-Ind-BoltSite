@@ -74,37 +74,37 @@ export const industries = [
     {
         name: 'AERONAUTICA',
         description: 'Soluciones de seguridad para la industria aeronáutica.',
-        image: '/Public/Aero2.png',
+        image: 'https://images.unsplash.com/photo-1559083156-7d2956b9430c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
     },
     {
         name: 'AGRICOLA',
         description: 'Soluciones de seguridad para la industria agrícola.',
-        image: '/Public/Agro.webp',
+        image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
     },
     {
         name: 'ALIMENTICIA',
         description: 'Soluciones de seguridad para la industria alimenticia.',
-        image: '/Public/Alimenticia.webp',
+        image: 'https://images.unsplash.com/photo-1606214174585-fe31582dc6ee?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
     },
     {
         name: 'AUTOMOTRIZ',
         description: 'Soluciones de seguridad para la industria automotriz.',
-        image: 'https://via.placeholder.com/300x200?text=Automotriz',
+        image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
     },
     {
         name: 'AUTOPARTISTA',
-        description: 'Soluciones de seguridad para la industria autopartista.',
-        image: 'https://via.placeholder.com/300x200?text=Autopartista',
+        description: 'Soluciones de seguridad para la industria de autopartes.',
+        image: 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
     },
     {
         name: 'AVICOLA',
         description: 'Soluciones de seguridad para la industria avícola.',
-        image: 'https://via.placeholder.com/300x200?text=Avicola',
+        image: 'https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
     },
     {
         name: 'CARPINTERIA',
         description: 'Soluciones de seguridad para carpinterías.',
-        image: 'https://via.placeholder.com/300x200?text=Carpinteria',
+        image: 'https://images.unsplash.com/photo-1622021142947-da7dedc7c39a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
     },
     {
         name: 'CEMENTERA',
@@ -114,7 +114,7 @@ export const industries = [
     {
         name: 'CONSTRUCCION',
         description: 'Soluciones de seguridad para la industria de la construcción.',
-        image: 'https://via.placeholder.com/300x200?text=Construccion',
+        image: 'https://images.unsplash.com/photo-1541976590-713941681591?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
     },
     {
         name: 'VIALIDAD',
@@ -169,27 +169,27 @@ export const industries = [
     {
         name: 'LOGISTICA',
         description: 'Soluciones de seguridad para la industria logística.',
-        image: 'https://via.placeholder.com/300x200?text=Logistica',
+        image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
     },
     {
         name: 'MANUFACTURA',
         description: 'Soluciones de seguridad para la industria manufacturera.',
-        image: 'https://via.placeholder.com/300x200?text=Manufactura',
+        image: 'https://images.unsplash.com/photo-1563874257547-d19fbb71b46c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
     },
     {
         name: 'METALMECANICA',
         description: 'Soluciones de seguridad para la industria metalmecánica.',
-        image: 'https://via.placeholder.com/300x200?text=Metalmecanica',
+        image: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
     },
     {
         name: 'METALURGICA',
         description: 'Soluciones de seguridad para la industria metalúrgica.',
-        image: 'https://via.placeholder.com/300x200?text=Metalurgica',
+        image: 'https://images.unsplash.com/photo-1533106497176-45ae19e68ba2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
     },
     {
         name: 'MINERA',
         description: 'Soluciones de seguridad para la industria minera.',
-        image: 'https://via.placeholder.com/300x200?text=Minera',
+        image: 'https://images.unsplash.com/photo-1507644331669-5cc76957c2d0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
     },
     {
         name: 'MINERIA',
@@ -219,7 +219,7 @@ export const industries = [
     {
         name: 'PETROLERA',
         description: 'Soluciones de seguridad para la industria petrolera.',
-        image: 'https://via.placeholder.com/300x200?text=Petrolera',
+        image: 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
     },
     {
         name: 'PETROQUIMICA',
@@ -234,12 +234,12 @@ export const industries = [
     {
         name: 'QUIMICA',
         description: 'Soluciones de seguridad para la industria química.',
-        image: 'https://via.placeholder.com/300x200?text=Quimica',
+        image: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
     },
     {
         name: 'SALUD',
         description: 'Soluciones de seguridad para el sector salud.',
-        image: 'https://via.placeholder.com/300x200?text=Salud',
+        image: 'https://images.unsplash.com/photo-1538108149393-fbbd81895907?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
     },
     {
         name: 'SIDERURGICA',
