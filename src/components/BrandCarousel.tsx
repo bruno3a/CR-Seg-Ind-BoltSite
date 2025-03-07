@@ -26,7 +26,7 @@ const BrandCarousel = () => {
   ];
 
   return (
-    <div className="container mx-auto px-6 py-3 max-w-6xl">
+    <div className="container mx-auto px-6 py-5 max-w-7xl">
       <h2 className="text-2xl font-bold text-center mb-8">Marcas que confían en nosotros</h2>
       <Slider {...settings}>
         {brands.map((brand, index) => (
