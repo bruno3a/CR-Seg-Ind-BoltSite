@@ -73,8 +73,8 @@ const Navbar: React.FC<NavbarProps> = ({
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4">
                         <div className="flex justify-between items-center mb-6">
-                            <h2 className="text-2xl font-bold text-gray-900">
-                                Login Clientes
+<h2 className="text-2xl font-bold text-gray-900">
+                                Ingreso Clientes
                             </h2>
                             <button
                                 onClick={() => setShowLogin(false)}
@@ -112,7 +112,7 @@ const Navbar: React.FC<NavbarProps> = ({
                                     placeholder="Ingresa tu contraseña"
                                 />
                             </div>
-                            <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
                                 <label className="flex items-center">
                                     <input
                                         type="checkbox"
@@ -126,16 +126,18 @@ const Navbar: React.FC<NavbarProps> = ({
                 >
                   Recuperar contraseña?
                 </a>
-                <Link to="/register" className="text-sm text-blue-600 hover:text-blue-800 ml-4" onClick={() => setShowLogin(false)}>
-                  Registrarse
-                </Link>
               </div>
+              <div className="flex space-x-4">
               <button
                 type="submit"
-                className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300"
+                className="w-1/2 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300"
               >
-                Loguear
+                Ingresar
               </button>
+              <Link to="/register" className="w-1/2 bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition duration-300 text-center" onClick={() => setShowLogin(false)}>
+                Registrarse
+              </Link>
+            </div>
             </form>
           </div>
         </div>
