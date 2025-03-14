@@ -14,6 +14,7 @@ import UserRegistration from './components/UserRegistration';
 import BrandCarousel from './components/BrandCarousel';
 import { Product, CartItem } from './types';
 import { Routes, Route } from 'react-router-dom';
+import PersonalProtectionSection from './components/PersonalProtectionSection';
 
 const API_URL = 'http://localhost:3010'; // Definir la URL de la API
 
@@ -178,6 +179,7 @@ function App() {
                                     </div>
                                 </section>
 
+                                <PersonalProtectionSection />
                                 <IndustriesSection />
 
 <section className="bg-gray-50 rounded-2xl shadow-lg py-10 px-8 mb-16" style={{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.pexels.com/photos/4483773/pexels-photo-4483773.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')`, backgroundSize: 'cover', backgroundPosition: 'center' }}>

@@ -1,0 +1,29 @@
+.personal-protection-section {
+    display: flex;
+    justify-content: flex-end; /* Align the image container to the right */
+    padding: 2rem;
+     background-image: linear-gradient(to bottom, #f9fafb, #f3f4f6);
+}
+
+.image-container {
+    position: relative;
+    max-width: 55%; /* Reduce image size by 35% */
+    margin-bottom: 2rem;
+}
+  
+.hotspot {
+  position: absolute;
+  border-radius: 50%;
+  cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+  .hotspot:hover{
+    background-color: rgba(0, 0, 255, 0.4);
+  }
+  
+  .tooltip {
+    position: absolute;
+    z-index: 10; /* Ensure the tooltip is above the hotspots */
+    white-space: nowrap; /* Prevent text from wrapping */
+  }
