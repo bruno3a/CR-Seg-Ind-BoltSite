@@ -180,13 +180,13 @@ function App() {
 
                                 <IndustriesSection />
 
-<section className="bg-gray-50 rounded-2xl shadow-lg p-8 mb-16">
+<section className="bg-gray-50 rounded-2xl shadow-lg py-10 px-8 mb-16" style={{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.pexels.com/photos/4483773/pexels-photo-4483773.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
                                     <div className="text-center mb-12">
-                                        <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                                        <h2 className="text-3xl font-bold text-white mb-4">
                                             Confiá en nosotros!
                                         </h2>
-                                        <p className="text-gray-600">
-                                            Amplia disponibilidad de productos, servicio de entrega y retiro en planta, consultá los nuevos ingresos!
+                                        <p className="text-white">
+                                            Amplia disponibilidad de productos, servicio de entrega y retiro en nuestro centro de distribución, consultá los nuevos ingresos!
                                         </p>
                                     </div>
 
@@ -214,16 +214,16 @@ function App() {
                                             },
                                         ].map((feature, index) => (
                                             <div key={index} className="text-center">
-                                                <a href={feature.url} className="inline-block p-3 bg-blue-100 rounded-full mb-4">
-                                                    <feature.icon className="w-6 h-6 text-blue-600" />
-                                                </a>
-                                                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                                                    {feature.title}
-                                                </h3>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </section>
+                <a href={feature.url} className="inline-block p-3 bg-blue-100 rounded-full mb-4">
+                    <feature.icon className="w-6 h-6 text-blue-600" />
+                </a>
+                <h3 className="text-lg font-semibold text-white mb-2">
+                    {feature.title}
+                </h3>
+            </div>
+        ))}
+    </div>
+</section>
                             </main>
                         </>
                     }
