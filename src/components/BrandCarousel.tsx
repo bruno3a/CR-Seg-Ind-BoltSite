@@ -9,10 +9,10 @@ const BrandCarousel = () => {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 5,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
+    slidesToShow: 7,
   };
 
   // Placeholder brand logos - replace with actual URLs
@@ -26,7 +26,8 @@ const BrandCarousel = () => {
   ];
 
   return (
-    <div className="container mx-auto px-6 py-5 max-w-7xl">
+    <div className="container mx-auto px-6 py-5 max-w-full">
+      <hr className="brand-separator bg-gradient-to-r from-black via-amber-400 to-black h-1" />
       <h2 className="text-2xl font-bold text-center mb-8">Marcas que confían en nosotros</h2>
       <Slider {...settings}>
         {brands.map((brand, index) => (
@@ -35,6 +36,7 @@ const BrandCarousel = () => {
           </div>
         ))}
       </Slider>
+      <hr className="brand-separator bg-gradient-to-r from-black via-amber-400 to-black h-1" />
     </div>
   );
 };
