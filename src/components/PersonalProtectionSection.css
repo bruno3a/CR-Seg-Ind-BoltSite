@@ -24,12 +24,14 @@
   position: absolute;
   border-radius: 50%;
   cursor: pointer;
-    transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease;
+  transform: translate(-50%, -50%); /* Centra el punto respecto a sus coordenadas */
 }
 
-  .hotspot:hover{
-    background-color: rgba(0, 0, 255, 0.4);
-  }
+.hotspot:hover {
+  background-color: rgba(59, 130, 246, 0.7); /* Un azul más visible al hover */
+  transform: translate(-50%, -50%) scale(1.1); /* Efecto de escala al hover */
+}
   
   .tooltip {
     position: absolute;

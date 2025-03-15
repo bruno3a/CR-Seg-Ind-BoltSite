@@ -10,14 +10,15 @@ interface Category {
 }
 
 const categories: Category[] = [
-  { id: 1, name: 'Cascos', area: 'head', top: '9%', left: '45%' },
-  { id: 2, name: 'Guantes', area: 'hands', top: '50%', left: '50%' },
-  { id: 3, name: 'Chalecos', area: 'torso', top: '30%', left: '45%' },
-  { id: 4, name: 'Botas', area: 'feet', top: '80%', left: '40%' },
-  { id: 5, name: 'Protección Ocular', area: 'head', top: '14%', left: '45%' },
-  { id: 6, name: 'Protección Respiratoria', area: 'head', top: '18%', left: '45%' },
-  { id: 7, name: 'Protección Auditiva', area: 'head', top: '15%', left: '50%' },
-  { id: 8, name: 'Protección Facial', area: 'head', top: '14%', left: '40%' },
+  { id: 1, name: 'Cascos', area: 'head', top: '17%', left: '18%' },
+  { id: 2, name: 'Guantes', area: 'hands', top: '62%', left: '82%' },
+  { id: 3, name: 'Chalecos', area: 'torso', top: '62%', left: '18%' },
+  { id: 4, name: 'Botas', area: 'feet', top: '85%', left: '82%' },
+  { id: 5, name: 'Protección Ocular', area: 'head', top: '35%', left: '18%' },
+  { id: 6, name: 'Protección Respiratoria', area: 'head', top: '17%', left: '82%' },
+  { id: 7, name: 'Protección Auditiva', area: 'head', top: '40%', left: '82%' },
+  { id: 8, name: 'Protección Facial', area: 'head', top: '44%', left: '18%' },
+  { id: 9, name: 'Indumentaria', area: 'body', top: '84%', left: '18%' },
 ];
 
 const PersonalProtectionSection = () => {
@@ -26,19 +27,19 @@ const PersonalProtectionSection = () => {
   return (
     <section className="w-3/5 bg-gradient-to-b from-gray-100 to-gray-50 py-8">
       <h2 className="text-2xl font-bold text-gray-800 text-center mb-4">
-        Equipos de Protección Personal
+        Elementos de Protección Personal
       </h2>
       <div className="image-container relative max-w-[800px] mx-auto">
         <img 
-          src="/Public/mameluco.jpg" 
-          alt="Figura Humana" 
+          src="/Public/EPP2.png" 
+          alt="Figura Humana con Elementos de Protección Personal" 
           className="w-full" 
-          style={{ marginTop: '-2rem' }} // Ajusta este valor según necesites
+          style={{ marginTop: '-2rem' }}
         />
         {categories.map((category) => (
           <div
             key={category.id}
-            className="absolute w-10 h-10 bg-blue-500 opacity-50 cursor-pointer hotspot"
+            className="absolute w-[85px] h-[85px] bg-blue-500 opacity-15 cursor-pointer hotspot"
             style={{ top: category.top, left: category.left }}
             onMouseEnter={() => setHoveredCategory(category)}
             onMouseLeave={() => setHoveredCategory(null)}
