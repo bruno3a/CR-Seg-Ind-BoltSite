@@ -27,9 +27,12 @@ const Hero = () => {
             >
               Ver Catálogo
             </Link>
-            <button className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-white hover:text-gray-900 transition duration-300">
+            <a 
+              href="mailto:ventas@crseguridad.com"
+              className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-white hover:text-gray-900 transition duration-300"
+            >
               Contactar Ventas
-            </button>
+            </a>
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shield, X, ShoppingCart } from 'lucide-react';
+import { X, ShoppingCart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface NavbarProps {
@@ -21,13 +21,18 @@ const Navbar: React.FC<NavbarProps> = ({
                 <div className="container mx-auto px-4">
                     <div className="flex justify-between items-center h-16">
                         <div className="flex items-center">
-                            <Shield className="h-8 w-8 text-amber-300" />
+                            <img 
+                                src="/favicon.jpg" 
+                                alt="CR Logo" 
+                                className="h-12 w-12 object-cover rounded-full"
+                                style={{
+                                    objectFit: 'cover',
+                                    objectPosition: 'center'
+                                }}
+                            />
                             <span className="ml-2 text-xl font-bold text-amber-300">
                                 CR Seguridad Industrial
                             </span>
-                            <a href="https://www.instagram.com/crindustrial/" target="_blank" rel="noopener noreferrer">
-                                <img src="https://img.icons8.com/color/48/000000/instagram-new--v1.png" alt="Instagram" className="h-6 w-6" />
-                            </a>
                         </div>
 
                         <div className="hidden md:flex items-center space-x-8">

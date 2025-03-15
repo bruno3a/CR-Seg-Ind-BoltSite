@@ -24,9 +24,17 @@ const PersonalProtectionSection = () => {
   const [hoveredCategory, setHoveredCategory] = useState<Category | null>(null);
 
   return (
-    <section className="personal-protection-section">
-      <div className="image-container relative">
-        <img src="/Public/mameluco.jpg" alt="Figura Humana" className="w-full" />
+    <section className="w-3/5 bg-gradient-to-b from-gray-100 to-gray-50 py-8">
+      <h2 className="text-2xl font-bold text-gray-800 text-center mb-4">
+        Equipos de Protección Personal
+      </h2>
+      <div className="image-container relative max-w-[800px] mx-auto">
+        <img 
+          src="/Public/mameluco.jpg" 
+          alt="Figura Humana" 
+          className="w-full" 
+          style={{ marginTop: '-2rem' }} // Ajusta este valor según necesites
+        />
         {categories.map((category) => (
           <div
             key={category.id}
@@ -37,7 +45,8 @@ const PersonalProtectionSection = () => {
           />
         ))}
         {hoveredCategory && (
-          <div className="absolute bg-white border p-2 shadow-md tooltip" style={{ top: hoveredCategory.top, left: `calc(${hoveredCategory.left} + 2rem)` }}>
+          <div className="absolute bg-white border p-2 shadow-md tooltip" 
+               style={{ top: hoveredCategory.top, left: `calc(${hoveredCategory.left} + 2rem)` }}>
             <p>{hoveredCategory.name}</p>
           </div>
         )}

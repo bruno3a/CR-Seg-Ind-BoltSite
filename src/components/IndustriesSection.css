@@ -1,0 +1,10 @@
+.industries-carousel {
+    mask-image: linear-gradient(
+        to bottom,
+        transparent,
+        black 34px,  /* Mitad de la altura de una card (68px/2) */
+        black calc(100% - 34px),  /* Desde abajo, empezar el fade a la mitad de la última card */
+        transparent
+    );
+}
+

@@ -1,14 +1,23 @@
 .personal-protection-section {
     display: flex;
-    justify-content: flex-end; /* Align the image container to the right */
+    justify-content: flex-end;
     padding: 2rem;
-     background-image: linear-gradient(to bottom, #f9fafb, #f3f4f6);
+    background-image: linear-gradient(to bottom, #f9fafb, #f3f4f6);
 }
 
 .image-container {
     position: relative;
-    max-width: 55%; /* Reduce image size by 35% */
+    max-width: 55%;
     margin-bottom: 2rem;
+    overflow: hidden; /* Para asegurar que la imagen recortada no se desborde */
+}
+
+.image-container img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: center 20%; /* Ajusta la posición vertical de la imagen */
 }
   
 .hotspot {
