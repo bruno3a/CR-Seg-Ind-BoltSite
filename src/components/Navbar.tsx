@@ -20,7 +20,7 @@ const Navbar: React.FC<NavbarProps> = ({
             <nav className="bg-black border-b border-amber-300 shadow-lg">
                 <div className="container mx-auto px-4">
                     <div className="flex justify-between items-center h-16">
-                        <div className="flex items-center">
+                        <Link to="/" className="flex items-center">
                             <img 
                                 src="/favicon.jpg" 
                                 alt="CR Logo" 
@@ -33,7 +33,7 @@ const Navbar: React.FC<NavbarProps> = ({
                             <span className="ml-2 text-xl font-bold text-amber-300">
                                 CR Seguridad Industrial
                             </span>
-                        </div>
+                        </Link>
 
                         <div className="hidden md:flex items-center space-x-8">
                             <Link to="/" className="text-gray-300 hover:text-amber-300">
