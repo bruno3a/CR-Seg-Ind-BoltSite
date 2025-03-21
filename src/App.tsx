@@ -16,6 +16,7 @@ import ClientCarousel from './components/ClientCarousel';
 import { Product, CartItem } from './types';
 import { Routes, Route } from 'react-router-dom';
 import PersonalProtectionSection from './components/PersonalProtectionSection';
+import Conocenos from './components/Conocenos';
 
 const API_URL = 'http://localhost:3010'; // Definir la URL de la API
 
@@ -253,6 +254,7 @@ function App() {
                 <Route path="/catalog" element={<Catalog products={products} onAddToCart={handleAddToCart} />} />
                 <Route path="/product/:id" element={<ProductDetailWrapper />} />
                 <Route path="/register" element={<UserRegistration />} />
+                <Route path="/conocenos" element={<Conocenos />} />
             </Routes>
 
             <footer className="bg-gray-900 text-white py-12">

@@ -14,7 +14,7 @@ const Hero = () => {
       <div className="relative container mx-auto px-4 h-full flex items-center">
         <div className="max-w-2xl">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-            Artículos de Seguridad Industrial para Todas las Industrias
+            Insumos para la Seguridad y Señalización de todas las Industrias
           </h1>
           <p className="text-xl text-gray-200 mb-8">
             Protege tus instalaciones con sistemas de seguridad de última
@@ -31,7 +31,7 @@ const Hero = () => {
               href="mailto:ventas@crseguridad.com"
               className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-white hover:text-gray-900 transition duration-300"
             >
-              Contactar Ventas
+              Contactanos
             </a>
           </div>
         </div>

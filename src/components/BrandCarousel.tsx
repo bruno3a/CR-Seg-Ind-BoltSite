@@ -64,24 +64,25 @@ const BrandCarousel = () => {
 
   const brands = [
     { name: '3M', logo: 'https://www.lubeseguridad.com.ar/scroll/000200122757900010001201913m.png' },
-    { name: 'LAKELAND', logo: 'https://www.lakeland.com/uploads/images/logos/Lakeland-Industries-Logo.png' },
-    { name: 'WYPALL', logo: 'https://www.kcprofessional.com.ar/media/10121604/wypall_logo.png' },
+    { name: 'LAKELAND', logo: 'https://www.lakeland.com/wp-content/uploads/elementor/thumbs/lakeland-fire-safety-white-225x57-1-qt736ti477vx1tra2mah3yomp0dijclyphy2wim6ii.webp' },
+    { name: 'WYPALL', logo: 'https://d1yjjnpx0p53s8.cloudfront.net/styles/logo-thumbnail/s3/052013/wypall.png?itok=hH7vqNTt' },
     { name: 'LIBUS', logo: 'https://www.lubeseguridad.com.ar/scroll/0002000928860marca-libus.jpg' },
     { name: 'STEELPRO', logo: 'https://www.lubeseguridad.com.ar/scroll/0002000528948marca-steel.jpg' },
     { name: 'DPS', logo: 'https://dpsindustrial.com.ar/wp-content/uploads/2023/03/logo-dps.png' },
     { name: 'OMBU', logo: 'https://www.lubeseguridad.com.ar/scroll/00020008275380001001120242ombu.png' },
     { name: 'FUNCIONAL', logo: 'https://www.lubeseguridad.com.ar/scroll/00020002275380001001020242funcional.png' },
-    { name: 'PAMPERO', logo: 'https://www.casasilvia.com.ar/media/catalog/category/pampero_1.png' },
-    { name: 'GRAFA70', logo: 'https://www.alpargatas.com.ar/uploads/logos/logo_grafa.png' },
-    { name: 'MARTOR', logo: 'https://www.martor.com/fileadmin/_processed_/4/5/csm_martor_logo_2x_01_c7403c72a7.png' },
-    { name: 'GAMISOL', logo: 'https://gamisol.com.ar/wp-content/uploads/2022/03/logo-gamisol.png' },
+    { name: 'PAMPERO', logo: 'https://media.licdn.com/dms/image/v2/D4D0BAQFZ_iaLBSRumQ/company-logo_200_200/company-logo_200_200/0/1686924340450/pampero_logo?e=1747872000&v=beta&t=QTG7sfZq7EZE0rWNwD8fku6uJ59ZsjnjiZG05q6q1NY' },
+    { name: 'GRAFA70', logo: 'https://grafa70.com.ar/wp-content/uploads/2019/03/cropped-logo_1-2.png' },
+    { name: 'MARTOR', logo: 'https://cdn.martor.com/fileadmin/martor.com/theme/dist/img/logo.png?cdnv=1742551700' },
+    { name: 'GAMISOL', logo: 'https://www.gamisol.com.ar/wp-content/uploads/2023/12/isologotipoGamisol.svg' },
     { name: 'EAGLE', logo: 'https://eaglesafety.com/wp-content/uploads/2019/03/eagle-protection-logo.png' },
-    { name: 'BILVEX', logo: 'https://bilvex.com.ar/wp-content/uploads/2021/06/logo-bilvex.png' },
-    { name: 'PRENTEX', logo: 'https://www.prentex.com.ar/images/logo.png' },
-    { name: 'CONOFLEX', logo: 'https://www.conoflex.com.ar/images/logo-conoflex.png' },
-    { name: 'MAPA', logo: 'https://www.mapa-pro.com/wp-content/themes/mapapro/images/mapa-professional.png' },
+    { name: 'BILVEX', logo: 'https://112cc5d764.cbaul-cdnwnd.com/9f0af1af3b99aa2b896bd83211c7b1c6/system_preview_detail_200000030-886bc89675-public/LOGO%20BIL%20VEX.jpg' },
+    { name: 'PRENTEX', logo: 'https://www.cas-seguridad.org.ar/wp-content/uploads/2020/08/logo-prentex.png' },
+    { name: 'CONOFLEX', logo: 'https://media.licdn.com/dms/image/v2/C4D0BAQHEIq5y8HxN4g/company-logo_200_200/company-logo_200_200/0/1630575160384/conoflex_argentina_logo?e=1747872000&v=beta&t=w0B2SQYgWxsy0KvsHHPohnA0L7sgWS9GDhIoEkiQPx0' },
+    //{ name: 'MAPA', logo: 'https://www.mapa-pro.com/wp-content/themes/mapapro/images/mapa-professional.png' },
+    { name: 'MAPA', logo: 'https://www.cas-seguridad.org.ar/wp-content/uploads/2020/08/MAPA.jpg' },
     { name: 'DP', logo: 'https://www.dpsafety.com.ar/wp-content/uploads/2023/04/logo-dp-safety.png' },
-    { name: 'UCU', logo: 'https://www.ucusal.com.ar/wp-content/uploads/2022/01/logo-ucu.png' }
+    { name: 'UCU', logo: 'https://media.licdn.com/dms/image/v2/C4D0BAQGouuEyVgErYA/company-logo_200_200/company-logo_200_200/0/1630563796981/universidad_catolica_del_uruguay_logo?e=1747872000&v=beta&t=p8M9PS-5LcccSuvJ58Qsm_RNbvgoIcx9hdq_Zx2uJNM' }
   ];
 
   return (

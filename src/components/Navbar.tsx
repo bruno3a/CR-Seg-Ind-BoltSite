@@ -22,8 +22,8 @@ const Navbar: React.FC<NavbarProps> = ({
                     <div className="flex justify-between items-center h-16">
                         <Link to="/" className="flex items-center">
                             <img 
-                                src="/favicon.jpg" 
-                                alt="CR Logo" 
+                                src="/CR Work Logo.jpeg" 
+                                alt="CR Work Logo" 
                                 className="h-12 w-12 object-cover rounded-full"
                                 style={{
                                     objectFit: 'cover',
@@ -31,7 +31,7 @@ const Navbar: React.FC<NavbarProps> = ({
                                 }}
                             />
                             <span className="ml-2 text-xl font-bold text-amber-300">
-                                CR Work - Insumos para la  Seguridad Industrial
+                                CR Work - Insumos para la Seguridad Industrial
                             </span>
                         </Link>
 
@@ -45,9 +45,9 @@ const Navbar: React.FC<NavbarProps> = ({
                             >
                 Productos
               </Link>
-              <a href="#" className="text-gray-300 hover:text-amber-300">
+              <Link to="/conocenos" className="text-gray-300 hover:text-amber-300">
                 Conocenos
-              </a>
+              </Link>
                             <a href="#" className="text-gray-300 hover:text-amber-300">
                                 Contacto
                             </a>
