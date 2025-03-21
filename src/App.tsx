@@ -154,19 +154,25 @@ function App() {
                             <Hero />
                             <BrandCarousel />
                             <main className="container mx-auto px-4 py-16">
+                                {/* Primero las secciones de Industrias y EPP */}
+                                <div className="flex">
+                                    <IndustriesSection />
+                                    <PersonalProtectionSection />
+                                </div>
+
+                                {/* Luego las cards de Distribuidor y Novedades */}
                                 <section className="mb-16">
-                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-                                          <Pictogram
-                                             icon={Users}
-                                             title="¡Convertite en Distribuidor!"
-                                             description="Ampliá tu negocio con nuestro asesoramiento. Tenemos todos los productos que necesitás. ¡Unite a nuestra red de distribuidores!"
-                                             stats={[
-                                                 { label: 'Variedad', value: 'Más de 5000 artículos' },
-                                                 { label: 'Calidad', value: 'Las mejores marcas' },
-                                             ]}
-                                             image="/Distributor.png"
-                                             //image="\Public\Distributor.png"
-                                         />
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                                        <Pictogram
+                                            icon={Users}
+                                            title="¡Convertite en Distribuidor!"
+                                            description="Ampliá tu negocio con nuestro asesoramiento. Tenemos todos los productos que necesitás. ¡Unite a nuestra red de distribuidores!"
+                                            stats={[
+                                                { label: 'Variedad', value: 'Más de 5000 artículos' },
+                                                { label: 'Calidad', value: 'Las mejores marcas' },
+                                            ]}
+                                            image="/Distributor.png"
+                                        />
                                         <Pictogram
                                             icon={Warehouse}
                                             title="Novedades"
@@ -180,12 +186,7 @@ function App() {
                                     </div>
                                 </section>
 
-                                <div className="flex">
-                                    <IndustriesSection />
-                                    <PersonalProtectionSection />
-                                </div>
-
-                                {/* Agregamos un div contenedor con margen inferior */}
+                                {/* Carrusel de clientes */}
                                 <div className="mb-24">
                                     <ClientCarousel />
                                 </div>

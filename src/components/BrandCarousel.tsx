@@ -85,7 +85,7 @@ const BrandCarousel = () => {
   ];
 
   return (
-    <div className="container mx-auto px-6 py-10 max-w-full bg-white">
+    <div className="container mx-auto px-6 py-10 max-w-full bg-gray-50">
       <hr className="brand-separator bg-gradient-to-r from-black via-amber-400 to-black h-1 mb-8" />
       <h2 className="text-2xl font-bold text-center mb-8">Marcas que confían en nosotros</h2>
       <Slider {...settings}>
