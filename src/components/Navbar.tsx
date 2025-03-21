@@ -31,7 +31,7 @@ const Navbar: React.FC<NavbarProps> = ({
                                 }}
                             />
                             <span className="ml-2 text-xl font-bold text-amber-300">
-                                CR Seguridad Industrial
+                                CR Work - Insumos para la  Seguridad Industrial
                             </span>
                         </Link>
 

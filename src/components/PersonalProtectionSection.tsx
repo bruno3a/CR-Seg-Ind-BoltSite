@@ -10,14 +10,14 @@ interface Category {
 }
 
 const categories: Category[] = [
-  { id: 1, name: 'Cascos', area: 'head', top: '17%', left: '18%' },
-  { id: 2, name: 'Guantes', area: 'hands', top: '62%', left: '82%' },
-  { id: 3, name: 'Chalecos', area: 'torso', top: '62%', left: '18%' },
+  { id: 1, name: 'Cascos', area: 'head', top: '20%', left: '18%' },
+  { id: 2, name: 'Guantes', area: 'hands', top: '63%', left: '82%' },
+  { id: 3, name: 'Chalecos', area: 'torso', top: '63%', left: '18%' },
   { id: 4, name: 'Botas', area: 'feet', top: '85%', left: '82%' },
-  { id: 5, name: 'Protección Ocular', area: 'head', top: '35%', left: '18%' },
-  { id: 6, name: 'Protección Respiratoria', area: 'head', top: '17%', left: '82%' },
-  { id: 7, name: 'Protección Auditiva', area: 'head', top: '40%', left: '82%' },
-  { id: 8, name: 'Protección Facial', area: 'head', top: '44%', left: '18%' },
+  { id: 5, name: 'Protección Ocular', area: 'head', top: '38%', left: '18%' },
+  { id: 6, name: 'Protección Respiratoria', area: 'head', top: '20%', left: '82%' },
+  { id: 7, name: 'Protección Auditiva', area: 'head', top: '42%', left: '82%' },
+  { id: 8, name: 'Protección Facial', area: 'head', top: '46%', left: '18%' },
   { id: 9, name: 'Indumentaria', area: 'body', top: '84%', left: '18%' },
 ];
 
@@ -33,13 +33,13 @@ const PersonalProtectionSection = () => {
         <img 
           src="/Public/EPP2.png" 
           alt="Figura Humana con Elementos de Protección Personal" 
-          className="w-full" 
-          style={{ marginTop: '-2rem' }}
+          className="w-[80%] h-auto" 
+          style={{ marginTop: '-1rem' }}
         />
         {categories.map((category) => (
           <div
             key={category.id}
-            className="absolute w-[85px] h-[85px] bg-blue-500 opacity-15 cursor-pointer hotspot"
+            className="absolute w-[80px] h-[80px] bg-blue-500 opacity-15 cursor-pointer hotspot"
             style={{ top: category.top, left: category.left }}
             onMouseEnter={() => setHoveredCategory(category)}
             onMouseLeave={() => setHoveredCategory(null)}

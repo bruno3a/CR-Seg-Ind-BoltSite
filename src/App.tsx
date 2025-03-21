@@ -12,6 +12,7 @@ import Catalog from './components/Catalog';
 import ProductDetail from './components/ProductDetail';
 import UserRegistration from './components/UserRegistration';
 import BrandCarousel from './components/BrandCarousel';
+import ClientCarousel from './components/ClientCarousel';
 import { Product, CartItem } from './types';
 import { Routes, Route } from 'react-router-dom';
 import PersonalProtectionSection from './components/PersonalProtectionSection';
@@ -184,7 +185,17 @@ function App() {
                                     <PersonalProtectionSection />
                                 </div>
 
-<section className="bg-gray-50 rounded-2xl shadow-lg py-10 px-8 mb-16" style={{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.pexels.com/photos/4483773/pexels-photo-4483773.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                                {/* Agregamos un div contenedor con margen inferior */}
+                                <div className="mb-24">
+                                    <ClientCarousel />
+                                </div>
+
+                                <section className="bg-gray-50 rounded-2xl shadow-lg py-10 px-8 mb-16" 
+                                    style={{ 
+                                        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.pexels.com/photos/4483773/pexels-photo-4483773.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')`, 
+                                        backgroundSize: 'cover', 
+                                        backgroundPosition: 'center' 
+                                    }}>
                                     <div className="text-center mb-12">
                                         <h2 className="text-3xl font-bold text-white mb-4">
                                             Confiá en nosotros!
