@@ -43,14 +43,14 @@ const Navbar: React.FC<NavbarProps> = ({
                                 to="/catalog"
                                 className="text-gray-300 hover:text-amber-300"
                             >
-                Productos
-              </Link>
-              <Link to="/conocenos" className="text-gray-300 hover:text-amber-300">
-                Conocenos
-              </Link>
-                            <a href="#" className="text-gray-300 hover:text-amber-300">
-                                Contacto
-                            </a>
+                                Productos
+                            </Link>
+                            <Link to="/nosotros" className="text-gray-300 hover:text-amber-300">
+                                Nosotros
+                            </Link>
+                            <Link to="/ubicanos" className="text-gray-300 hover:text-amber-300">
+                                Ubicanos
+                            </Link>
                             <button
                                 onClick={() => setShowLogin(true)}
                                 className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-200 transition duration-300"
