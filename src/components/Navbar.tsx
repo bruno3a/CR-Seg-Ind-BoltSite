@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { X, ShoppingCart, Search } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -17,6 +17,15 @@ const Navbar: React.FC<NavbarProps> = ({
     const [showSearch, setShowSearch] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
+    const searchInputRef = useRef<HTMLInputElement>(null);
+
+    const handleSearchButtonClick = () => {
+        setShowSearch(true);
+        // Usar setTimeout para asegurar que el input esté en el DOM
+        setTimeout(() => {
+            searchInputRef.current?.focus();
+        }, 50);
+    };
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -60,7 +69,7 @@ const Navbar: React.FC<NavbarProps> = ({
                                 <div className="relative flex items-center bg-gray-800 rounded-lg w-48 hover:w-56 transition-all duration-300">
                                     <Search className="absolute left-2 text-amber-300 w-4 h-4" />
                                     <button
-                                        onClick={() => setShowSearch(true)}
+                                        onClick={handleSearchButtonClick}
                                         className="w-full px-8 py-1.5 text-left text-sm text-amber-300 hover:text-amber-400 truncate"
                                     >
                                         Buscar productos
@@ -121,13 +130,13 @@ const Navbar: React.FC<NavbarProps> = ({
                         <form onSubmit={handleSearch} className="relative max-w-2xl mx-auto">
                             <div className="bg-black border border-amber-300 rounded-xl shadow-lg p-3">
                                 <input
+                                    ref={searchInputRef}
                                     type="text"
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                     onKeyDown={handleSearchKeyDown}
                                     placeholder="Buscar productos..."
                                     className="w-full pl-10 pr-10 py-2 bg-gray-800 text-white rounded-xl border border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-300 transition-all duration-300"
-                                    autoFocus
                                 />
                                 <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-amber-300 w-5 h-5" />
                                 <button

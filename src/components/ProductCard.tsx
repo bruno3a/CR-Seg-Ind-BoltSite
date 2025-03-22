@@ -10,15 +10,16 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
     const navigate = useNavigate();
-    const { id, name, description, price, category, stock, icon, imageUrl } = product;
+    const { id, name, description, price, category, stock, image_url, icon } = product;
     const [imgError, setImgError] = useState(false);
-    const defaultImage = '/placeholder-product.png'; // Asegúrate de tener esta imagen en tu carpeta public
+    const defaultImage = '/placeholder-product.png';
 
     const handleImageError = () => {
         setImgError(true);
     };
 
-    const imageSource = imgError ? defaultImage : (imageUrl || icon || defaultImage);
+    // Priorizar image_url
+    const imageSource = imgError ? defaultImage : (image_url || icon || defaultImage);
 
     const [quantity, setQuantity] = useState(1);
     const [showTooltip, setShowTooltip] = useState(false);
@@ -39,7 +40,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
 
     return (
         <div
-            className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 relative group h-[400px] flex flex-col"
+            className="bg-white rounded-lg shadow-sm p-4 flex flex-col"
             onMouseEnter={() => setShowTooltip(true)}
             onMouseLeave={() => setShowTooltip(false)}
             onClick={handleCardClick}

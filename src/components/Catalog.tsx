@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -9,6 +9,7 @@ import { industries } from '../utils';
 import IndustryFilter from './IndustryFilter';
 import { Search } from 'lucide-react';
 import Pagination from './Pagination';
+import { X } from 'lucide-react';
 
 // Schema validation
 const ProductSchema = z.object({
@@ -45,7 +46,8 @@ const Catalog: React.FC<CatalogProps> = ({ onAddToCart }) => {
 
     let query = supabase
       .from('products')
-      .select('*', { count: 'exact' });
+      .select('*', { count: 'exact' })
+      .order('name'); // Ordenar por nombre para consistencia
 
     if (search) {
       query = query.textSearch('name', search, {
@@ -58,68 +60,81 @@ const Catalog: React.FC<CatalogProps> = ({ onAddToCart }) => {
     if (industries?.length) query = query.in('industry', industries);
     if (brands?.length) query = query.in('brand', brands);
 
-    query = query.range(start, end);
-
-    const { data, error, count } = await query;
+    const { data, error, count } = await query.range(start, end);
     
     if (error) throw error;
 
-    const validatedData = data.map(product => {
-      const result = ProductSchema.safeParse(product);
-      if (!result.success) {
-        console.error('Invalid product data:', result.error);
-        return null;
-      }
-      return result.data;
-    }).filter((product): product is Product => product !== null);
+    // Eliminar duplicados antes de retornar
+    const uniqueData = data ? Array.from(new Map(data.map(item => [item.id, item])).values()) : [];
 
     return {
-      data: validatedData,
-      count: count || 0
+      data: uniqueData,
+      count: count || uniqueData.length
     };
   }, []);
 
-  // React Query hook con configuración optimizada
+  // Fetch inicial de productos
   const {
     data: productsResponse,
     isLoading,
     error
   } = useQuery({
-    queryKey: ['products', search, selectedCategories, selectedIndustries, selectedBrands, currentPage, itemsPerPage],
+    queryKey: ['products', search],
     queryFn: () => fetchProducts({
       search,
-      categories: selectedCategories,
-      industries: selectedIndustries,
-      brands: selectedBrands,
-      page: currentPage,
-      itemsPerPage
+      categories: [],
+      industries: [],
+      brands: [],
+      page: 1,
+      itemsPerPage: 1000
     }),
-    staleTime: 5 * 60 * 1000, // Cache válido por 5 minutos
+    select: (data) => {
+      // Eliminar duplicados basados en el ID
+      const uniqueProducts = data.data.reduce((acc, current) => {
+        if (!acc.find(item => item.id === current.id)) {
+          acc.push(current);
+        }
+        return acc;
+      }, [] as Product[]);
+
+      return {
+        data: uniqueProducts,
+        count: uniqueProducts.length
+      };
+    },
+    staleTime: 5 * 60 * 1000,
     keepPreviousData: true,
-    // Añadir estas opciones para evitar refetch innecesarios
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false
   });
 
-  // Modificar el prefetch para que solo se ejecute si es necesario
-  useEffect(() => {
-    if (productsResponse?.count && currentPage * itemsPerPage < productsResponse.count) {
-      const nextPage = currentPage + 1;
-      queryClient.prefetchQuery({
-        queryKey: ['products', search, selectedCategories, selectedIndustries, selectedBrands, nextPage, itemsPerPage],
-        queryFn: () => fetchProducts({
-          search,
-          categories: selectedCategories,
-          industries: selectedIndustries,
-          brands: selectedBrands,
-          page: nextPage,
-          itemsPerPage
-        }),
-        staleTime: 5 * 60 * 1000
-      });
+  // Filtrado local de productos
+  const filteredProducts = useMemo(() => {
+    if (!productsResponse?.data) return { data: [], count: 0 };
+
+    let filtered = productsResponse.data;
+
+    // Aplicar filtros localmente
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter(product => selectedCategories.includes(product.category));
     }
-  }, [currentPage, productsResponse?.count]);
+    if (selectedIndustries.length > 0) {
+      filtered = filtered.filter(product => product.industry && selectedIndustries.includes(product.industry));
+    }
+    if (selectedBrands.length > 0) {
+      filtered = filtered.filter(product => product.brand && selectedBrands.includes(product.brand));
+    }
+
+    // Calcular paginación
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    
+    return {
+      data: filtered.slice(start, end),
+      count: filtered.length
+    };
+  }, [productsResponse?.data, selectedCategories, selectedIndustries, selectedBrands, currentPage, itemsPerPage]);
 
   // Manejar añadir al carrito sin causar refetch
   const handleAddToCart = useCallback((product: Product, quantity: number) => {
@@ -139,6 +154,21 @@ const Catalog: React.FC<CatalogProps> = ({ onAddToCart }) => {
 
   const handleItemsPerPageChange = (value: number) => {
     setItemsPerPage(value);
+    setCurrentPage(1);
+  };
+
+  const handleRemoveFilter = (type: 'category' | 'industry' | 'brand', value: string) => {
+    switch (type) {
+      case 'category':
+        setSelectedCategories(prev => prev.filter(cat => cat !== value));
+        break;
+      case 'industry':
+        setSelectedIndustries(prev => prev.filter(ind => ind !== value));
+        break;
+      case 'brand':
+        setSelectedBrands(prev => prev.filter(brand => brand !== value));
+        break;
+    }
     setCurrentPage(1);
   };
 
@@ -191,13 +221,52 @@ const Catalog: React.FC<CatalogProps> = ({ onAddToCart }) => {
               );
               setCurrentPage(1);
             }}
+            categories={uniqueCategories}
+            selectedCategories={selectedCategories}
+            onCategoryChange={(category) => {
+              setSelectedCategories(prev =>
+                prev.includes(category)
+                  ? prev.filter(c => c !== category)
+                  : [...prev, category]
+              );
+              setCurrentPage(1);
+            }}
           />
         </div>
 
         {/* Main content */}
         <div className="flex-1">
+          {/* Category Pills */}
+          <div className="mb-4">
+            <div className="flex flex-wrap gap-2">
+              {uniqueCategories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => {
+                    setSelectedCategories(prev =>
+                      prev.includes(category)
+                        ? prev.filter(c => c !== category)
+                        : [...prev, category]
+                    );
+                  }}
+                  className={`
+                    px-4 py-2 rounded-full text-sm font-medium
+                    transition-colors duration-200
+                    ${selectedCategories.includes(category)
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }
+                  `}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Products Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {productsResponse?.data.map(product => (
+            {filteredProducts.data.map(product => (
               <ProductCard
                 key={product.id}
                 product={product}
@@ -207,10 +276,10 @@ const Catalog: React.FC<CatalogProps> = ({ onAddToCart }) => {
           </div>
 
           {/* Pagination */}
-          {productsResponse && (
+          {filteredProducts && (
             <Pagination
               currentPage={currentPage}
-              totalPages={Math.ceil(productsResponse.count / itemsPerPage)}
+              totalPages={Math.ceil(filteredProducts.count / itemsPerPage)}
               onPageChange={handlePageChange}
               onItemsPerPageChange={handleItemsPerPageChange}
             />

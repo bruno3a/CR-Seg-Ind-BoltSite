@@ -2,9 +2,10 @@ export interface Product {
   id: string;
   name: string;
   description: string;
-  icon: string;
   price: string;
   category: string;
+  image_url?: string;
+  icon?: string;
   industry: string;
   brand: string;
   code: string;

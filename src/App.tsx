@@ -23,8 +23,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { setupSupabaseListener } from './lib/supabase';
 import { supabase } from './lib/supabase';
 
-const API_URL = 'http://localhost:3010'; // Definir la URL de la API
-
 const backgroundImageUrl = "https://mla-s1-p.mlstatic.com/D_NQ_NP_773577-MLA41041719255_032020-OO.webp";
 
 interface NavbarProps {
@@ -135,7 +133,7 @@ function App() {
 
           const fetchedProduct = {
             ...data,
-            imageUrl: data.imageUrl || 'https://via.placeholder.com/400',
+            imageUrl: data.imageUrl || '/placeholder-product.png',
             technicalSpecs: data.technicalSpecs || {
               'Specification 1': 'Value 1',
               'Specification 2': 'Value 2'
@@ -280,11 +278,8 @@ function App() {
           />
           <Route
             path="/catalog"
-            element={
-              <Catalog products={products} onAddToCart={handleAddToCart} />
-            }
+            element={<Catalog onAddToCart={handleAddToCart} />}
           />
-          <Route path="/catalog" element={<Catalog products={products} onAddToCart={handleAddToCart} />} />
           <Route 
             path="/product/:id" 
             element={<ProductDetailWrapper onAddToCart={handleAddToCart} />} 

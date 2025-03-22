@@ -28,7 +28,7 @@ const ProductDetailWrapper: React.FC<ProductDetailWrapperProps> = ({ onAddToCart
 
         const fetchedProduct = {
           ...data,
-          imageUrl: data.image_url || 'https://via.placeholder.com/400',
+          imageUrl: data.image_url || '/placeholder-product.png',
           technicalSpecs: data.especificaciones || {
             'Specification 1': 'Value 1',
             'Specification 2': 'Value 2'

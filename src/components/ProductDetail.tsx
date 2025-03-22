@@ -31,38 +31,31 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, onAddToCart }) =
 
   const renderDocumentationContent = (documentation: string | undefined) => {
     if (!documentation) {
-      console.log('No documentation found');
       return defaultMessage;
     }
 
-    console.log('Documentation found:', documentation);
+    const urls = documentation.split(';')
+      .map(url => url.trim())
+      .filter(url => isValidUrl(url)); // Filtrar solo URLs válidas
 
-    const urls = documentation.split(';').map(url => url.trim());
-    
-    if (!urls.some(url => isValidUrl(url))) {
-      return documentation;
+    if (urls.length === 0) {
+      return documentation; // Si no hay URLs válidas, mostrar el contenido como texto
     }
 
     return (
       <div className="space-y-2">
-        {urls.map((url, index) => {
-          if (!isValidUrl(url)) return null;
-          
-          const fileName = index === 0 ? 'Ficha Técnica' : `Ficha Técnica ${index + 1}`;
-          
-          return (
-            <a
-              key={index}
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors duration-200"
-            >
-              <Download className="w-4 h-4" />
-              <span>{fileName}</span>
-            </a>
-          );
-        })}
+        {urls.map((url, index) => (
+          <a
+            key={index}
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors duration-200"
+          >
+            <Download className="w-4 h-4" />
+            <span>{index === 0 ? 'Ficha Técnica' : `Ficha Técnica ${index + 1}`}</span>
+          </a>
+        ))}
       </div>
     );
   };
@@ -97,7 +90,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, onAddToCart }) =
         {/* Imagen */}
         <div className="bg-white rounded-lg shadow-sm overflow-hidden">
           <img
-            src={product.imageUrl || product.icon}
+            src={product.image_url || product.icon || '/placeholder-product.png'}
             alt={product.name}
             className="w-full h-auto object-contain aspect-square p-4"
           />
@@ -109,7 +102,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, onAddToCart }) =
           <div className="bg-white rounded-lg shadow-sm p-4">
             <h1 className="text-2xl font-bold text-gray-800 mb-2">{product.name}</h1>
             <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
-              <span>{product.brand}</span>
+              <span className="font-bold">{product.brand}</span>
               <span>•</span>
               <span>Código: {product.code || product.id}</span>
             </div>
@@ -118,11 +111,6 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, onAddToCart }) =
               <span className="text-2xl font-bold text-gray-900">
                 ${Number(product.price).toFixed(2)}
               </span>
-              <WhatsAppButton
-                phoneNumber="5491112345678"
-                message={`Tengo algunas dudas sobre este producto: ${product.name} (${product.code || product.id})`}
-                className="text-xs px-3 py-1.5 bg-green-500 text-white rounded-lg hover:bg-green-600"
-              />
             </div>
           </div>
 
