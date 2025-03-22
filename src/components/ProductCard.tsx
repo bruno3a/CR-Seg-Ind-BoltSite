@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ShoppingCart } from 'lucide-react';
 import { Product } from '../types';
 import { Link, useNavigate } from 'react-router-dom';
+import { IMAGES } from '../config/constants';
 
 interface ProductCardProps {
     product: Product;
@@ -10,16 +11,14 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
     const navigate = useNavigate();
-    const { id, name, description, price, category, stock, image_url, icon } = product;
+    const { id, name, description, price, category, stock, image_url } = product;
     const [imgError, setImgError] = useState(false);
-    const defaultImage = '/placeholder-product.png';
 
     const handleImageError = () => {
         setImgError(true);
     };
 
-    // Priorizar image_url
-    const imageSource = imgError ? defaultImage : (image_url || icon || defaultImage);
+    const imageSource = imgError || !product.image_url ? IMAGES.DEFAULT_PRODUCT : product.image_url;
 
     const [quantity, setQuantity] = useState(1);
     const [showTooltip, setShowTooltip] = useState(false);
@@ -40,7 +39,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
 
     return (
         <div
-            className="bg-white rounded-lg shadow-sm p-4 flex flex-col"
+            className="bg-white rounded-lg shadow-sm p-4 flex flex-col relative"
             onMouseEnter={() => setShowTooltip(true)}
             onMouseLeave={() => setShowTooltip(false)}
             onClick={handleCardClick}
@@ -53,21 +52,21 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
                 </div>
             )}
 
-            <div className="p-3 flex flex-col flex-grow relative">
-                {/* Stock badges */}
-                <div className="absolute top-2 right-2 flex flex-col gap-1">
-                    {stock > 0 && (
-                        <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
-                            Stock disponible
-                        </span>
-                    )}
-                    {stock === 0 && (
-                        <span className="px-2 py-1 bg-orange-100 text-orange-800 text-xs font-medium rounded-full">
-                            A pedido
-                        </span>
-                    )}
-                </div>
+            {/* Stock badges */}
+            <div className="absolute top-2 right-2 flex flex-col gap-1 z-50">
+                {stock > 0 && (
+                    <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                        Stock disponible
+                    </span>
+                )}
+                {stock === 0 && (
+                    <span className="px-2 py-1 bg-orange-100 text-orange-800 text-xs font-medium rounded-full">
+                        A pedido
+                    </span>
+                )}
+            </div>
 
+            <div className="p-3 flex flex-col flex-grow">
                 {/* Image and category */}
                 <Link to={`/product/${id}`} className="block h-48 overflow-hidden rounded-lg mb-3">
                     <img 

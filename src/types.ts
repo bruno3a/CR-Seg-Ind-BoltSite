@@ -4,9 +4,8 @@ export interface Product {
   description: string;
   price: string;
   category: string;
-  image_url?: string;
-  icon?: string;
-  industry: string;
+  image_url: string;
+  industry?: string;
   brand: string;
   code: string;
   normative: string;

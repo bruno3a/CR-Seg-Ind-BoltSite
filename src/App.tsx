@@ -22,6 +22,7 @@ import OrderDetail from './components/OrderDetail';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { setupSupabaseListener } from './lib/supabase';
 import { supabase } from './lib/supabase';
+import { API_URL } from './config/constants';
 
 const backgroundImageUrl = "https://mla-s1-p.mlstatic.com/D_NQ_NP_773577-MLA41041719255_032020-OO.webp";
 

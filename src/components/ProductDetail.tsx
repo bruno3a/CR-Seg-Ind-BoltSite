@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import WhatsAppButton from './WhatsAppButton';
 import { Download } from 'lucide-react'; // Asegúrate de importar el ícono
 import { Product } from '../types';
+import { IMAGES } from '../config/constants';
 
 interface ProductDetailProps {
   product: Product;
@@ -12,7 +13,15 @@ interface ProductDetailProps {
 const ProductDetail: React.FC<ProductDetailProps> = ({ product, onAddToCart }) => {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('características');
+  const [imgError, setImgError] = useState(false);
   const navigate = useNavigate();
+  const defaultImage = '/placeholder-product.png';
+
+  const handleImageError = () => {
+    setImgError(true);
+  };
+
+  const imageSource = imgError || !product.image_url ? IMAGES.DEFAULT_PRODUCT : product.image_url;
 
   const handleAddToCart = () => {
     onAddToCart(product, quantity);
@@ -29,6 +38,14 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, onAddToCart }) =
     }
   };
 
+  const hasValidDocumentation = (documentation: string | undefined): boolean => {
+    if (!documentation) return false;
+    const urls = documentation.split(';')
+      .map(url => url.trim())
+      .filter(url => isValidUrl(url));
+    return urls.length > 0;
+  };
+
   const renderDocumentationContent = (documentation: string | undefined) => {
     if (!documentation) {
       return defaultMessage;
@@ -36,10 +53,10 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, onAddToCart }) =
 
     const urls = documentation.split(';')
       .map(url => url.trim())
-      .filter(url => isValidUrl(url)); // Filtrar solo URLs válidas
+      .filter(url => isValidUrl(url));
 
     if (urls.length === 0) {
-      return documentation; // Si no hay URLs válidas, mostrar el contenido como texto
+      return defaultMessage;
     }
 
     return (
@@ -60,6 +77,8 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, onAddToCart }) =
     );
   };
 
+  const hasDocumentation = hasValidDocumentation(product.documentacion);
+
   const tabs = [
     { 
       id: 'características', 
@@ -78,8 +97,9 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, onAddToCart }) =
     },
     { 
       id: 'documentación', 
-      label: 'Documentación', 
-      content: renderDocumentationContent(product.documentacion) // Cambiado de documentación a documentacion
+      label: 'Documentación',
+      disabled: !hasDocumentation,
+      content: renderDocumentationContent(product.documentacion)
     },
   ];
 
@@ -90,8 +110,9 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, onAddToCart }) =
         {/* Imagen */}
         <div className="bg-white rounded-lg shadow-sm overflow-hidden">
           <img
-            src={product.image_url || product.icon || '/placeholder-product.png'}
+            src={imageSource}
             alt={product.name}
+            onError={handleImageError}
             className="w-full h-auto object-contain aspect-square p-4"
           />
         </div>
@@ -146,10 +167,13 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, onAddToCart }) =
             {tabs.map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => !tab.disabled && setActiveTab(tab.id)}
+                disabled={tab.disabled}
                 className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors duration-200 ${
                   activeTab === tab.id
                     ? 'border-blue-600 text-blue-600'
+                    : tab.disabled
+                    ? 'border-transparent text-gray-300 cursor-not-allowed'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >

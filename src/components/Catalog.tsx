@@ -47,7 +47,7 @@ const Catalog: React.FC<CatalogProps> = ({ onAddToCart }) => {
     let query = supabase
       .from('products')
       .select('*', { count: 'exact' })
-      .order('name'); // Ordenar por nombre para consistencia
+      .order('name');
 
     if (search) {
       query = query.textSearch('name', search, {
@@ -61,15 +61,19 @@ const Catalog: React.FC<CatalogProps> = ({ onAddToCart }) => {
     if (brands?.length) query = query.in('brand', brands);
 
     const { data, error, count } = await query.range(start, end);
-    
+
     if (error) throw error;
 
-    // Eliminar duplicados antes de retornar
-    const uniqueData = data ? Array.from(new Map(data.map(item => [item.id, item])).values()) : [];
+    // Transformar los productos sin modificar las imágenes
+    const transformedProducts = data.map(product => ({
+      ...product,
+      // No sobreescribimos icon aquí, mantenemos el original
+      price: product.price.toString(),
+    }));
 
     return {
-      data: uniqueData,
-      count: count || uniqueData.length
+      data: transformedProducts,
+      count: count || 0
     };
   }, []);
 

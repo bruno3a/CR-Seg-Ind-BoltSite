@@ -5,10 +5,15 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const defaultImage = 'https://via.placeholder.com/400';
+// Imagen por defecto en public/assets
+const defaultImage = '/placeholder-product.png';
 
 async function isValidImageUrl(url) {
   if (!url) return false;
+  
+  // Si es la imagen por defecto, asumimos que es válida
+  if (url === defaultImage) return true;
+  
   try {
     const response = await fetch(url, { method: 'HEAD', timeout: 5000 });
     const contentType = response.headers.get('content-type');
@@ -30,33 +35,30 @@ async function validateAndFixImages() {
     
     for (const product of products) {
       let needsUpdate = false;
-      const updates = {};
       
-      // Validar icon
-      if (!await isValidImageUrl(product.icon)) {
-        updates.icon = defaultImage;
-        needsUpdate = true;
-      }
-      
-      // Validar imageUrl
-      if (!await isValidImageUrl(product.imageUrl)) {
-        updates.imageUrl = product.icon || defaultImage;
-        needsUpdate = true;
-      }
-      
-      if (needsUpdate) {
-        await Product.findByIdAndUpdate(product._id, { $set: updates });
+      // Solo validar image_url
+      if (!await isValidImageUrl(product.image_url)) {
+        await Product.findByIdAndUpdate(product._id, {
+          $set: { image_url: defaultImage }
+        });
         fixedCount++;
-        console.log(`Fixed images for product: ${product.name}`);
+        console.log(`Fixed image for product: ${product.name}`);
+        console.log('Updated to default image');
       }
     }
     
-    console.log(`Fixed ${fixedCount} products`);
+    console.log('\n=== Summary ===');
+    console.log(`Total products processed: ${products.length}`);
+    console.log(`Products fixed: ${fixedCount}`);
+    
   } catch (error) {
     console.error('Error:', error);
   } finally {
     await mongoose.disconnect();
+    console.log('\nDatabase connection closed');
   }
 }
 
 validateAndFixImages();
+
+

@@ -28,11 +28,11 @@ const ProductDetailWrapper: React.FC<ProductDetailWrapperProps> = ({ onAddToCart
 
         const fetchedProduct = {
           ...data,
-          imageUrl: data.image_url || '/placeholder-product.png',
-          technicalSpecs: data.especificaciones || {
-            'Specification 1': 'Value 1',
-            'Specification 2': 'Value 2'
-          }
+          image_url: data.image_url || '/placeholder-product.png',
+          technicalSpecs: data.especificaciones || {},
+          características: data.características || '',
+          presentación: data.presentación || '',
+          documentación: data.documentación || ''
         };
         setProduct(fetchedProduct);
       } catch (err: any) {
@@ -48,15 +48,17 @@ const ProductDetailWrapper: React.FC<ProductDetailWrapperProps> = ({ onAddToCart
   }, [id]);
 
   if (loading) {
-    return <div>Loading product...</div>;
+    return <div className="flex justify-center items-center min-h-[400px]">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-500"></div>
+    </div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div className="text-center text-red-600 p-4">Error: {error}</div>;
   }
 
   if (!product) {
-    return <div>Product not found.</div>;
+    return <div className="text-center text-gray-600 p-4">Producto no encontrado</div>;
   }
 
   return <ProductDetail product={product} onAddToCart={onAddToCart} />;

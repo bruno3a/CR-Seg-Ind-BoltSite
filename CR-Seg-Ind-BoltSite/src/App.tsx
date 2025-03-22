@@ -10,8 +10,7 @@ import Cart from './components/Cart';
 import WelcomePopup from './components/WelcomePopup';
 import Catalog from './components/Catalog'; // Importar Catalog
 //import Login from './components/Login';
-
-const API_URL = 'http://localhost:3010'; // Definir la URL de la API
+import { API_URL } from './config/constants';
 
 interface Product {
   _id: string;
