@@ -1,81 +1,183 @@
 import React, { useState } from 'react';
-import { industries } from '../utils';
+import { Search, ChevronDown, X } from 'lucide-react';
 
 interface Industry {
     name: string;
     description: string;
     image: string;
 }
+
 interface IndustryFilterProps {
     allIndustries: Industry[];
     selectedIndustries: string[];
     onIndustryChange: (industryName: string) => void;
+    brands?: string[];
+    selectedBrands?: string[];
+    onBrandChange?: (brand: string) => void;
 }
 
 const IndustryFilter: React.FC<IndustryFilterProps> = ({
     allIndustries,
     selectedIndustries,
     onIndustryChange,
+    brands = [],
+    selectedBrands = [],
+    onBrandChange = () => {},
 }) => {
-    // Simulate admin-selected industries (replace with actual logic if needed)
-    const adminSelectedIndustries = [
-        "AERONAUTICA",
-        "AGRICOLA",
-        "ALIMENTICIA",
-        "AUTOMOTRIZ",
-        "AUTOPARTISTA",
-        "AVICOLA",
-        "CARPINTERIA"
-    ];
+    const [searchTerm, setSearchTerm] = useState('');
+    const [isIndustryOpen, setIsIndustryOpen] = useState(true);
+    const [isBrandsOpen, setIsBrandsOpen] = useState(true);
 
-    const [showAll, setShowAll] = useState(false);
-
-    const visibleIndustries = showAll
-        ? allIndustries
-        : allIndustries.filter((industry) => adminSelectedIndustries.includes(industry.name));
-
-    const remainingIndustries = allIndustries.filter(
-        (industry) => !adminSelectedIndustries.includes(industry.name)
+    const filteredIndustries = allIndustries.filter(industry =>
+        industry.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    const filteredBrands = brands.filter(brand =>
+        brand.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const clearFilters = () => {
+        selectedIndustries.forEach(industry => onIndustryChange(industry));
+        selectedBrands.forEach(brand => onBrandChange(brand));
+        setSearchTerm('');
+    };
+
     return (
-        <div className="w-64 p-4 bg-gray-100 rounded-lg shadow-md">
-            <h2 className="text-lg font-semibold mb-4">Industrias</h2>
-            <ul>
-                {visibleIndustries.map((industry) => (
-                    <li
-                        key={industry.name}
-                        className={`cursor-pointer py-2 px-4 rounded-md mb-1 ${selectedIndustries.includes(industry.name)
-                            ? 'bg-blue-500 text-white'
-                            : 'hover:bg-gray-200'
-                            }`}
-                        onClick={() => onIndustryChange(industry.name)}
-                    >
-                        {industry.name}
-                    </li>
-                ))}
-                {remainingIndustries.length > 0 && (
-                    <div className="overflow-y-auto max-h-40">
-                        {remainingIndustries.map((industry) => (
-                            <li
-                                key={industry.name}
-                                className={`cursor-pointer py-2 px-4 rounded-md mb-1 ${selectedIndustries.includes(industry.name)
-                                    ? 'bg-blue-500 text-white'
-                                    : 'hover:bg-gray-200'
-                                    }`}
-                                onClick={() => onIndustryChange(industry.name)}
-                            >
-                                {industry.name}
-                            </li>
-                        ))}
+        <div className="w-72 bg-white rounded-xl shadow-lg border border-gray-100">
+            <div className="p-4">
+                {/* Header */}
+                <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-lg font-semibold text-gray-800">Filtros</h2>
+                    {(selectedIndustries.length > 0 || selectedBrands.length > 0) && (
+                        <button
+                            onClick={clearFilters}
+                            className="text-sm text-blue-600 hover:text-blue-700 flex items-center"
+                        >
+                            <X className="w-4 h-4 mr-1" />
+                            Limpiar
+                        </button>
+                    )}
+                </div>
+
+                {/* Search */}
+                <div className="relative mb-6">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                    <input
+                        type="text"
+                        placeholder="Buscar filtros..."
+                        className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                </div>
+
+                {/* Active Filters */}
+                {(selectedIndustries.length > 0 || selectedBrands.length > 0) && (
+                    <div className="mb-6">
+                        <h3 className="text-sm font-medium text-gray-600 mb-2">Filtros activos</h3>
+                        <div className="flex flex-wrap gap-2">
+                            {selectedIndustries.map(industry => (
+                                <span
+                                    key={industry}
+                                    className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800"
+                                >
+                                    {industry}
+                                    <button
+                                        onClick={() => onIndustryChange(industry)}
+                                        className="ml-2 hover:text-blue-600"
+                                    >
+                                        <X className="w-3 h-3" />
+                                    </button>
+                                </span>
+                            ))}
+                            {selectedBrands.map(brand => (
+                                <span
+                                    key={brand}
+                                    className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-amber-100 text-amber-800"
+                                >
+                                    {brand}
+                                    <button
+                                        onClick={() => onBrandChange(brand)}
+                                        className="ml-2 hover:text-amber-600"
+                                    >
+                                        <X className="w-3 h-3" />
+                                    </button>
+                                </span>
+                            ))}
+                        </div>
                     </div>
                 )}
-            </ul>
-            {/* <button
-        onClick={() => setShowAll(!showAll)}
-        className="text-blue-500 hover:text-blue-700 mt-2"
-      >
-        {showAll ? 'Mostrar menos' : 'Mostrar todas'}
-      </button> */}
+
+                {/* Industries */}
+                <div className="mb-6">
+                    <button
+                        className="flex items-center justify-between w-full py-2 text-left font-medium text-gray-700 hover:text-gray-900 transition-colors"
+                        onClick={() => setIsIndustryOpen(!isIndustryOpen)}
+                    >
+                        <span>Industrias</span>
+                        <ChevronDown
+                            className={`w-4 h-4 transition-transform duration-200 ${
+                                isIndustryOpen ? 'transform rotate-180' : ''
+                            }`}
+                        />
+                    </button>
+                    {isIndustryOpen && (
+                        <div className="mt-2 space-y-1 max-h-60 overflow-y-auto custom-scrollbar">
+                            {filteredIndustries.map((industry) => (
+                                <label
+                                    key={industry.name}
+                                    className="flex items-center p-2.5 rounded-lg hover:bg-gray-50 cursor-pointer group transition-colors"
+                                >
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedIndustries.includes(industry.name)}
+                                        onChange={() => onIndustryChange(industry.name)}
+                                        className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                                    />
+                                    <span className="ml-3 text-sm text-gray-600 group-hover:text-gray-900">
+                                        {industry.name}
+                                    </span>
+                                </label>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* Brands */}
+                <div>
+                    <button
+                        className="flex items-center justify-between w-full py-2 text-left font-medium text-gray-700 hover:text-gray-900 transition-colors"
+                        onClick={() => setIsBrandsOpen(!isBrandsOpen)}
+                    >
+                        <span>Marcas</span>
+                        <ChevronDown
+                            className={`w-4 h-4 transition-transform duration-200 ${
+                                isBrandsOpen ? 'transform rotate-180' : ''
+                            }`}
+                        />
+                    </button>
+                    {isBrandsOpen && (
+                        <div className="mt-2 space-y-1 max-h-60 overflow-y-auto custom-scrollbar">
+                            {filteredBrands.map((brand) => (
+                                <label
+                                    key={brand}
+                                    className="flex items-center p-2.5 rounded-lg hover:bg-gray-50 cursor-pointer group transition-colors"
+                                >
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedBrands.includes(brand)}
+                                        onChange={() => onBrandChange(brand)}
+                                        className="w-4 h-4 text-amber-600 rounded border-gray-300 focus:ring-amber-500"
+                                    />
+                                    <span className="ml-3 text-sm text-gray-600 group-hover:text-gray-900">
+                                        {brand}
+                                    </span>
+                                </label>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </div>
         </div>
     );
 };

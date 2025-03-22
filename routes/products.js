@@ -131,4 +131,87 @@ router.delete('/remove-duplicates', async (req, res) => {
   }
 });
 
+// Nueva ruta para actualizar características específicas de un producto
+router.patch('/:id/characteristics', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { 
+      brand, 
+      industry, 
+      category, 
+      características, 
+      especificaciones, 
+      presentación, 
+      documentación 
+    } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: 'ID de producto inválido' });
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          brand,
+          industry,
+          category,
+          características,
+          especificaciones,
+          presentación,
+          documentación
+        }
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedProduct) {
+      return res.status(404).json({ message: 'Producto no encontrado' });
+    }
+
+    res.json(updatedProduct);
+  } catch (err) {
+    res.status(400).json({ 
+      message: 'Error al actualizar características del producto', 
+      error: err.message 
+    });
+  }
+});
+
+// Ruta para actualizar características de múltiples productos
+router.patch('/batch/characteristics', async (req, res) => {
+  try {
+    const updates = req.body;
+    if (!Array.isArray(updates)) {
+      return res.status(400).json({ message: 'Se espera un array de actualizaciones' });
+    }
+
+    const results = await Promise.all(
+      updates.map(async (update) => {
+        const { name, characteristics } = update;
+        const updatedProduct = await Product.findOneAndUpdate(
+          { name },
+          { $set: characteristics },
+          { new: true, runValidators: true }
+        );
+        return {
+          name,
+          success: !!updatedProduct,
+          product: updatedProduct
+        };
+      })
+    );
+
+    res.json({
+      message: 'Actualización por lotes completada',
+      results
+    });
+  } catch (err) {
+    res.status(400).json({ 
+      message: 'Error en actualización por lotes', 
+      error: err.message 
+    });
+  }
+});
+
 export default router;

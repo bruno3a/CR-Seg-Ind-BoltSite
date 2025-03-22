@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { X, ShoppingCart } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { X, ShoppingCart, Search } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface NavbarProps {
     onCartClick: () => void;
@@ -14,65 +14,131 @@ const Navbar: React.FC<NavbarProps> = ({
     onClientLoginClick,
 }) => {
     const [showLogin, setShowLogin] = useState(false);
+    const [showSearch, setShowSearch] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
+    const navigate = useNavigate();
+
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (searchTerm.trim()) {
+            navigate(`/catalog?search=${encodeURIComponent(searchTerm.trim())}`);
+            setShowSearch(false);
+            setSearchTerm('');
+        }
+    };
+
+    const handleSearchKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Escape') {
+            setShowSearch(false);
+            setSearchTerm('');
+        }
+    };
 
     return (
         <>
-            <nav className="bg-black border-b border-amber-300 shadow-lg">
-                <div className="container mx-auto px-4">
-                    <div className="flex justify-between items-center h-16">
-                        <Link to="/" className="flex items-center">
-                            <img 
-                                src="/CR Work Logo.jpeg" 
-                                alt="CR Work Logo" 
-                                className="h-12 w-12 object-cover rounded-full"
-                                style={{
-                                    objectFit: 'cover',
-                                    objectPosition: 'center'
-                                }}
-                            />
-                            <span className="ml-2 text-xl font-bold text-amber-300">
-                                CR Work - Insumos para la Seguridad Industrial
-                            </span>
-                        </Link>
+            <div className="sticky top-0 z-50">
+                <nav className="bg-black border-b border-amber-300 shadow-lg">
+                    <div className="container mx-auto px-4">
+                        <div className="flex justify-between items-center h-16">
+                            <Link to="/" className="flex items-center">
+                                <img 
+                                    src="/CR Work Logo.jpeg" 
+                                    alt="CR Work Logo" 
+                                    className="h-12 w-12 object-cover rounded-full"
+                                    style={{
+                                        objectFit: 'cover',
+                                        objectPosition: 'center'
+                                    }}
+                                />
+                                <span className="ml-2 text-xl font-bold text-amber-300">
+                                    CR Work - Insumos para la Seguridad Industrial
+                                </span>
+                            </Link>
 
-                        <div className="hidden md:flex items-center space-x-8">
-                            <Link to="/" className="text-gray-300 hover:text-amber-300">
-                                Inicio
-                            </Link>
-                            <Link
-                                to="/catalog"
-                                className="text-gray-300 hover:text-amber-300"
-                            >
-                                Productos
-                            </Link>
-                            <Link to="/nosotros" className="text-gray-300 hover:text-amber-300">
-                                Nosotros
-                            </Link>
-                            <Link to="/ubicanos" className="text-gray-300 hover:text-amber-300">
-                                Ubicanos
-                            </Link>
-                            <button
-                                onClick={() => setShowLogin(true)}
-                                className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-200 transition duration-300"
-                            >
-                                Ingreso Clientes
-                            </button>
-                            <button
-                                onClick={onCartClick}
-                                className="relative bg-amber-500 text-white px-4 py-2 rounded-lg hover:bg-amber-600 transition duration-300 flex items-center"
-                            >
-                                <ShoppingCart className="w-5 h-5 mr-2" />
-                                Carrito
-                                {cartItemsCount > 0 && (
-                                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                                        {cartItemsCount}
-                                    </span>
-                                )}
-                            </button>
+                            {/* Search Button */}
+                            <div className="absolute left-1/2 transform -translate-x-1/2">
+                                <button
+                                    onClick={() => setShowSearch(true)}
+                                    className="p-2 text-amber-300 hover:text-amber-400 transition-colors duration-200"
+                                >
+                                    <Search className="w-6 h-6" />
+                                </button>
+                            </div>
+
+                            <div className="hidden md:flex items-center space-x-8">
+                                <Link to="/" className="text-gray-300 hover:text-amber-300">
+                                    Inicio
+                                </Link>
+                                <Link
+                                    to="/catalog"
+                                    className="text-gray-300 hover:text-amber-300"
+                                >
+                                    Productos
+                                </Link>
+                                <Link to="/nosotros" className="text-gray-300 hover:text-amber-300">
+                                    Nosotros
+                                </Link>
+                                <Link to="/ubicanos" className="text-gray-300 hover:text-amber-300">
+                                    Ubicanos
+                                </Link>
+                                <button
+                                    onClick={() => setShowLogin(true)}
+                                    className="bg-gray-100 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-200 transition duration-300"
+                                >
+                                    Ingreso Clientes
+                                </button>
+                                <button
+                                    onClick={onCartClick}
+                                    className="relative bg-amber-500 text-white px-4 py-2 rounded-lg hover:bg-amber-600 transition duration-300 flex items-center"
+                                >
+                                    <ShoppingCart className="w-5 h-5 mr-2" />
+                                    Carrito
+                                    {cartItemsCount > 0 && (
+                                        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                                            {cartItemsCount}
+                                        </span>
+                                    )}
+                                </button>
+                            </div>
                         </div>
                     </div>
+                </nav>
+
+                {/* Search Bar - Floating below navbar */}
+                <div 
+                    className={`absolute left-0 right-0 transform transition-all duration-300 ${
+                        showSearch ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
+                    }`}
+                    style={{
+                        top: '64px', // altura del navbar
+                        zIndex: 40
+                    }}
+                >
+                    <div className="container mx-auto px-4">
+                        <form onSubmit={handleSearch} className="relative max-w-2xl mx-auto">
+                            <div className="bg-black border border-amber-300 rounded-xl shadow-lg p-3">
+                                <input
+                                    type="text"
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    onKeyDown={handleSearchKeyDown}
+                                    placeholder="Buscar productos..."
+                                    className="w-full pl-10 pr-10 py-2 bg-gray-800 text-white rounded-xl border border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-300 transition-all duration-300"
+                                    autoFocus
+                                />
+                                <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-amber-300 w-5 h-5" />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowSearch(false)}
+                                    className="absolute right-6 top-1/2 transform -translate-y-1/2 text-amber-300 hover:text-amber-400"
+                                >
+                                    <X className="w-5 h-5" />
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </nav>
+            </div>
 
             {showLogin && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
