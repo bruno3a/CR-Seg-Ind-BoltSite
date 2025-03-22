@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Shield, Lock, Building2, User, Warehouse, Bell, Users, Book, FileText, Syringe } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -18,6 +18,7 @@ import { Routes, Route } from 'react-router-dom';
 import PersonalProtectionSection from './components/PersonalProtectionSection';
 import Nosotros from './components/Nosotros';
 import Ubicanos from './components/Ubicanos';
+import OrderDetail from './components/OrderDetail';
 
 const API_URL = 'http://localhost:3010'; // Definir la URL de la API
 
@@ -30,6 +31,7 @@ interface NavbarProps {
 }
 
 function App() {
+    const navigate = useNavigate();
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [showWelcome, setShowWelcome] = useState(false);
@@ -257,6 +259,10 @@ function App() {
                 <Route path="/register" element={<UserRegistration />} />
                 <Route path="/nosotros" element={<Nosotros />} />
                 <Route path="/ubicanos" element={<Ubicanos />} />
+                <Route 
+                    path="/order-detail" 
+                    element={<OrderDetail items={cartItems} onClose={() => navigate(-1)} />} 
+                />
             </Routes>
 
             <footer className="bg-gray-900 text-white py-12">
@@ -340,10 +346,12 @@ function App() {
                 isOpen={isCartOpen}
                 onClose={() => setIsCartOpen(false)}
                 items={cartItems}
-                onUpdateQuantity={(id: string, quantity: number) =>
-                    handleUpdateQuantity(id, quantity)
-                }
+                onUpdateQuantity={(id: string, quantity: number) => handleUpdateQuantity(id, quantity)}
                 onRemoveItem={(id: string) => handleRemoveItem(id)}
+                onDetailedOrder={() => {
+                    setIsCartOpen(false);
+                    navigate('/order-detail');
+                }}
             />
 
             <WelcomePopup

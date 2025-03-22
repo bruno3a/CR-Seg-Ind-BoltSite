@@ -14,9 +14,17 @@ interface CartProps {
     items: CartItem[];
     onUpdateQuantity: (id: string, quantity: number) => void;
     onRemoveItem: (id: string) => void;
+    onDetailedOrder?: () => void; // Nuevo prop para manejar el click en orden detallada
 }
 
-const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onUpdateQuantity, onRemoveItem }) => {
+const Cart: React.FC<CartProps> = ({ 
+    isOpen, 
+    onClose, 
+    items, 
+    onUpdateQuantity, 
+    onRemoveItem,
+    onDetailedOrder 
+}) => {
     const cartRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -48,7 +56,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onUpdateQuantity, o
                 <div className="p-4 border-b flex justify-between items-center">
                     <div className="flex items-center">
                         <ShoppingCart className="w-6 h-6 text-blue-600 mr-2" />
-                        <h2 className="text-xl font-semibold">Your Cart</h2>
+                        <h2 className="text-xl font-semibold">Orden de Compra</h2>
                     </div>
                     <button
                         onClick={onClose}
@@ -62,7 +70,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onUpdateQuantity, o
                     {items.length === 0 ? (
                         <div className="text-center text-gray-500 mt-8">
                             <ShoppingCart className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                            <p>Your cart is empty</p>
+                            <p>Tu orden está vacía</p>
                         </div>
                     ) : (
                         <div className="space-y-4">
@@ -104,12 +112,21 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onUpdateQuantity, o
                         <span className="text-lg font-semibold">Total:</span>
                         <span className="text-xl font-bold text-blue-600">${total.toFixed(2)}</span>
                     </div>
-                    <button
-                        className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300"
-                        disabled={items.length === 0}
-                    >
-                        Proceed to Checkout
-                    </button>
+                    <div className="flex gap-2">
+                        <button
+                            onClick={onDetailedOrder}
+                            className="flex-1 bg-blue-100 text-blue-600 py-3 rounded-lg font-semibold hover:bg-blue-200 transition duration-300"
+                            disabled={items.length === 0}
+                        >
+                            Orden Detallada
+                        </button>
+                        <button
+                            className="flex-1 bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300"
+                            disabled={items.length === 0}
+                        >
+                            Finalizar Orden
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -40,9 +40,9 @@ const Navbar: React.FC<NavbarProps> = ({
                 <nav className="bg-black border-b border-amber-300 shadow-lg">
                     <div className="container mx-auto px-4">
                         <div className="flex justify-between items-center h-16">
-                            <Link to="/" className="flex items-center">
+                            <Link to="/" className="flex items-center flex-shrink-0">
                                 <img 
-                                    src="/CR Work Logo.jpeg" 
+                                    src="/assets/cr-work-logo.jpeg" 
                                     alt="CR Work Logo" 
                                     className="h-12 w-12 object-cover rounded-full"
                                     style={{
@@ -55,14 +55,17 @@ const Navbar: React.FC<NavbarProps> = ({
                                 </span>
                             </Link>
 
-                            {/* Search Button */}
-                            <div className="absolute left-1/2 transform -translate-x-1/2">
-                                <button
-                                    onClick={() => setShowSearch(true)}
-                                    className="p-2 text-amber-300 hover:text-amber-400 transition-colors duration-200"
-                                >
-                                    <Search className="w-6 h-6" />
-                                </button>
+                            {/* Search Input - Centered between "Industrial" and "Inicio" */}
+                            <div className="flex-1 flex justify-center mx-8">
+                                <div className="relative flex items-center bg-gray-800 rounded-lg w-48 hover:w-56 transition-all duration-300">
+                                    <Search className="absolute left-2 text-amber-300 w-4 h-4" />
+                                    <button
+                                        onClick={() => setShowSearch(true)}
+                                        className="w-full px-8 py-1.5 text-left text-sm text-amber-300 hover:text-amber-400 truncate"
+                                    >
+                                        Buscar productos
+                                    </button>
+                                </div>
                             </div>
 
                             <div className="hidden md:flex items-center space-x-8">
@@ -92,7 +95,7 @@ const Navbar: React.FC<NavbarProps> = ({
                                     className="relative bg-amber-500 text-white px-4 py-2 rounded-lg hover:bg-amber-600 transition duration-300 flex items-center"
                                 >
                                     <ShoppingCart className="w-5 h-5 mr-2" />
-                                    Carrito
+                                    Orden
                                     {cartItemsCount > 0 && (
                                         <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
                                             {cartItemsCount}

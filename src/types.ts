@@ -23,4 +23,5 @@ export interface CartItem {
   name: string;
   price: string;
   quantity: number;
+  brand: string;  // Añadiendo la marca
 }

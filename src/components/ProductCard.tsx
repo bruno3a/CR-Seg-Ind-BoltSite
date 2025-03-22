@@ -20,7 +20,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
 
     return (
         <div
-            className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 relative group"
+            className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 relative group h-[400px] flex flex-col"
             onMouseEnter={() => setShowTooltip(true)}
             onMouseLeave={() => setShowTooltip(false)}
         >
@@ -32,7 +32,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
                 </div>
             )}
 
-            <div className="p-3">
+            <div className="p-3 flex flex-col flex-grow">
                 {/* Stock badge */}
                 {stock > 0 && (
                     <span className="absolute top-2 right-2 px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
@@ -41,19 +41,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
                 )}
 
                 {/* Image and category */}
-                <Link to={`/product/${_id}`} className="block aspect-square overflow-hidden rounded-lg mb-3">
+                <Link to={`/product/${_id}`} className="block h-48 overflow-hidden rounded-lg mb-3">
                     <img src={icon} alt={name} className="w-full h-full object-contain hover:scale-105 transition-transform duration-300" />
                 </Link>
                 <span className="text-xs font-medium text-blue-600">{category}</span>
 
                 {/* Product info */}
-                <Link to={`/product/${_id}`} className="block mt-1 mb-2">
-                    <h3 className="text-sm font-medium text-gray-900 line-clamp-2 hover:text-blue-600">{name}</h3>
+                <Link to={`/product/${_id}`} className="block mt-1 mb-2 flex-grow">
+                    <h3 className="text-sm font-medium text-gray-900 line-clamp-2 hover:text-blue-600 min-h-[40px]">{name}</h3>
                 </Link>
-                <div className="text-lg font-bold text-gray-900">${Number(price).toFixed(2)}</div>
+                <div className="text-lg font-bold text-gray-900 mb-3">${Number(price).toFixed(2)}</div>
 
-                {/* Add to cart section */}
-                <div className="flex items-center gap-2 mt-3">
+                {/* Add to cart section - fixed at bottom */}
+                <div className="flex items-center gap-2 mt-auto">
                     <input
                         type="number"
                         min="1"
