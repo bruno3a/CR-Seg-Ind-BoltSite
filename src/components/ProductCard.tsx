@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ShoppingCart } from 'lucide-react';
 import { Product } from '../types';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface ProductCardProps {
     product: Product;
@@ -9,7 +9,8 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
-    const { _id, name, description, price, category, stock, icon, imageUrl } = product;
+    const navigate = useNavigate();
+    const { id, name, description, price, category, stock, icon, imageUrl } = product;
     const [imgError, setImgError] = useState(false);
     const defaultImage = '/placeholder-product.png'; // Asegúrate de tener esta imagen en tu carpeta public
 
@@ -27,11 +28,21 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
         setQuantity(isNaN(newQuantity) || newQuantity < 1 ? 1 : newQuantity);
     };
 
+    const handleCardClick = (e: React.MouseEvent) => {
+        if (
+            !(e.target as HTMLElement).closest('input') && 
+            !(e.target as HTMLElement).closest('button')
+        ) {
+            navigate(`/product/${id}`);
+        }
+    };
+
     return (
         <div
             className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 relative group h-[400px] flex flex-col"
             onMouseEnter={() => setShowTooltip(true)}
             onMouseLeave={() => setShowTooltip(false)}
+            onClick={handleCardClick}
         >
             {/* Tooltip */}
             {showTooltip && (
@@ -57,7 +68,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
                 </div>
 
                 {/* Image and category */}
-                <Link to={`/product/${_id}`} className="block h-48 overflow-hidden rounded-lg mb-3">
+                <Link to={`/product/${id}`} className="block h-48 overflow-hidden rounded-lg mb-3">
                     <img 
                         src={imageSource}
                         alt={name}
@@ -68,7 +79,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
                 <span className="text-xs font-medium text-blue-600">{category}</span>
 
                 {/* Product info */}
-                <Link to={`/product/${_id}`} className="block mt-1 mb-2 flex-grow">
+                <Link to={`/product/${id}`} className="block mt-1 mb-2 flex-grow">
                     <h3 className="text-sm font-medium text-gray-900 line-clamp-2 hover:text-blue-600 min-h-[40px]">{name}</h3>
                 </Link>
                 <div className="text-lg font-bold text-gray-900 mb-3">${Number(price).toFixed(2)}</div>

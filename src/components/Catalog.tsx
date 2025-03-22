@@ -1,254 +1,224 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { ProductFilters, PaginatedResponse, Product } from '../types';
+import { z } from 'zod';
 import ProductCard from './ProductCard';
-import { Product } from '../types';
 import { industries } from '../utils';
 import IndustryFilter from './IndustryFilter';
 import { Search } from 'lucide-react';
+import Pagination from './Pagination';
+
+// Schema validation
+const ProductSchema = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+  description: z.string().nullable(),
+  price: z.number(),
+  category: z.string(),
+  industry: z.string().nullable(),
+  brand: z.string().nullable(),
+  stock: z.number(),
+});
 
 interface CatalogProps {
-    onAddToCart: (product: Product, quantity: number) => void;
+  onAddToCart: (product: Product, quantity: number) => void;
 }
 
 const Catalog: React.FC<CatalogProps> = ({ onAddToCart }) => {
-    const [products, setProducts] = useState<Product[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    const [searchParams, setSearchParams] = useSearchParams();
-    const [search, setSearch] = useState(searchParams.get('search') || '');
-    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-    const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
-    const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(15);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [search, setSearch] = useState(searchParams.get('search') || '');
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedIndustries, setSelectedIndustries] = useState<string[]>([]);
+  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(15);
 
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                let query = supabase
-                    .from('products')
-                    .select('*');
+  const queryClient = useQueryClient();
 
-                // Aplicar filtros
-                if (search) {
-                    query = query.ilike('name', `%${search}%`);
-                }
+  // Cache con React Query
+  const fetchProducts = useCallback(async (filters: ProductFilters): Promise<PaginatedResponse<Product>> => {
+    const { page, itemsPerPage, search, categories, industries, brands } = filters;
+    const start = (page - 1) * itemsPerPage;
+    const end = start + itemsPerPage - 1;
 
-                if (selectedCategories.length > 0) {
-                    query = query.in('category', selectedCategories);
-                }
+    let query = supabase
+      .from('products')
+      .select('*', { count: 'exact' });
 
-                if (selectedIndustries.length > 0) {
-                    query = query.in('industry', selectedIndustries);
-                }
+    if (search) {
+      query = query.textSearch('name', search, {
+        config: 'english',
+        type: 'websearch'
+      });
+    }
 
-                if (selectedBrands.length > 0) {
-                    query = query.in('brand', selectedBrands);
-                }
+    if (categories?.length) query = query.in('category', categories);
+    if (industries?.length) query = query.in('industry', industries);
+    if (brands?.length) query = query.in('brand', brands);
 
-                const { data, error } = await query;
+    query = query.range(start, end);
 
-                if (error) {
-                    throw error;
-                }
+    const { data, error, count } = await query;
+    
+    if (error) throw error;
 
-                setProducts(data || []);
-            } catch (err) {
-                setError(err instanceof Error ? err.message : 'Error fetching products');
-            } finally {
-                setLoading(false);
-            }
-        };
+    const validatedData = data.map(product => {
+      const result = ProductSchema.safeParse(product);
+      if (!result.success) {
+        console.error('Invalid product data:', result.error);
+        return null;
+      }
+      return result.data;
+    }).filter((product): product is Product => product !== null);
 
-        fetchProducts();
-    }, [search, selectedCategories, selectedIndustries, selectedBrands]);
-
-    const brands = Array.from(new Set(products.map(product => product.brand))).filter(Boolean);
-
-    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearch(event.target.value);
-        setSearchParams(event.target.value ? { search: event.target.value } : {});
+    return {
+      data: validatedData,
+      count: count || 0
     };
+  }, []);
 
-    const handleCategoryChange = (category: string) => {
-        setSelectedCategories(prev =>
-            prev.includes(category)
-                ? prev.filter(c => c !== category)
-                : [...prev, category]
-        );
-    };
+  // React Query hook con configuración optimizada
+  const {
+    data: productsResponse,
+    isLoading,
+    error
+  } = useQuery({
+    queryKey: ['products', search, selectedCategories, selectedIndustries, selectedBrands, currentPage, itemsPerPage],
+    queryFn: () => fetchProducts({
+      search,
+      categories: selectedCategories,
+      industries: selectedIndustries,
+      brands: selectedBrands,
+      page: currentPage,
+      itemsPerPage
+    }),
+    staleTime: 5 * 60 * 1000, // Cache válido por 5 minutos
+    keepPreviousData: true,
+    // Añadir estas opciones para evitar refetch innecesarios
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false
+  });
 
-    const handleIndustryChange = (industryName: string) => {
-        setSelectedIndustries(prev =>
-            prev.includes(industryName)
-                ? prev.filter(ind => ind !== industryName)
-                : [...prev, industryName]
-        );
-    };
+  // Modificar el prefetch para que solo se ejecute si es necesario
+  useEffect(() => {
+    if (productsResponse?.count && currentPage * itemsPerPage < productsResponse.count) {
+      const nextPage = currentPage + 1;
+      queryClient.prefetchQuery({
+        queryKey: ['products', search, selectedCategories, selectedIndustries, selectedBrands, nextPage, itemsPerPage],
+        queryFn: () => fetchProducts({
+          search,
+          categories: selectedCategories,
+          industries: selectedIndustries,
+          brands: selectedBrands,
+          page: nextPage,
+          itemsPerPage
+        }),
+        staleTime: 5 * 60 * 1000
+      });
+    }
+  }, [currentPage, productsResponse?.count]);
 
-    const handleBrandChange = (brand: string) => {
-        setSelectedBrands(prev =>
-            prev.includes(brand)
-                ? prev.filter(b => b !== brand)
-                : [...prev, brand]
-        );
-    };
+  // Manejar añadir al carrito sin causar refetch
+  const handleAddToCart = useCallback((product: Product, quantity: number) => {
+    onAddToCart(product, quantity);
+  }, [onAddToCart]);
 
-    const filteredProducts = products
-        .filter(product =>
-            product.name.toLowerCase().includes(search.toLowerCase())
-        )
-        .filter(product =>
-            selectedCategories.length === 0 || selectedCategories.includes(product.category)
-        )
-        .filter(product =>
-            selectedIndustries.length === 0 || selectedIndustries.includes(product.industry)
-        )
-        .filter(product =>
-            selectedBrands.length === 0 || (product.brand && selectedBrands.includes(product.brand))
-        );
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+    setSearchParams(event.target.value ? { search: event.target.value } : {});
+    setCurrentPage(1); // Reset a la primera página cuando se busca
+  };
 
-    // Pagination logic
-    const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-    const paginatedProducts = filteredProducts.slice(
-        (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage
-    );
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
-    const handlePageChange = (page: number) => {
-        setCurrentPage(page);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
+  const handleItemsPerPageChange = (value: number) => {
+    setItemsPerPage(value);
+    setCurrentPage(1);
+  };
 
-    const handleItemsPerPageChange = (value: number) => {
-        setItemsPerPage(value);
-        setCurrentPage(1);
-    };
+  if (isLoading) {
+    return <div className="flex justify-center items-center min-h-[400px]">Cargando productos...</div>;
+  }
 
-    const uniqueCategories = Array.from(new Set(products.map(product => product.category)));
+  if (error) {
+    return <div className="text-red-500">Error al cargar productos: {(error as Error).message}</div>;
+  }
 
-    return (
-        <div className="container mx-auto px-4 py-6">
-            {/* Search bar */}
-            <div className="relative max-w-xl mx-auto mb-8">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <input
-                    type="text"
-                    placeholder="Buscar productos..."
-                    value={search}
-                    onChange={handleSearchChange}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg shadow-sm focus:ring-1 focus:ring-blue-500 focus:border-transparent text-sm"
-                />
-            </div>
+  const uniqueCategories = Array.from(new Set(productsResponse?.data.map(product => product.category) || []));
+  const brands = Array.from(new Set(productsResponse?.data.map(product => product.brand).filter(Boolean) || []));
 
-            <div className="flex gap-6">
-                {/* Filters sidebar */}
-                <div className="w-72 flex-shrink-0">
-                    <IndustryFilter
-                        allIndustries={industries}
-                        selectedIndustries={selectedIndustries}
-                        onIndustryChange={handleIndustryChange}
-                        brands={brands}
-                        selectedBrands={selectedBrands}
-                        onBrandChange={handleBrandChange}
-                    />
-                </div>
+  return (
+    <div className="container mx-auto px-4 py-6">
+      {/* Search bar */}
+      <div className="relative max-w-xl mx-auto mb-8">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+        <input
+          type="text"
+          placeholder="Buscar productos..."
+          value={search}
+          onChange={handleSearchChange}
+          className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg shadow-sm focus:ring-1 focus:ring-blue-500 focus:border-transparent text-sm"
+        />
+      </div>
 
-                {/* Main content */}
-                <div className="flex-1">
-                    {/* Categories */}
-                    <div className="mb-6 flex flex-wrap gap-2">
-                        {uniqueCategories.map(category => (
-                            <button
-                                key={category}
-                                onClick={() => handleCategoryChange(category)}
-                                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors
-                                    ${selectedCategories.includes(category)
-                                        ? 'bg-blue-600 text-white'
-                                        : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
-                                    }`}
-                            >
-                                {category}
-                            </button>
-                        ))}
-                    </div>
-
-                    {/* Products grid */}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                        {paginatedProducts.map(product => (
-                            <ProductCard
-                                key={product._id}
-                                product={product}
-                                onAddToCart={onAddToCart}
-                            />
-                        ))}
-                    </div>
-
-                    {/* Empty state */}
-                    {filteredProducts.length === 0 && (
-                        <div className="text-center py-12">
-                            <p className="text-gray-500">No se encontraron productos que coincidan con los filtros seleccionados.</p>
-                        </div>
-                    )}
-
-                    {/* Pagination controls container */}
-                    {filteredProducts.length > 0 && (
-                        <div className="mt-8 space-y-4">
-                            {/* Items per page selector */}
-                            <div className="flex justify-end items-center gap-2">
-                                <span className="text-sm text-gray-600">Mostrar:</span>
-                                <select
-                                    value={itemsPerPage}
-                                    onChange={(e) => handleItemsPerPageChange(Number(e.target.value))}
-                                    className="border rounded-md px-2 py-1 text-sm"
-                                >
-                                    <option value={15}>15</option>
-                                    <option value={30}>30</option>
-                                    <option value={50}>50</option>
-                                </select>
-                            </div>
-
-                            {/* Pagination */}
-                            {totalPages > 1 && (
-                                <div className="flex justify-center items-center gap-2">
-                                    <button
-                                        onClick={() => handlePageChange(currentPage - 1)}
-                                        disabled={currentPage === 1}
-                                        className="px-3 py-1 rounded-md border disabled:opacity-50 disabled:cursor-not-allowed"
-                                    >
-                                        Anterior
-                                    </button>
-                                    
-                                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                                        <button
-                                            key={page}
-                                            onClick={() => handlePageChange(page)}
-                                            className={`px-3 py-1 rounded-md ${
-                                                currentPage === page
-                                                    ? 'bg-blue-600 text-white'
-                                                    : 'border hover:bg-gray-50'
-                                            }`}
-                                        >
-                                            {page}
-                                        </button>
-                                    ))}
-                                    
-                                    <button
-                                        onClick={() => handlePageChange(currentPage + 1)}
-                                        disabled={currentPage === totalPages}
-                                        className="px-3 py-1 rounded-md border disabled:opacity-50 disabled:cursor-not-allowed"
-                                    >
-                                        Siguiente
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-                    )}
-                </div>
-            </div>
+      <div className="flex gap-6">
+        {/* Filters sidebar */}
+        <div className="w-72 flex-shrink-0">
+          <IndustryFilter
+            allIndustries={industries}
+            selectedIndustries={selectedIndustries}
+            onIndustryChange={(industry) => {
+              setSelectedIndustries(prev =>
+                prev.includes(industry)
+                  ? prev.filter(i => i !== industry)
+                  : [...prev, industry]
+              );
+              setCurrentPage(1);
+            }}
+            brands={brands}
+            selectedBrands={selectedBrands}
+            onBrandChange={(brand) => {
+              setSelectedBrands(prev =>
+                prev.includes(brand)
+                  ? prev.filter(b => b !== brand)
+                  : [...prev, brand]
+              );
+              setCurrentPage(1);
+            }}
+          />
         </div>
-    );
+
+        {/* Main content */}
+        <div className="flex-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {productsResponse?.data.map(product => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                onAddToCart={handleAddToCart}
+              />
+            ))}
+          </div>
+
+          {/* Pagination */}
+          {productsResponse && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={Math.ceil(productsResponse.count / itemsPerPage)}
+              onPageChange={handlePageChange}
+              onItemsPerPageChange={handleItemsPerPageChange}
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Catalog;

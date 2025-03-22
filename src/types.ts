@@ -1,5 +1,5 @@
 export interface Product {
-  _id: string;
+  id: string;
   name: string;
   description: string;
   icon: string;
@@ -12,10 +12,10 @@ export interface Product {
   stock: number;
   imageUrl: string;
   technicalSpecs: { [key: string]: string };
-  características: string; // Add this property
-  especificaciones: string; // Add this property
-  presentación: string; // Add this property
-  documentación: string; // Add this property
+  características: string;
+  especificaciones: string;
+  presentación: string;
+  documentacion: string;
 }
 
 export interface CartItem {

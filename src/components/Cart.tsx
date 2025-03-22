@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import { ShoppingCart, X, Trash2 } from 'lucide-react';
 
 interface CartItem {
@@ -6,6 +6,8 @@ interface CartItem {
     name: string;
     price: string;
     quantity: number;
+    category: string;
+    brand: string;
 }
 
 interface CartProps {
@@ -27,21 +29,19 @@ const Cart: React.FC<CartProps> = ({
 }) => {
     const cartRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (cartRef.current && !cartRef.current.contains(event.target as Node) && isOpen) {
-                onClose();
-            }
-        };
+    // Usar useCallback para el manejador del click fuera
+    const handleClickOutside = useCallback((event: MouseEvent) => {
+        if (cartRef.current && !cartRef.current.contains(event.target as Node) && isOpen) {
+            onClose();
+        }
+    }, [isOpen, onClose]);
 
+    useEffect(() => {
         if (isOpen) {
             document.addEventListener('mousedown', handleClickOutside);
+            return () => document.removeEventListener('mousedown', handleClickOutside);
         }
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [isOpen, onClose]);
+    }, [isOpen, handleClickOutside]);
 
     const total = items.reduce((sum, item) => {
         const price = parseFloat(item.price);
@@ -78,7 +78,12 @@ const Cart: React.FC<CartProps> = ({
                                 <div key={item._id} className="flex items-center space-x-4 bg-gray-50 p-4 rounded-lg">
                                     <div className="flex-1">
                                         <h3 className="font-semibold text-gray-900">{item.name}</h3>
-                                        <p className="text-blue-600">{`$${Number(item.price).toFixed(2)}`}</p>
+                                        <div className="text-sm text-gray-600">
+                                            <span className="mr-2">{item.category}</span>
+                                            <span className="text-gray-400">|</span>
+                                            <span className="ml-2">{item.brand}</span>
+                                        </div>
+                                        <p className="text-blue-600 mt-1">{`$${Number(item.price).toFixed(2)}`}</p>
                                     </div>
                                     <div className="flex items-center space-x-2">
                                         <button

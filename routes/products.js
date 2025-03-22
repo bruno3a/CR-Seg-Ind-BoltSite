@@ -99,15 +99,18 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// TEMPORARY ROUTE TO REMOVE DUPLICATE PRODUCTS
+// TEMPORARY ROUTE TO REMOVE DUPLICATES - Mejorada
 router.delete('/remove-duplicates', async (req, res) => {
   try {
+    // Primero encontramos duplicados basados en el nombre
     const duplicates = await Product.aggregate([
       {
         $group: {
           _id: { name: "$name" },
-          dups: { $addToSet: "$_id" },
-          count: { $sum: 1 }
+          uniqueIds: { $addToSet: "$_id" },
+          count: { $sum: 1 },
+          // Guardamos el documento más reciente
+          lastDocument: { $last: "$$ROOT" }
         }
       },
       {
@@ -117,15 +120,44 @@ router.delete('/remove-duplicates', async (req, res) => {
       }
     ]);
 
-    const removedProductIds = [];
+    const removedProducts = [];
+    const updatedProducts = [];
 
     for (const dup of duplicates) {
-      const idsToRemove = dup.dups.slice(1); // Keep the first one, remove the rest
-      removedProductIds.push(...idsToRemove)
+      // Mantener el último documento y eliminar los demás
+      const idsToRemove = dup.uniqueIds.filter(id => 
+        id.toString() !== dup.lastDocument._id.toString()
+      );
+      
+      // Eliminar los duplicados
       await Product.deleteMany({ _id: { $in: idsToRemove } });
+      removedProducts.push(...idsToRemove);
+
+      // Asegurarse de que el documento que queda tiene todos los campos necesarios
+      const updatedProduct = await Product.findByIdAndUpdate(
+        dup.lastDocument._id,
+        {
+          $set: {
+            icon: dup.lastDocument.icon || '',
+            imageUrl: dup.lastDocument.imageUrl || '',
+            características: dup.lastDocument.características || '',
+            especificaciones: dup.lastDocument.especificaciones || '',
+            presentación: dup.lastDocument.presentación || '',
+            documentación: dup.lastDocument.documentación || ''
+          }
+        },
+        { new: true }
+      );
+      updatedProducts.push(updatedProduct);
     }
 
-    res.json({ message: "Duplicates removed", removedIds: removedProductIds });
+    res.json({
+      message: "Duplicates processed",
+      removedCount: removedProducts.length,
+      updatedCount: updatedProducts.length,
+      removedIds: removedProducts,
+      updatedProducts: updatedProducts
+    });
   } catch (err) {
     res.status(500).json({ message: "Error removing duplicates", error: err.message });
   }
