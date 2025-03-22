@@ -9,7 +9,16 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
-    const { name, description, icon, price, category, _id, stock } = product;
+    const { _id, name, description, price, category, stock, icon, imageUrl } = product;
+    const [imgError, setImgError] = useState(false);
+    const defaultImage = '/placeholder-product.png'; // Asegúrate de tener esta imagen en tu carpeta public
+
+    const handleImageError = () => {
+        setImgError(true);
+    };
+
+    const imageSource = imgError ? defaultImage : (imageUrl || icon || defaultImage);
+
     const [quantity, setQuantity] = useState(1);
     const [showTooltip, setShowTooltip] = useState(false);
 
@@ -20,7 +29,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
 
     return (
         <div
-            className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 relative group h-[400px] flex flex-col"
+            className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 relative group h-[400px] flex flex-col"
             onMouseEnter={() => setShowTooltip(true)}
             onMouseLeave={() => setShowTooltip(false)}
         >
@@ -32,17 +41,29 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
                 </div>
             )}
 
-            <div className="p-3 flex flex-col flex-grow">
-                {/* Stock badge */}
-                {stock > 0 && (
-                    <span className="absolute top-2 right-2 px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
-                        Stock disponible
-                    </span>
-                )}
+            <div className="p-3 flex flex-col flex-grow relative">
+                {/* Stock badges */}
+                <div className="absolute top-2 right-2 flex flex-col gap-1">
+                    {stock > 0 && (
+                        <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                            Stock disponible
+                        </span>
+                    )}
+                    {stock === 0 && (
+                        <span className="px-2 py-1 bg-orange-100 text-orange-800 text-xs font-medium rounded-full">
+                            A pedido
+                        </span>
+                    )}
+                </div>
 
                 {/* Image and category */}
                 <Link to={`/product/${_id}`} className="block h-48 overflow-hidden rounded-lg mb-3">
-                    <img src={icon} alt={name} className="w-full h-full object-contain hover:scale-105 transition-transform duration-300" />
+                    <img 
+                        src={imageSource}
+                        alt={name}
+                        onError={handleImageError}
+                        className="w-full h-full object-contain hover:scale-105 transition-transform duration-300"
+                    />
                 </Link>
                 <span className="text-xs font-medium text-blue-600">{category}</span>
 
