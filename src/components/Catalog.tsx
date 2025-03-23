@@ -85,9 +85,9 @@ const Catalog: React.FC<CatalogProps> = ({ onAddToCart }) => {
     error,
     isFetching
   } = useQuery({
-    queryKey: ['products', search],
+    queryKey: ['products', searchParams.get('search')], // Cambiar search por searchParams.get('search')
     queryFn: () => fetchProducts({
-      search,
+      search: searchParams.get('search') || '', // Usar searchParams directamente
       categories: selectedCategories,
       industries: selectedIndustries,
       brands: selectedBrands,
@@ -103,6 +103,14 @@ const Catalog: React.FC<CatalogProps> = ({ onAddToCart }) => {
     if (!productsResponse?.data) return { data: [], count: 0 };
 
     let filtered = [...productsResponse.data];
+
+    // Filtrar por búsqueda local
+    if (search) {
+      filtered = filtered.filter(product => 
+        product.name.toLowerCase().includes(search.toLowerCase()) ||
+        product.description?.toLowerCase().includes(search.toLowerCase())
+      );
+    }
 
     if (selectedCategories.length > 0) {
       filtered = filtered.filter(product => 
@@ -129,7 +137,7 @@ const Catalog: React.FC<CatalogProps> = ({ onAddToCart }) => {
       data: filtered.slice(start, end),
       count: filtered.length
     };
-  }, [productsResponse?.data, selectedCategories, selectedIndustries, selectedBrands, currentPage, itemsPerPage]);
+  }, [productsResponse?.data, search, selectedCategories, selectedIndustries, selectedBrands, currentPage, itemsPerPage]);
 
   // 6. Debug effect
   useEffect(() => {
@@ -162,9 +170,8 @@ const Catalog: React.FC<CatalogProps> = ({ onAddToCart }) => {
   const handleSearchChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setSearch(value);
-    setSearchParams(value ? { search: value } : {});
-    setCurrentPage(1);
-  }, [setSearchParams]);
+    // No actualizar searchParams aquí
+  }, []);
 
   const handleIndustryChange = useCallback((industry: string) => {
     setSelectedIndustries(prev => 

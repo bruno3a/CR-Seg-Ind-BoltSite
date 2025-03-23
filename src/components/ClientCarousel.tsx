@@ -13,7 +13,7 @@ const ClientLogo: React.FC<{ client: { name: string; logo: string } }> = ({ clie
 
   if (imageError) {
     return (
-      <div className="w-full h-24 flex items-center justify-center bg-gray-100 rounded-lg">
+      <div className="w-full h-14 flex items-center justify-center bg-gray-100 rounded-lg">
         <span className="text-xl font-bold text-gray-700 text-center font-sans tracking-wider">
           {client.name}
         </span>
@@ -26,7 +26,7 @@ const ClientLogo: React.FC<{ client: { name: string; logo: string } }> = ({ clie
       src={client.logo} 
       alt={`Logo ${client.name}`} 
       onError={handleImageError}
-      className="w-full h-24 object-contain mx-auto filter grayscale hover:grayscale-0 transition-all duration-300"
+      className="w-full h-14 object-contain mx-auto filter grayscale hover:grayscale-0 transition-all duration-300"
     />
   );
 };
@@ -107,3 +107,4 @@ const ClientCarousel = () => {
 };
 
 export default ClientCarousel;
+

@@ -13,7 +13,7 @@ const BrandLogo: React.FC<{ brand: { name: string; logo: string } }> = ({ brand 
 
   if (imageError) {
     return (
-      <div className="w-full h-24 flex items-center justify-center bg-gray-100 rounded-lg">
+      <div className="w-full h-14 flex items-center justify-center bg-gray-100 rounded-lg">
         <span className="text-xl font-bold text-gray-700 text-center font-sans tracking-wider">
           {brand.name}
         </span>
@@ -26,7 +26,7 @@ const BrandLogo: React.FC<{ brand: { name: string; logo: string } }> = ({ brand 
       src={brand.logo} 
       alt={`Logo ${brand.name}`} 
       onError={handleImageError}
-      className="w-full h-24 object-contain mx-auto filter grayscale hover:grayscale-0 transition-all duration-300"
+      className="w-full h-14 object-contain mx-auto filter grayscale hover:grayscale-0 transition-all duration-300"
     />
   );
 };
@@ -86,9 +86,9 @@ const BrandCarousel = () => {
   ];
 
   return (
-    <div className="container mx-auto px-6 py-10 max-w-full bg-gray-50">
-      <hr className="brand-separator bg-gradient-to-r from-black via-amber-400 to-black h-1 mb-8" />
-      <h2 className="text-2xl font-bold text-center mb-8">Marcas que confían en nosotros</h2>
+    <div className="container mx-auto px-6 py-6 max-w-full bg-gray-50">
+      <hr className="brand-separator bg-gradient-to-r from-black via-amber-400 to-black h-1 mb-6" />
+      <h2 className="text-2xl font-bold text-center mb-6">Marcas que confían en nosotros</h2>
       <Slider {...settings}>
         {brands.map((brand, index) => (
           <div key={index} className="px-4">
@@ -96,7 +96,7 @@ const BrandCarousel = () => {
           </div>
         ))}
       </Slider>
-      <hr className="brand-separator bg-gradient-to-r from-black via-amber-400 to-black h-1 mt-8" />
+      <hr className="brand-separator bg-gradient-to-r from-black via-amber-400 to-black h-1 mt-6" />
     </div>
   );
 };
