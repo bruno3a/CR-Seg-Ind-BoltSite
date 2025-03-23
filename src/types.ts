@@ -4,6 +4,7 @@ export interface Product {
   description: string;
   price: string;
   category: string;
+  categories?: string[]; // Opcional: si también manejas múltiples categorías
   image_url: string;
   industry?: string;
   brand: string;
@@ -24,4 +25,13 @@ export interface CartItem {
   price: string;
   quantity: number;
   brand: string;  // Añadiendo la marca
+}
+
+export interface ProductFilters {
+  page: number;
+  itemsPerPage: number;
+  search?: string;
+  categories?: string[];
+  industries?: string[];
+  brands?: string[];
 }

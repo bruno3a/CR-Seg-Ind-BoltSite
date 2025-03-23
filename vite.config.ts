@@ -5,8 +5,14 @@ export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
     exclude: ['lucide-react'],
+  },
+  server: {
+    watch: {
+      usePolling: true,
+    },
+  },
+  build: {
+    sourcemap: true,
   }
-  // Eliminar toda la sección de server.proxy
 });
-
 

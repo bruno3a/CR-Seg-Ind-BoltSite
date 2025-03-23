@@ -82,15 +82,23 @@ function App() {
 
   const handleAddToCart = useCallback((product: Product, quantity: number) => {
     setCartItems((prev) => {
-      const existing = prev.find((item) => item._id === product._id);
+      const existing = prev.find((item) => item._id === product.id);
       if (existing) {
         return prev.map((item) =>
-          item._id === product._id
+          item._id === product.id
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
       }
-      return [...prev, { ...product, quantity }];
+      return [...prev, { 
+        _id: product.id,
+        name: product.name,
+        price: product.price,
+        quantity: quantity,
+        brand: product.brand,
+        category: product.category,
+        image_url: product.image_url // Agregamos la URL de la imagen
+      }];
     });
     setIsCartOpen(true);
   }, []);

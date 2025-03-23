@@ -8,6 +8,7 @@ interface CartItem {
     quantity: number;
     category: string;
     brand: string;
+    image_url?: string;
 }
 
 interface CartProps {
@@ -75,36 +76,53 @@ const Cart: React.FC<CartProps> = ({
                     ) : (
                         <div className="space-y-4">
                             {items.map((item) => (
-                                <div key={item._id} className="flex items-center space-x-4 bg-gray-50 p-4 rounded-lg">
+                                <div key={item._id} className="flex items-start space-x-4 bg-gray-50 p-4 rounded-lg">
+                                    {/* Imagen del producto */}
+                                    <div className="w-16 h-16 flex-shrink-0">
+                                        <img
+                                            src={item.image_url || '/placeholder-product.png'}
+                                            alt={item.name}
+                                            className="w-full h-full object-contain rounded-md"
+                                            onError={(e) => {
+                                                (e.target as HTMLImageElement).src = '/placeholder-product.png';
+                                            }}
+                                        />
+                                    </div>
+
+                                    {/* Información del producto */}
                                     <div className="flex-1">
-                                        <h3 className="font-semibold text-gray-900">{item.name}</h3>
+                                        <h3 className="font-semibold text-gray-900">
+                                            {item.name} <span className="font-bold">| {item.brand}</span>
+                                        </h3>
                                         <div className="text-sm text-gray-600">
                                             <span className="mr-2">{item.category}</span>
-                                            <span className="text-gray-400">|</span>
-                                            <span className="ml-2">{item.brand}</span>
                                         </div>
-                                        <p className="text-blue-600 mt-1">{`$${Number(item.price).toFixed(2)}`}</p>
                                     </div>
-                                    <div className="flex items-center space-x-2">
-                                        <button
-                                            onClick={() => onUpdateQuantity(item._id, Math.max(0, item.quantity - 1))}
-                                            className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100"
-                                        >
-                                            -
-                                        </button>
-                                        <span className="w-8 text-center">{item.quantity}</span>
-                                        <button
-                                            onClick={() => onUpdateQuantity(item._id, item.quantity + 1)}
-                                            className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100"
-                                        >
-                                            +
-                                        </button>
-                                        <button
-                                            onClick={() => onRemoveItem(item._id)}
-                                            className="text-red-500 hover:text-red-700 ml-2"
-                                        >
-                                            <Trash2 className="w-5 h-5" />
-                                        </button>
+
+                                    {/* Precio y controles de cantidad */}
+                                    <div className="flex flex-col items-end space-y-2">
+                                        <p className="text-blue-600 font-semibold">{`$${Number(item.price).toFixed(2)}`}</p>
+                                        <div className="flex items-center space-x-2">
+                                            <button
+                                                onClick={() => onUpdateQuantity(item._id, Math.max(0, item.quantity - 1))}
+                                                className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100"
+                                            >
+                                                -
+                                            </button>
+                                            <span className="w-8 text-center">{item.quantity}</span>
+                                            <button
+                                                onClick={() => onUpdateQuantity(item._id, item.quantity + 1)}
+                                                className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100"
+                                            >
+                                                +
+                                            </button>
+                                            <button
+                                                onClick={() => onRemoveItem(item._id)}
+                                                className="text-red-500 hover:text-red-700 ml-2"
+                                            >
+                                                <Trash2 className="w-5 h-5" />
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             ))}

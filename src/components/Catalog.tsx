@@ -7,12 +7,12 @@ import { z } from 'zod';
 import ProductCard from './ProductCard';
 import { industries } from '../utils';
 import IndustryFilter from './IndustryFilter';
-import { Search } from 'lucide-react';
+import { Search, Badge } from 'lucide-react';
 import Pagination from './Pagination';
 import { X } from 'lucide-react';
 
 // Schema validation
-const ProductSchema = z.object({
+export const ProductSchema = z.object({
   id: z.string().uuid(),
   name: z.string(),
   description: z.string().nullable(),
@@ -28,6 +28,7 @@ interface CatalogProps {
 }
 
 const Catalog: React.FC<CatalogProps> = ({ onAddToCart }) => {
+  // 1. All useState hooks
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState(searchParams.get('search') || '');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -36,101 +37,91 @@ const Catalog: React.FC<CatalogProps> = ({ onAddToCart }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(15);
 
+  // 2. Query client
   const queryClient = useQueryClient();
 
-  // Cache con React Query
+  // 3. Fetch products function
   const fetchProducts = useCallback(async (filters: ProductFilters): Promise<PaginatedResponse<Product>> => {
-    const { page, itemsPerPage, search, categories, industries, brands } = filters;
-    const start = (page - 1) * itemsPerPage;
-    const end = start + itemsPerPage - 1;
+    const { search } = filters;
+    try {
+      console.log('Fetching products with search:', search);
+      let query = supabase
+        .from('products')
+        .select('*', { count: 'exact' });
 
-    let query = supabase
-      .from('products')
-      .select('*', { count: 'exact' })
-      .order('name');
+      if (search) {
+        query = query.ilike('name', `%${search}%`);
+      }
 
-    if (search) {
-      query = query.textSearch('name', search, {
-        config: 'english',
-        type: 'websearch'
-      });
+      const { data, error, count } = await query;
+      console.log('Supabase response:', { data, error, count });
+
+      if (error) throw error;
+      if (!data) return { data: [], count: 0 };
+
+      const transformedProducts = data.map(product => ({
+        ...product,
+        categories: Array.isArray(product.categories) ? product.categories : [product.category],
+        industry: product.industry || null,
+        brand: product.brand || null,
+        price: typeof product.price === 'number' ? product.price.toString() : product.price
+      }));
+
+      console.log('Transformed products:', transformedProducts);
+      return {
+        data: transformedProducts,
+        count: count || transformedProducts.length
+      };
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      return { data: [], count: 0 };
     }
-
-    if (categories?.length) query = query.in('category', categories);
-    if (industries?.length) query = query.in('industry', industries);
-    if (brands?.length) query = query.in('brand', brands);
-
-    const { data, error, count } = await query.range(start, end);
-
-    if (error) throw error;
-
-    // Transformar los productos sin modificar las imágenes
-    const transformedProducts = data.map(product => ({
-      ...product,
-      // No sobreescribimos icon aquí, mantenemos el original
-      price: product.price.toString(),
-    }));
-
-    return {
-      data: transformedProducts,
-      count: count || 0
-    };
   }, []);
 
-  // Fetch inicial de productos
+  // 4. Query hook
   const {
     data: productsResponse,
     isLoading,
-    error
+    error,
+    isFetching
   } = useQuery({
     queryKey: ['products', search],
     queryFn: () => fetchProducts({
       search,
-      categories: [],
-      industries: [],
-      brands: [],
-      page: 1,
-      itemsPerPage: 1000
+      categories: selectedCategories,
+      industries: selectedIndustries,
+      brands: selectedBrands,
+      page: currentPage,
+      itemsPerPage
     }),
-    select: (data) => {
-      // Eliminar duplicados basados en el ID
-      const uniqueProducts = data.data.reduce((acc, current) => {
-        if (!acc.find(item => item.id === current.id)) {
-          acc.push(current);
-        }
-        return acc;
-      }, [] as Product[]);
-
-      return {
-        data: uniqueProducts,
-        count: uniqueProducts.length
-      };
-    },
     staleTime: 5 * 60 * 1000,
-    keepPreviousData: true,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-    refetchOnReconnect: false
+    keepPreviousData: true
   });
 
-  // Filtrado local de productos
+  // 5. Memoized values
   const filteredProducts = useMemo(() => {
     if (!productsResponse?.data) return { data: [], count: 0 };
 
-    let filtered = productsResponse.data;
+    let filtered = [...productsResponse.data];
 
-    // Aplicar filtros localmente
     if (selectedCategories.length > 0) {
-      filtered = filtered.filter(product => selectedCategories.includes(product.category));
-    }
-    if (selectedIndustries.length > 0) {
-      filtered = filtered.filter(product => product.industry && selectedIndustries.includes(product.industry));
-    }
-    if (selectedBrands.length > 0) {
-      filtered = filtered.filter(product => product.brand && selectedBrands.includes(product.brand));
+      filtered = filtered.filter(product => 
+        selectedCategories.some(cat => product.categories.includes(cat))
+      );
     }
 
-    // Calcular paginación
+    if (selectedIndustries.length > 0) {
+      filtered = filtered.filter(product => 
+        product.industry && selectedIndustries.includes(product.industry)
+      );
+    }
+
+    if (selectedBrands.length > 0) {
+      filtered = filtered.filter(product => 
+        product.brand && selectedBrands.includes(product.brand)
+      );
+    }
+
     const start = (currentPage - 1) * itemsPerPage;
     const end = start + itemsPerPage;
     
@@ -140,58 +131,98 @@ const Catalog: React.FC<CatalogProps> = ({ onAddToCart }) => {
     };
   }, [productsResponse?.data, selectedCategories, selectedIndustries, selectedBrands, currentPage, itemsPerPage]);
 
-  // Manejar añadir al carrito sin causar refetch
-  const handleAddToCart = useCallback((product: Product, quantity: number) => {
-    onAddToCart(product, quantity);
-  }, [onAddToCart]);
+  // 6. Debug effect
+  useEffect(() => {
+    console.log('Current state:', {
+      productsResponse,
+      isLoading,
+      error,
+      isFetching,
+      filteredProducts
+    });
+  }, [productsResponse, isLoading, error, isFetching, filteredProducts]);
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.target.value);
-    setSearchParams(event.target.value ? { search: event.target.value } : {});
-    setCurrentPage(1); // Reset a la primera página cuando se busca
-  };
+  const uniqueCategories = useMemo(() => {
+    if (!productsResponse?.data) return [];
+    return Array.from(new Set(
+      productsResponse.data.flatMap((product: Product) => product.categories)
+    )) as string[];
+  }, [productsResponse?.data]);
 
-  const handlePageChange = (page: number) => {
+  const uniqueBrands = useMemo(() => {
+    if (!productsResponse?.data) return [];
+    return Array.from(new Set(
+      productsResponse.data
+        .map(product => product.brand)
+        .filter(Boolean)
+    ));
+  }, [productsResponse?.data]);
+
+  // 6. Event handlers
+  const handleSearchChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSearch(value);
+    setSearchParams(value ? { search: value } : {});
+    setCurrentPage(1);
+  }, [setSearchParams]);
+
+  const handleIndustryChange = useCallback((industry: string) => {
+    setSelectedIndustries(prev => 
+      prev.includes(industry) ? prev.filter(i => i !== industry) : [...prev, industry]
+    );
+    setCurrentPage(1);
+  }, []);
+
+  const handleBrandChange = useCallback((brand: string) => {
+    setSelectedBrands(prev => 
+      prev.includes(brand) ? prev.filter(b => b !== brand) : [...prev, brand]
+    );
+    setCurrentPage(1);
+  }, []);
+
+  const handleCategoryChange = useCallback((category: string) => {
+    setSelectedCategories(prev => 
+      prev.includes(category) ? prev.filter(c => c !== category) : [...prev, category]
+    );
+    setCurrentPage(1);
+  }, []);
+
+  const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  }, []);
 
-  const handleItemsPerPageChange = (value: number) => {
-    setItemsPerPage(value);
-    setCurrentPage(1);
-  };
+  const handleItemsPerPageChange = useCallback((newItemsPerPage: number) => {
+    setItemsPerPage(newItemsPerPage);
+    setCurrentPage(1); // Reset a la primera página cuando cambia el número de items por página
+  }, []);
 
-  const handleRemoveFilter = (type: 'category' | 'industry' | 'brand', value: string) => {
-    switch (type) {
-      case 'category':
-        setSelectedCategories(prev => prev.filter(cat => cat !== value));
-        break;
-      case 'industry':
-        setSelectedIndustries(prev => prev.filter(ind => ind !== value));
-        break;
-      case 'brand':
-        setSelectedBrands(prev => prev.filter(brand => brand !== value));
-        break;
-    }
-    setCurrentPage(1);
-  };
-
-  if (isLoading) {
-    return <div className="flex justify-center items-center min-h-[400px]">Cargando productos...</div>;
+  if (isLoading || isFetching) {
+    return (
+      <div className="flex justify-center items-center min-h-[400px]">
+        <div className="text-lg text-gray-600">Cargando productos...</div>
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="text-red-500">Error al cargar productos: {(error as Error).message}</div>;
+    return (
+      <div className="flex justify-center items-center min-h-[400px]">
+        <div className="text-lg text-red-500">
+          Error al cargar productos: {(error as Error).message}
+        </div>
+      </div>
+    );
   }
 
-  const uniqueCategories = Array.from(new Set(productsResponse?.data.map(product => product.category) || []));
-  const brands = Array.from(new Set(productsResponse?.data.map(product => product.brand).filter(Boolean) || []));
+  // Verificar si tenemos datos antes de renderizar
+  const hasProducts = productsResponse?.data && productsResponse.data.length > 0;
+  const displayProducts = filteredProducts?.data || [];
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      {/* Search bar */}
-      <div className="relative max-w-xl mx-auto mb-8">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+    <div className="container mx-auto px-4 py-8">
+      {/* Barra de búsqueda */}
+      <div className="max-w-xl mx-auto mb-8">
+        <Search className="absolute left-7 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
         <input
           type="text"
           placeholder="Buscar productos..."
@@ -201,94 +232,92 @@ const Catalog: React.FC<CatalogProps> = ({ onAddToCart }) => {
         />
       </div>
 
-      <div className="flex gap-6">
-        {/* Filters sidebar */}
-        <div className="w-72 flex-shrink-0">
-          <IndustryFilter
-            allIndustries={industries}
-            selectedIndustries={selectedIndustries}
-            onIndustryChange={(industry) => {
-              setSelectedIndustries(prev =>
-                prev.includes(industry)
-                  ? prev.filter(i => i !== industry)
-                  : [...prev, industry]
-              );
-              setCurrentPage(1);
-            }}
-            brands={brands}
-            selectedBrands={selectedBrands}
-            onBrandChange={(brand) => {
-              setSelectedBrands(prev =>
-                prev.includes(brand)
-                  ? prev.filter(b => b !== brand)
-                  : [...prev, brand]
-              );
-              setCurrentPage(1);
-            }}
-            categories={uniqueCategories}
-            selectedCategories={selectedCategories}
-            onCategoryChange={(category) => {
-              setSelectedCategories(prev =>
-                prev.includes(category)
-                  ? prev.filter(c => c !== category)
-                  : [...prev, category]
-              );
-              setCurrentPage(1);
-            }}
-          />
-        </div>
+      {/* Contenedor principal con grid y responsive */}
+      <div className="flex flex-col lg:flex-row gap-12">
+        {/* Sidebar con filtros */}
+        <aside className="w-full lg:w-64 flex-shrink-0">
+          <div className="lg:sticky lg:top-4">
+            <IndustryFilter
+              allIndustries={industries}
+              selectedIndustries={selectedIndustries}
+              onIndustryChange={handleIndustryChange}
+              brands={uniqueBrands}
+              selectedBrands={selectedBrands}
+              onBrandChange={handleBrandChange}
+              categories={uniqueCategories}
+              selectedCategories={selectedCategories}
+              onCategoryChange={handleCategoryChange}
+            />
+          </div>
+        </aside>
 
-        {/* Main content */}
-        <div className="flex-1">
-          {/* Category Pills */}
-          <div className="mb-4">
+        {/* Contenido principal */}
+        <main className="flex-1 min-w-0">
+          {/* Añadir Pills de Categorías aquí */}
+          <div className="mb-6">
             <div className="flex flex-wrap gap-2">
               {uniqueCategories.map((category) => (
                 <button
                   key={category}
-                  onClick={() => {
-                    setSelectedCategories(prev =>
-                      prev.includes(category)
-                        ? prev.filter(c => c !== category)
-                        : [...prev, category]
-                    );
-                  }}
+                  onClick={() => handleCategoryChange(category)}
                   className={`
-                    px-4 py-2 rounded-full text-sm font-medium
-                    transition-colors duration-200
-                    ${selectedCategories.includes(category)
-                      ? 'bg-blue-600 text-white'
+                    inline-flex items-center px-3 py-1 rounded-full text-sm
+                    transition-colors duration-200 ease-in-out
+                    ${
+                      selectedCategories.includes(category)
+                      ? 'bg-amber-500 text-white hover:bg-amber-600'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }
                   `}
                 >
+                  <Badge className="w-4 h-4 mr-1" />
                   {category}
+                  {selectedCategories.includes(category) && (
+                    <span 
+                      className="ml-1 hover:text-amber-200"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleCategoryChange(category);
+                      }}
+                    >
+                      ×
+                    </span>
+                  )}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Products Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {filteredProducts.data.map(product => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onAddToCart={handleAddToCart}
-              />
-            ))}
-          </div>
+          {!hasProducts ? (
+            <div className="text-center text-gray-600">
+              No se encontraron productos
+            </div>
+          ) : (
+            <>
+              {/* Grid de productos */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
+                {displayProducts.map((product) => (
+                  <div key={product.id} className="h-full">
+                    <ProductCard
+                      product={product}
+                      onAddToCart={onAddToCart}
+                    />
+                  </div>
+                ))}
+              </div>
 
-          {/* Pagination */}
-          {filteredProducts && (
-            <Pagination
-              currentPage={currentPage}
-              totalPages={Math.ceil(filteredProducts.count / itemsPerPage)}
-              onPageChange={handlePageChange}
-              onItemsPerPageChange={handleItemsPerPageChange}
-            />
+              {/* Paginación */}
+              <div className="mt-8 mb-8">
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={Math.ceil((filteredProducts?.count || 0) / itemsPerPage)}
+                  onPageChange={handlePageChange}
+                  onItemsPerPageChange={handleItemsPerPageChange}
+                />
+              </div>
+            </>
           )}
-        </div>
+        </main>
       </div>
     </div>
   );
