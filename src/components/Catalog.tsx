@@ -7,7 +7,7 @@ import { z } from 'zod';
 import ProductCard from './ProductCard';
 import { industries } from '../utils';
 import IndustryFilter from './IndustryFilter';
-import { Search, Badge } from 'lucide-react';
+import { Search, Badge, ChevronDown } from 'lucide-react';
 import Pagination from './Pagination';
 import { X } from 'lucide-react';
 
@@ -36,6 +36,8 @@ const Catalog: React.FC<CatalogProps> = ({ onAddToCart }) => {
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(15);
+  const [showFilters, setShowFilters] = useState(false);
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
 
   // 2. Query client
   const queryClient = useQueryClient();
@@ -227,23 +229,71 @@ const Catalog: React.FC<CatalogProps> = ({ onAddToCart }) => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Barra de búsqueda */}
-      <div className="max-w-xl mx-auto mb-8">
-        <Search className="absolute left-7 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-        <input
-          type="text"
-          placeholder="Buscar productos..."
-          value={search}
-          onChange={handleSearchChange}
-          className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg shadow-sm focus:ring-1 focus:ring-blue-500 focus:border-transparent text-sm"
-        />
+      {/* Barra superior con búsqueda y botón de filtros */}
+      <div className="flex flex-col sm:flex-row gap-4 mb-6">
+        <div className="relative flex-1">
+          <input
+            type="text"
+            placeholder="Buscar productos..."
+            value={search}
+            onChange={handleSearchChange}
+            className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-amber-500"
+          />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+        </div>
+        <button
+          onClick={() => setShowMobileFilters(true)}
+          className="lg:hidden px-4 py-2 bg-gray-100 rounded-lg flex items-center justify-center"
+        >
+          <span className="mr-2">Filtros</span>
+          <ChevronDown className="w-4 h-4" />
+        </button>
       </div>
 
-      {/* Contenedor principal con grid y responsive */}
-      <div className="flex flex-col lg:flex-row gap-12">
-        {/* Sidebar con filtros */}
-        <aside className="w-full lg:w-64 flex-shrink-0">
-          <div className="lg:sticky lg:top-4">
+      {/* Modal de filtros para móvil */}
+      {showMobileFilters && (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          <div className="absolute inset-0 bg-black bg-opacity-50" onClick={() => setShowMobileFilters(false)} />
+          <div className="absolute inset-y-0 right-0 w-full max-w-sm bg-white">
+            <div className="h-full flex flex-col">
+              <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+                <h2 className="text-lg font-semibold">Filtros</h2>
+                <button onClick={() => setShowMobileFilters(false)}>
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+              <div className="flex-1 overflow-y-auto p-4">
+                <IndustryFilter
+                  allIndustries={industries}
+                  selectedIndustries={selectedIndustries}
+                  onIndustryChange={handleIndustryChange}
+                  brands={uniqueBrands}
+                  selectedBrands={selectedBrands}
+                  onBrandChange={handleBrandChange}
+                  categories={uniqueCategories}
+                  selectedCategories={selectedCategories}
+                  onCategoryChange={handleCategoryChange}
+                  isMobile={true}
+                />
+              </div>
+              <div className="p-4 border-t border-gray-200">
+                <button
+                  onClick={() => setShowMobileFilters(false)}
+                  className="w-full py-2 bg-amber-600 text-white rounded-lg"
+                >
+                  Ver resultados
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Layout principal */}
+      <div className="flex flex-col lg:flex-row gap-8">
+        {/* Sidebar desktop */}
+        <aside className="hidden lg:block w-72 flex-shrink-0">
+          <div className="sticky top-4">
             <IndustryFilter
               allIndustries={industries}
               selectedIndustries={selectedIndustries}
@@ -258,73 +308,28 @@ const Catalog: React.FC<CatalogProps> = ({ onAddToCart }) => {
           </div>
         </aside>
 
-        {/* Contenido principal */}
-        <main className="flex-1 min-w-0">
-          {/* Añadir Pills de Categorías aquí */}
-          <div className="mb-6">
-            <div className="flex flex-wrap gap-2">
-              {uniqueCategories.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => handleCategoryChange(category)}
-                  className={`
-                    inline-flex items-center px-3 py-1 rounded-full text-sm
-                    transition-colors duration-200 ease-in-out
-                    ${
-                      selectedCategories.includes(category)
-                      ? 'bg-amber-500 text-white hover:bg-amber-600'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }
-                  `}
-                >
-                  <Badge className="w-4 h-4 mr-1" />
-                  {category}
-                  {selectedCategories.includes(category) && (
-                    <span 
-                      className="ml-1 hover:text-amber-200"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleCategoryChange(category);
-                      }}
-                    >
-                      ×
-                    </span>
-                  )}
-                </button>
-              ))}
-            </div>
+        {/* Grid de productos */}
+        <div className="flex-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {displayProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                onAddToCart={onAddToCart}
+              />
+            ))}
           </div>
 
-          {!hasProducts ? (
-            <div className="text-center text-gray-600">
-              No se encontraron productos
-            </div>
-          ) : (
-            <>
-              {/* Grid de productos */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
-                {displayProducts.map((product) => (
-                  <div key={product.id} className="h-full">
-                    <ProductCard
-                      product={product}
-                      onAddToCart={onAddToCart}
-                    />
-                  </div>
-                ))}
-              </div>
-
-              {/* Paginación */}
-              <div className="mt-8 mb-8">
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={Math.ceil((filteredProducts?.count || 0) / itemsPerPage)}
-                  onPageChange={handlePageChange}
-                  onItemsPerPageChange={handleItemsPerPageChange}
-                />
-              </div>
-            </>
-          )}
-        </main>
+          {/* Paginación */}
+          <div className="mt-8">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={Math.ceil((filteredProducts?.count || 0) / itemsPerPage)}
+              onPageChange={handlePageChange}
+              onItemsPerPageChange={handleItemsPerPageChange}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

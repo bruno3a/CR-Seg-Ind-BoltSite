@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { X, ShoppingCart, Search } from 'lucide-react';
+import { X, ShoppingCart, Search, Menu } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 interface NavbarProps {
@@ -18,6 +18,7 @@ const Navbar: React.FC<NavbarProps> = ({
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
     const searchInputRef = useRef<HTMLInputElement>(null);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const handleSearchButtonClick = () => {
         setShowSearch(true);
@@ -49,35 +50,28 @@ const Navbar: React.FC<NavbarProps> = ({
                 <nav className="bg-black border-b border-amber-300 shadow-lg">
                     <div className="container mx-auto px-4">
                         <div className="flex justify-between items-center h-16">
+                            {/* Logo y título */}
                             <Link to="/" className="flex items-center flex-shrink-0">
                                 <img 
                                     src="/assets/cr-work-logo.jpeg" 
                                     alt="CR Work Logo" 
-                                    className="h-12 w-12 object-cover rounded-full"
-                                    style={{
-                                        objectFit: 'cover',
-                                        objectPosition: 'center'
-                                    }}
+                                    className="h-8 w-8 md:h-12 md:w-12 object-cover rounded-full"
                                 />
-                                <span className="ml-2 text-xl font-bold text-amber-300">
-                                    CR Work - Insumos para la Seguridad Industrial
+                                <span className="ml-2 text-sm md:text-xl font-bold text-amber-300 truncate">
+                                    CR Work
                                 </span>
                             </Link>
 
-                            {/* Search Input - Centered between "Industrial" and "Inicio" */}
-                            <div className="flex-1 flex justify-center mx-8">
-                                <div className="relative flex items-center bg-gray-800 rounded-lg w-48 hover:w-56 transition-all duration-300">
-                                    <Search className="absolute left-2 text-amber-300 w-4 h-4" />
-                                    <button
-                                        onClick={handleSearchButtonClick}
-                                        className="w-full px-8 py-1.5 text-left text-sm text-amber-300 hover:text-amber-400 truncate"
-                                    >
-                                        Buscar productos
-                                    </button>
-                                </div>
-                            </div>
+                            {/* Botón menú móvil */}
+                            <button
+                                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                                className="md:hidden text-amber-300 hover:text-amber-400"
+                            >
+                                <Menu className="h-6 w-6" />
+                            </button>
 
-                            <div className="hidden md:flex items-center space-x-8">
+                            {/* Menú desktop */}
+                            <div className="hidden md:flex items-center space-x-4">
                                 <Link to="/" className="text-gray-300 hover:text-amber-300">
                                     Inicio
                                 </Link>
@@ -113,6 +107,29 @@ const Navbar: React.FC<NavbarProps> = ({
                                 </button>
                             </div>
                         </div>
+
+                        {/* Menú móvil */}
+                        {isMenuOpen && (
+                            <div className="md:hidden py-4">
+                                <div className="flex flex-col space-y-4">
+                                    <Link to="/catalog" className="text-amber-300 hover:text-amber-400">
+                                        Catálogo
+                                    </Link>
+                                    <Link to="/nosotros" className="text-amber-300 hover:text-amber-400">
+                                        Nosotros
+                                    </Link>
+                                    <Link to="/ubicanos" className="text-amber-300 hover:text-amber-400">
+                                        Ubicanos
+                                    </Link>
+                                    <button
+                                        onClick={onClientLoginClick}
+                                        className="text-amber-300 hover:text-amber-400 text-left"
+                                    >
+                                        Iniciar Sesión
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </nav>
 

@@ -11,6 +11,8 @@ interface IndustryFilterProps {
     categories: string[];
     selectedCategories: string[];
     onCategoryChange: (category: string) => void;
+    className?: string;
+    isMobile?: boolean;
 }
 
 interface FilterSectionProps {
@@ -40,42 +42,42 @@ const FilterSection: React.FC<FilterSectionProps> = ({
     }, [items, searchTerm]);
 
     return (
-        <div className="mt-4">
+        <div className="py-3 border-b border-gray-100 last:border-0">
             <button
-                className="flex items-center justify-between w-full py-2 text-left font-medium text-gray-700 hover:text-gray-900"
                 onClick={onToggle}
+                className="w-full flex items-center justify-between text-sm text-gray-700 hover:text-gray-900"
             >
-                <span className="text-sm">{title}</span>
                 <div className="flex items-center">
+                    <span className="font-medium">{title}</span>
                     {selectedItems.length > 0 && (
-                        <span className="mr-2 text-xs text-amber-600">
-                            ({selectedItems.length})
+                        <span className="ml-2 px-2 py-0.5 text-xs bg-amber-100 text-amber-700 rounded-full">
+                            {selectedItems.length}
                         </span>
                     )}
-                    <ChevronDown 
-                        className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} 
-                    />
                 </div>
+                <ChevronDown 
+                    className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} 
+                />
             </button>
             {isOpen && (
-                <div className="mt-1 max-h-40 overflow-y-auto custom-scrollbar">
+                <div className="mt-2 max-h-40 overflow-y-auto custom-scrollbar">
                     {filteredItems.length > 0 ? (
                         filteredItems.map((item) => (
                             <label
                                 key={item}
-                                className="flex items-center py-1 px-2 hover:bg-gray-50 rounded cursor-pointer text-xs"
+                                className="flex items-center py-1.5 px-2 hover:bg-gray-50 rounded cursor-pointer text-sm"
                             >
                                 <input
                                     type="checkbox"
                                     checked={selectedItems.includes(item)}
                                     onChange={() => onItemChange(item)}
-                                    className="w-3 h-3 text-amber-600 rounded border-gray-300"
+                                    className="w-4 h-4 text-amber-600 rounded border-gray-300 focus:ring-amber-500"
                                 />
                                 <span className="ml-2 text-gray-700">{item}</span>
                             </label>
                         ))
                     ) : (
-                        <div className="text-xs text-gray-500 py-2 px-2">
+                        <div className="text-sm text-gray-500 py-2 px-2">
                             No se encontraron resultados
                         </div>
                     )}
@@ -95,6 +97,8 @@ const IndustryFilter: React.FC<IndustryFilterProps> = ({
     categories = [], // Provide default empty array
     selectedCategories = [], // Provide default empty array
     onCategoryChange,
+    className = '',
+    isMobile = false
 }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [isIndustryOpen, setIsIndustryOpen] = useState(true);
@@ -117,7 +121,9 @@ const IndustryFilter: React.FC<IndustryFilterProps> = ({
                            selectedCategories.length > 0;
 
     return (
-        <div className="w-72 bg-white rounded-xl shadow-lg border border-gray-100">
+        <div className={`bg-white rounded-xl shadow-lg border border-gray-100 ${
+            isMobile ? 'w-full' : 'w-full lg:w-72'
+        } ${className}`}>
             <div className="p-4">
                 {/* Header y Búsqueda */}
                 <div className="space-y-4">
@@ -140,41 +146,43 @@ const IndustryFilter: React.FC<IndustryFilterProps> = ({
                             placeholder="Buscar en filtros..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full pl-8 pr-3 py-1.5 text-sm border border-gray-200 rounded-md focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
+                            className="w-full pl-8 pr-3 py-2 text-sm border border-gray-200 rounded-md focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
                         />
                     </div>
                 </div>
 
                 {/* Secciones de Filtros */}
-                <FilterSection
-                    title="Categorías"
-                    isOpen={isCategoriesOpen}
-                    onToggle={() => setIsCategoriesOpen(!isCategoriesOpen)}
-                    items={categories}
-                    selectedItems={selectedCategories}
-                    onItemChange={onCategoryChange}
-                    searchTerm={searchTerm}
-                />
+                <div className="mt-4 space-y-2">
+                    <FilterSection
+                        title="Categorías"
+                        isOpen={isCategoriesOpen}
+                        onToggle={() => setIsCategoriesOpen(!isCategoriesOpen)}
+                        items={categories}
+                        selectedItems={selectedCategories}
+                        onItemChange={onCategoryChange}
+                        searchTerm={searchTerm}
+                    />
 
-                <FilterSection
-                    title="Marcas"
-                    isOpen={isBrandsOpen}
-                    onToggle={() => setIsBrandsOpen(!isBrandsOpen)}
-                    items={brands}
-                    selectedItems={selectedBrands}
-                    onItemChange={onBrandChange}
-                    searchTerm={searchTerm}
-                />
+                    <FilterSection
+                        title="Marcas"
+                        isOpen={isBrandsOpen}
+                        onToggle={() => setIsBrandsOpen(!isBrandsOpen)}
+                        items={brands}
+                        selectedItems={selectedBrands}
+                        onItemChange={onBrandChange}
+                        searchTerm={searchTerm}
+                    />
 
-                <FilterSection
-                    title="Industrias"
-                    isOpen={isIndustryOpen}
-                    onToggle={() => setIsIndustryOpen(!isIndustryOpen)}
-                    items={allIndustries.map(i => i.name)}
-                    selectedItems={selectedIndustries}
-                    onItemChange={onIndustryChange}
-                    searchTerm={searchTerm}
-                />
+                    <FilterSection
+                        title="Industrias"
+                        isOpen={isIndustryOpen}
+                        onToggle={() => setIsIndustryOpen(!isIndustryOpen)}
+                        items={allIndustries.map(i => i.name)}
+                        selectedItems={selectedIndustries}
+                        onItemChange={onIndustryChange}
+                        searchTerm={searchTerm}
+                    />
+                </div>
             </div>
         </div>
     );

@@ -189,97 +189,39 @@ function App() {
               <>
                 <Hero />
                 <BrandCarousel />
-                <main className="container mx-auto px-4 py-16">
-                  {/* Primero las secciones de Industrias y EPP */}
-                  <div className="flex">
-                    <IndustriesSection />
-                    <PersonalProtectionSection />
+                <main className="container mx-auto px-4 py-8 md:py-16">
+                  {/* Secciones de Industrias y EPP */}
+                  <div className="flex flex-col lg:flex-row gap-8">
+                    <div className="w-full lg:w-1/2">
+                      <IndustriesSection />
+                    </div>
+                    <div className="w-full lg:w-1/2">
+                      <PersonalProtectionSection />
+                    </div>
                   </div>
 
-                  {/* Luego las cards de Distribuidor y Novedades */}
-                  <section className="mb-16">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-                      <Pictogram
-                        icon={Users}
-                        title="¡Convertite en Distribuidor!"
-                        description="Ampliá tu negocio con nuestro asesoramiento. Tenemos todos los productos que necesitás. ¡Unite a nuestra red de distribuidores!"
-                        stats={[
-                          { label: 'Variedad', value: 'Más de 5000 artículos' },
-                          { label: 'Calidad', value: 'Las mejores marcas' },
-                        ]}
-                        image="/Distributor.png"
-                      />
-                      <Pictogram
-                        icon={Warehouse}
-                        title="Novedades"
-                        description="Descubrí los nuevos ingresos. Siempre hay alguna novedad."
-                        stats={[
-                          { label: 'Lo último de mercado internacional', value: 'Importados' },
-                          { label: 'La confianza de siempre', value: 'Nacionales' },
-                        ]}
-                        image="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"
-                      />
-                    </div>
-                  </section>
-
-                  {/* Carrusel de clientes */}
-                  <div className="mb-24">
-                    <ClientCarousel />
-                  </div>
-
-                  <section className="bg-gray-50 rounded-2xl shadow-lg py-10 px-8 mb-16" 
-                    style={{ 
-                      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.pexels.com/photos/4483773/pexels-photo-4483773.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')`, 
-                      backgroundSize: 'cover', 
-                      backgroundPosition: 'center' 
-                    }}>
-                    <div className="text-center mb-12">
-                      <h2 className="text-3xl font-bold text-white mb-4">
-                        Confiá en nosotros!
-                      </h2>
-                      <p className="text-white">
-                        Amplia disponibilidad de productos, servicio de entrega y retiro en nuestro centro de distribución, consultá los nuevos ingresos!
-                      </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-                      {[
-                        {
-                          icon: Users,
-                          title: 'Convertite en distribuidor',
-                          url: '#convertite-en-distribuidor'
-                        },
-                        {
-                          icon: Book,
-                          title: 'Catálogo digital',
-                          url: '#catalogo-digital'
-                        },
-                        {
-                          icon: FileText,
-                          title: 'Plantilla X',
-                          url: '#plantilla-x'
-                        },
-                        {
-                          icon: Bell,
-                          title: 'Novedades',
-                          url: '#novedades'
-                        },
-                      ].map((feature, index) => (
-                        <div key={index} className="text-center">
-                          <a href={feature.url} className="inline-block p-3 bg-blue-100 rounded-full mb-4">
-                            <feature.icon className="w-6 h-6 text-blue-600" />
-                          </a>
-                          <h3 className="text-lg font-semibold text-white mb-2">
-                            {feature.title}
-                          </h3>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Contenido debajo de los botones con más espacio */}
-                    <div className="mt-16">
-                      {/* ... contenido adicional ... */}
-                    </div>
+                  {/* Cards responsivas */}
+                  <section className="grid grid-cols-1 md:grid-cols-2 gap-8 my-16">
+                    <Pictogram
+                      icon={Users}
+                      title="¡Convertite en Distribuidor!"
+                      description="Ampliá tu negocio con nuestro asesoramiento."
+                      stats={[
+                        { label: 'Variedad', value: 'Más de 5000 artículos' },
+                        { label: 'Calidad', value: 'Las mejores marcas' },
+                      ]}
+                      image="/Distributor.png"
+                    />
+                    <Pictogram
+                      icon={Warehouse}
+                      title="Novedades"
+                      description="Descubrí los nuevos ingresos."
+                      stats={[
+                        { label: 'Importados', value: 'Lo último' },
+                        { label: 'Nacionales', value: 'Confianza' },
+                      ]}
+                      image="/News.png"
+                    />
                   </section>
                 </main>
               </>
@@ -302,9 +244,9 @@ function App() {
           />
         </Routes>
 
-        <footer className="bg-gray-900 text-white py-12">
+        <footer className="bg-gray-900 text-white py-8 md:py-12">
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               <div>
                 <h3 className="text-lg font-semibold mb-4">Sobre Nosotros</h3>
                 <p className="text-gray-400 mb-4">
