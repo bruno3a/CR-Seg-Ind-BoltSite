@@ -1,5 +1,5 @@
 // Backend API Configuration (Express server)
-export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3010';
+export const API_URL = import.meta.env.VITE_API_URL || 'https://railway.com/project/9618bad8-9517-4c27-94a6-996e57859008';
 
 // Supabase Configuration (Product Database)
 export const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
